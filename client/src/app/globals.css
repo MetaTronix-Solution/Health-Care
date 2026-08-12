@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+:root {
+  --color-primary: #0a192f;
+  --color-secondary: #2e5bff;
+  --color-tertiary: #fcfcfc;
+  --color-neutral-bg: #f4f7f9;
+  --color-neutral-line: #dfe4e8;
+  --color-neutral-muted: #6b7280;
+}
+
+@theme inline {
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-tertiary: var(--color-tertiary);
+  --color-neutral-bg: var(--color-neutral-bg);
+  --color-neutral-line: var(--color-neutral-line);
+  --color-neutral-muted: var(--color-neutral-muted);
+  --font-sans: var(--font-jakarta);
+}
+
+body {
+  background: var(--color-tertiary);
+  color: var(--color-primary);
+  font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.eyebrow {
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--color-neutral-muted);
+}
+
+.hairline {
+  border-top: 1px solid var(--color-neutral-line);
+}
