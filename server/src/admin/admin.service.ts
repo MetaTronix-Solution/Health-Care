@@ -1,30 +1,76 @@
 import { Injectable } from '@nestjs/common';
+
 import { InjectModel } from '@nestjs/mongoose';
-import { Admin, AdminDocument } from './schemas/admin.schema';
+
 import { Model } from 'mongoose';
+
+import {
+  Admin,
+  AdminDocument,
+} from './schemas/admin.schema';
 
 @Injectable()
 export class AdminService {
-    constructor(
-        @InjectModel(Admin.name)
-        private readonly adminModel: Model<AdminDocument>,
-    ) {}
 
-    async findByEmail(email: string) {
-        return this.adminModel.findOne({email: email.toLowerCase()})
-    }
+  constructor(
+    @InjectModel(Admin.name)
+    private readonly adminModel:
+      Model<AdminDocument>,
+  ) {}
 
-    async findById(id: string) {
-        return this.adminModel.findById(id);
-    }
+  async findByEmail(email: string) {
 
-    async updateRefreshToken(adminId: string, refreshToken: string) {
-        return this.adminModel.findByIdAndUpdate(adminId, {refreshToken})
-    }
+    return this.adminModel
+      .findOne({
+        email: email.toLowerCase(),
+      })
+      .exec();
+  }
 
-    async removeRefreshToken(adminId: string) {
-        return this.adminModel.findByIdAndUpdate(adminId, {
-            refreshToken: null
-        })
-    }
+  async findById(id: string) {
+
+    return this.adminModel
+      .findById(id)
+      .exec();
+  }
+
+  async updateRefreshTokenId(
+    adminId: string,
+    refreshTokenId: string,
+  ) {
+
+    return this.adminModel
+      .findByIdAndUpdate(
+        adminId,
+        {
+          $set: {
+            refreshTokenId,
+          },
+        },
+        {
+          returnDocument: 'after',
+        },
+      )
+      .exec();
+  }
+
+  async removeRefreshTokenId(
+    adminId: string,
+  ) {
+
+    return this.adminModel
+      .findByIdAndUpdate(
+        adminId,
+        {
+          $set: {
+            refreshTokenId: null,
+          },
+        },
+        {
+          returnDocument: 'after',
+        },
+      )
+      .exec();
+  }
+
 }
