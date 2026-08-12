@@ -1,7 +1,15 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import {
+  Prop,
+  Schema,
+  SchemaFactory,
+} from '@nestjs/mongoose';
 
-export type AdminDocument = HydratedDocument<Admin>;
+import {
+  HydratedDocument,
+} from 'mongoose';
+
+export type AdminDocument =
+  HydratedDocument<Admin>;
 
 @Schema({
   timestamps: true,
@@ -32,9 +40,11 @@ export class Admin {
   isActive!: boolean;
 
   @Prop({
+    type: String,
     default: null,
   })
-  refreshToken?: string;
+  refreshTokenId?: string;
 }
 
-export const AdminSchema = SchemaFactory.createForClass(Admin);
+export const AdminSchema =
+  SchemaFactory.createForClass(Admin);
