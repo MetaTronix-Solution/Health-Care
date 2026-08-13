@@ -1,4 +1,4 @@
-import {Injectable,} from '@nestjs/common';
+import {Injectable, NotFoundException,} from '@nestjs/common';
 import {InjectModel,} from '@nestjs/mongoose';
 import {Model,} from 'mongoose';
 import {Product,ProductDocument,} from './schemas/product.schema';
@@ -56,5 +56,36 @@ export class ProductService {
       message: 'Product created successfully',
       product,
     };
+  }
+
+
+  //Get all products
+  async findAll() {
+    const products = await this.productModel.find().sort({createdAr: -1}).exec();
+
+    if(!products) {
+      throw new NotFoundException("Products are not available");
+    }
+
+    return {
+      success: true,
+      message: "Products fetched successfully",
+      count: products.length,
+      products
+    }
+  }
+
+
+  async findOne(id: string) {
+    const product = await this.productModel.findById(id).exec();
+
+    if(!product) {
+      throw new NotFoundException("Product not found");
+    }
+    return {
+      success: true,
+      message: "Product fetched successfully",
+      product
+    }
   }
 }

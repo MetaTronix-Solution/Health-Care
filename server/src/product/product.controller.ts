@@ -36,4 +36,20 @@ export class ProductController {
       files,
     );
   }
+
+
+  // get all products
+  @Get()
+  async findAll() {
+    return this.productService.findAll();
+  }
+
+
+  //get products by id
+  @Get(":id")
+  async findOne(
+    @Param("id") id: string,
+  ) {
+    return this.productService.findOne(id);
+  }
 }
