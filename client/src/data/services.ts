@@ -1,80 +1,50 @@
-import type { Service } from "@/src/types/service";
+export type Service = {
+  number: string;
+  slug: string;
+  title: string;
+  description: string;
+  ctaLabel: string;
+};
 
 export const services: Service[] = [
   {
+    number: "01",
+    slug: "equipment-sales",
+    title: "Equipment Sales",
+    description:
+      "Medical equipment selected around your clinical requirements — from diagnostics to critical care.",
+    ctaLabel: "Explore Equipment",
+  },
+  {
+    number: "02",
+    slug: "equipment-rental",
+    title: "Equipment Rental",
+    description:
+      "Flexible rental options for temporary, short-term, or home-care equipment needs.",
+    ctaLabel: "Ask About Rental",
+  },
+  {
+    number: "03",
     slug: "installation",
-    index: "01",
-    title: "Installation",
+    title: "Installation & Setup",
     description:
-      "Site assessment, logistics, and certified installation for every device class we manufacture, coordinated around your facility's schedule.",
-    points: [
-      "Pre-installation site survey",
-      "Certified field engineers",
-      "Post-install verification testing",
-    ],
+      "Professional installation and commissioning to get equipment operating correctly from day one.",
+    ctaLabel: "Learn About Installation",
   },
   {
-    slug: "maintenance",
-    index: "02",
-    title: "Maintenance",
+    number: "04",
+    slug: "maintenance-support",
+    title: "Maintenance & Support",
     description:
-      "Scheduled preventive maintenance programs that keep imaging and monitoring fleets within calibration and compliance tolerances.",
-    points: [
-      "Preventive maintenance scheduling",
-      "Remote diagnostics",
-      "Compliance documentation",
-    ],
+      "Preventive maintenance, repairs, and biomedical technical support to keep systems reliable.",
+    ctaLabel: "Learn About Support",
   },
   {
-    slug: "technical-support",
-    index: "03",
-    title: "Technical Support",
+    number: "05",
+    slug: "consultation-training",
+    title: "Consultation & Training",
     description:
-      "24/7 technical support lines staffed by engineers who know the systems, not a call-center script.",
-    points: [
-      "24/7 emergency support line",
-      "Remote troubleshooting",
-      "On-site dispatch when required",
-    ],
-  },
-  {
-    slug: "training",
-    index: "04",
-    title: "Training",
-    description:
-      "Clinical and biomedical training programs that get staff confident on new equipment before it enters daily use.",
-    points: [
-      "On-site clinical training",
-      "Biomedical engineering certification",
-      "Ongoing refresher sessions",
-    ],
-  },
-  {
-    slug: "consultation",
-    index: "05",
-    title: "Consultation",
-    description:
-      "Workflow and capital planning consultation for departments scaling or replacing diagnostic and surgical infrastructure.",
-    points: [
-      "Capital equipment planning",
-      "Workflow optimization review",
-      "Regulatory readiness assessment",
-    ],
-  },
-  {
-    slug: "product-demonstration",
-    index: "06",
-    title: "Product Demonstration",
-    description:
-      "Hands-on demonstrations in your own clinical environment, so evaluation teams see performance under real conditions.",
-    points: [
-      "In-facility live demonstration",
-      "Comparative performance review",
-      "Custom evaluation protocols",
-    ],
+      "Equipment planning, facility guidance, and staff training from selection through operation.",
+    ctaLabel: "Request a Consultation",
   },
 ];
-
-export function getServiceBySlug(slug: string) {
-  return services.find((service) => service.slug === slug);
-}
