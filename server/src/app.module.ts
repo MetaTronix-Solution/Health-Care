@@ -19,9 +19,7 @@ import { ContactModule } from './contact/contact.module';
 
       inject: [ConfigService],
 
-      useFactory: (
-        configService: ConfigService,
-      ) => ({
+      useFactory: ( configService: ConfigService ) => ({
         uri: configService.get<string>(
           'MONGO_URI',
         ),

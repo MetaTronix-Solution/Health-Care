@@ -4,6 +4,7 @@ import { ContactService } from './contact.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Contact, ContactSchema } from './schemas/contact.schema';
 
+
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -11,7 +12,7 @@ import { Contact, ContactSchema } from './schemas/contact.schema';
         name: Contact.name,
         schema: ContactSchema
       }
-    ])
+    ]),
   ],
   controllers: [ContactController],
   providers: [ContactService]
