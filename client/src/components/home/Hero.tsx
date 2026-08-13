@@ -1,4 +1,5 @@
-import { ArrowRight, Image as ImageIcon } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 import { Container } from "@/src/components/ui/Container";
 import { Button } from "@/src/components/ui/Button";
 
@@ -33,15 +34,14 @@ export function Hero() {
           </div>
 
           <div className="relative aspect-[4/3] w-full overflow-hidden border border-neutral-line bg-tertiary">
-            <div className="flex h-full flex-col items-center justify-center text-neutral-muted">
-              <ImageIcon size={48} className="mb-4 opacity-50" />
-
-              <p className="text-center text-sm font-semibold uppercase tracking-wider opacity-70">
-                [ PLACEHOLDER: HERO_ROBOTICS.JPG ]
-              </p>
-
-              <p className="mt-2 text-xs opacity-50">Awaiting client asset</p>
-            </div>
+            <Image
+              src="https://images.unsplash.com/photo-1648224395277-052c8108efa3?q=80&w=1800&auto=format&fit=crop"
+              alt="Hospital room with clinical monitor and medical equipment"
+              fill
+              priority
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+            />
           </div>
         </div>
       </Container>
