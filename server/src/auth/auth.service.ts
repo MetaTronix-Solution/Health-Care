@@ -1,74 +1,48 @@
-import {
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
-
+import { Injectable,UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-
 import { ConfigService } from '@nestjs/config';
-
 import * as bcrypt from 'bcryptjs';
-
 import { randomUUID } from 'crypto';
-
 import { AdminService } from '../admin/admin.service';
-
 import { AdminLoginDto } from './dto/admin-login.dto';
+
+
+
 
 
 @Injectable()
 export class AuthService {
-
   constructor(
+    private readonly adminService: AdminService,
 
-    private readonly adminService:
-      AdminService,
+    private readonly jwtService: JwtService,
 
-    private readonly jwtService:
-      JwtService,
-
-    private readonly configService:
-      ConfigService,
+    private readonly configService: ConfigService,
 
   ) {}
 
 
-  // =====================================================
+
   // LOGIN
-  // =====================================================
 
-  async login(
-    adminLoginDto: AdminLoginDto,
-  ) {
+  async login( adminLoginDto: AdminLoginDto ) {
 
-    const {
-      email,
-      password,
-    } = adminLoginDto;
+    const { email,  password } = adminLoginDto;
 
-
-    // =========================
-    // 1. Find admin
-    // =========================
-
+    // Find admin
     const admin =
       await this.adminService.findByEmail(
-        email,
+        email
       );
 
 
     if (!admin) {
-
       throw new UnauthorizedException(
         'Invalid email or password',
       );
     }
 
-
-    // =========================
-    // 2. Check active
-    // =========================
-
+    //Check active
     if (!admin.isActive) {
 
       throw new UnauthorizedException(
@@ -76,11 +50,7 @@ export class AuthService {
       );
     }
 
-
-    // =========================
-    // 3. Check password
-    // =========================
-
+    // Check password
     const passwordMatched =
       await bcrypt.compare(
         password,
@@ -96,9 +66,9 @@ export class AuthService {
     }
 
 
-    // =========================
-    // 4. Generate tokens
-    // =========================
+
+    // Generate tokens
+
 
     const tokens =
       await this.generateTokens(
@@ -107,9 +77,9 @@ export class AuthService {
       );
 
 
-    // =========================
-    // 5. Save refresh token ID
-    // =========================
+
+    // Save refresh token ID
+
 
     await this.adminService
       .updateRefreshTokenId(
@@ -118,50 +88,34 @@ export class AuthService {
       );
 
 
-    // =========================
-    // 6. Response
-    // =========================
+
+    // Response
+
 
     return {
-
-      message:
-        'Login successful',
-
-      accessToken:
-        tokens.accessToken,
-
-      refreshToken:
-        tokens.refreshToken,
+      message: 'Login successful',
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
 
       admin: {
-
-        id:
-          admin._id,
-
-        name:
-          admin.name,
-
-        email:
-          admin.email,
+        id: admin._id,
+        name: admin.name,
+        email: admin.email,
 
       },
     };
   }
 
 
-  // =====================================================
+
   // REFRESH TOKEN
-  // =====================================================
 
   async refreshToken(
     refreshToken: string,
   ) {
 
     try {
-
-      // =========================
       // 1. Verify refresh token
-      // =========================
 
       const payload =
         await this.jwtService.verifyAsync(
@@ -175,9 +129,8 @@ export class AuthService {
         );
 
 
-      // =========================
+
       // 2. Check jti
-      // =========================
 
       if (!payload.jti) {
 
@@ -186,10 +139,7 @@ export class AuthService {
         );
       }
 
-
-      // =========================
-      // 3. Find admin
-      // =========================
+      //Find admin
 
       const admin =
         await this.adminService.findById(
@@ -204,11 +154,7 @@ export class AuthService {
         );
       }
 
-
-      // =========================
-      // 4. Check active
-      // =========================
-
+      //Check active
       if (!admin.isActive) {
 
         throw new UnauthorizedException(
@@ -217,23 +163,19 @@ export class AuthService {
       }
 
 
-      // =========================
-      // 5. Check stored jti
-      // =========================
 
-      if (
-        !admin.refreshTokenId
-      ) {
+      //Check stored jti
+
+
+      if (!admin.refreshTokenId) {
 
         throw new UnauthorizedException(
           'Refresh token not found',
         );
       }
 
+      // Compare jti
 
-      // =========================
-      // 6. Compare jti
-      // =========================
 
       if (
         payload.jti !==
@@ -246,9 +188,8 @@ export class AuthService {
       }
 
 
-      // =========================
-      // 7. Generate NEW tokens
-      // =========================
+      //Generate NEW tokens
+
 
       const tokens =
         await this.generateTokens(
@@ -257,9 +198,8 @@ export class AuthService {
         );
 
 
-      // =========================
-      // 8. Replace old jti
-      // =========================
+      // Replace old jti
+
 
       await this.adminService
         .updateRefreshTokenId(
@@ -268,33 +208,21 @@ export class AuthService {
         );
 
 
-      // =========================
-      // 9. Return tokens
-      // =========================
+
+      // Return tokens
+
 
       return {
-
-        message:
-          'Token refreshed successfully',
-
-        accessToken:
-          tokens.accessToken,
-
-        refreshToken:
-          tokens.refreshToken,
+        message: 'Token refreshed successfully',
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
       };
-
 
     } catch (error) {
 
-      if (
-        error instanceof
-        UnauthorizedException
-      ) {
-
+      if ( error instanceof UnauthorizedException) {
         throw error;
       }
-
 
       throw new UnauthorizedException(
         'Invalid or expired refresh token',
