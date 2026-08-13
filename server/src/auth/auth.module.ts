@@ -1,27 +1,29 @@
 import { Module } from '@nestjs/common';
 
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+
 import {
   ConfigModule,
   ConfigService,
 } from '@nestjs/config';
 
-import { JwtModule } from '@nestjs/jwt';
-
 import { AdminModule } from '../admin/admin.module';
 
-import { AuthController } from './auth.controller';
+import { JwtModule } from '@nestjs/jwt';
 
-import { AuthService } from './auth.service';
+import { AdminAuthGuard } from './guards/admin-auth.guard';
 
-import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
+
     ConfigModule,
 
     AdminModule,
 
     JwtModule.registerAsync({
+
       imports: [ConfigModule],
 
       inject: [ConfigService],
@@ -29,6 +31,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       useFactory: (
         configService: ConfigService,
       ) => ({
+
         secret:
           configService.get<string>(
             'JWT_ACCESS_SECRET',
@@ -37,8 +40,10 @@ import { JwtStrategy } from './strategies/jwt.strategy';
         signOptions: {
           expiresIn: '15m',
         },
+
       }),
     }),
+
   ],
 
   controllers: [
@@ -47,11 +52,16 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 
   providers: [
     AuthService,
-    JwtStrategy,
+    AdminAuthGuard,
   ],
 
   exports: [
     AuthService,
+
+    // IMPORTANT
+    JwtModule,
+
+    AdminAuthGuard,
   ],
 })
 export class AuthModule {}
