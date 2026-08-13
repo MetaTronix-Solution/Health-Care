@@ -1,0 +1,44 @@
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import type { Article } from "@/src/types/article";
+import { formatDate } from "@/src/lib/utils";
+
+export function ArticleCard({ article }: { article: Article }) {
+  return (
+    <Link
+      href={`/resources/${article.slug}`}
+      className="group flex flex-col border border-neutral-line bg-tertiary transition-colors hover:border-primary"
+    >
+      <div className="relative aspect-[16/9] overflow-hidden bg-neutral-bg">
+        <Image
+          src={article.image}
+          alt={article.title}
+          fill
+          sizes="(min-width: 1024px) 33vw, 100vw"
+          className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+        />
+      </div>
+      <div className="flex flex-1 flex-col gap-3 border-t border-neutral-line p-6">
+        <div className="flex items-center justify-between">
+          <span className="eyebrow">{article.category}</span>
+          <span className="text-[11px] text-neutral-muted">
+            {formatDate(article.date)}
+          </span>
+        </div>
+        <div className="flex items-start justify-between gap-3">
+          <h3 className="text-lg font-medium leading-snug tracking-tight text-primary">
+            {article.title}
+          </h3>
+          <ArrowUpRight
+            size={16}
+            className="mt-1 shrink-0 text-neutral-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+          />
+        </div>
+        <p className="text-[13px] leading-relaxed text-neutral-muted">
+          {article.excerpt}
+        </p>
+      </div>
+    </Link>
+  );
+}
