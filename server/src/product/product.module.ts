@@ -4,6 +4,7 @@ import { Product, ProductSchema } from './schemas/product.schema';
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
 import { ImagekitModule } from 'src/imagekit/imagekit.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
     imports: [
@@ -13,7 +14,8 @@ import { ImagekitModule } from 'src/imagekit/imagekit.module';
                 schema: ProductSchema
             }
         ]),
-        ImagekitModule
+        ImagekitModule,
+        AuthModule
     ],
 
     providers: [ProductService],
