@@ -57,7 +57,11 @@ const websiteJsonLd = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${jakarta.variable} h-full`}>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className={`${jakarta.variable} h-full`}
+    >
       <body className="min-h-full flex flex-col bg-tertiary text-primary">
         <script
           type="application/ld+json"
