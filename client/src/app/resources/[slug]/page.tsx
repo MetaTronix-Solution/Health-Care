@@ -75,19 +75,21 @@ export default async function ArticleDetailPage({
 
       <article>
         <section className="border-b border-neutral-line bg-tertiary py-14 lg:py-20">
-          <Container className="max-w-3xl">
-            <div className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.08em]">
-              <span className="text-secondary">{article.category}</span>
-              <span className="text-neutral-muted">
-                {formatDate(article.date)}
-              </span>
+          <Container>
+            <div className="mx-auto max-w-3xl">
+              <div className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.08em]">
+                <span className="text-secondary">{article.category}</span>
+                <span className="text-neutral-muted">
+                  {formatDate(article.date)}
+                </span>
+              </div>
+              <h1 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-light leading-[1.1] tracking-tight text-primary">
+                {article.title}
+              </h1>
+              <p className="mt-5 text-[13px] text-neutral-muted">
+                By {article.author}
+              </p>
             </div>
-            <h1 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-light leading-[1.1] tracking-tight text-primary">
-              {article.title}
-            </h1>
-            <p className="mt-5 text-[13px] text-neutral-muted">
-              By {article.author}
-            </p>
           </Container>
         </section>
 
@@ -103,27 +105,29 @@ export default async function ArticleDetailPage({
         </div>
 
         <section className="py-14 lg:py-20">
-          <Container className="max-w-3xl">
-            <div className="flex flex-col gap-5">
-              {article.content.map((paragraph, index) => (
-                <p
-                  key={index}
-                  className="text-[15px] leading-relaxed text-primary/90"
-                >
-                  {paragraph}
-                </p>
-              ))}
-            </div>
+          <Container>
+            <div className="mx-auto max-w-3xl">
+              <div className="flex flex-col gap-5">
+                {article.content.map((paragraph, index) => (
+                  <p
+                    key={index}
+                    className="text-[15px] leading-relaxed text-primary/90"
+                  >
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
 
-            <div className="mt-10 flex items-center gap-3 border-t border-neutral-line pt-6">
-              <span className="eyebrow">Share</span>
-              <button
-                type="button"
-                aria-label="Share this article"
-                className="flex h-9 w-9 items-center justify-center border border-neutral-line text-primary transition-colors hover:bg-neutral-bg"
-              >
-                <Share2 size={15} />
-              </button>
+              <div className="mt-10 flex items-center gap-3 border-t border-neutral-line pt-6">
+                <span className="eyebrow">Share</span>
+                <button
+                  type="button"
+                  aria-label="Share this article"
+                  className="flex h-9 w-9 items-center justify-center border border-neutral-line text-primary transition-colors hover:bg-neutral-bg"
+                >
+                  <Share2 size={15} />
+                </button>
+              </div>
             </div>
           </Container>
         </section>
