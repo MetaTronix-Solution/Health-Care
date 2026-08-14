@@ -5,7 +5,7 @@ import { Button } from "@/src/components/ui/Button";
 
 export function AboutHero() {
   return (
-    <section className="max-h-[60vh] min-h-[420px] py-16 lg:py-20">
+    <section className="min-h-[420px] py-16 lg:py-20">
       <Container>
         <div className="grid h-full grid-cols-1 gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-16">
           <div>
