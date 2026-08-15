@@ -2,13 +2,9 @@ import type { Metadata } from "next";
 import { Container } from "@/src/components/ui/Container";
 import { ContactForm } from "@/src/components/contact/ContactForm";
 import { COMPANY } from "@/src/data/company";
+import { contactMetadata } from "@/src/lib/seo/pages";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    `Reach ${COMPANY.name} for product inquiries, technical support, or sleep and respiratory care guidance in Nepal.`,
-  alternates: { canonical: "/contact" },
-};
+export const metadata: Metadata = contactMetadata;
 
 export default function ContactPage() {
   return (
@@ -16,11 +12,12 @@ export default function ContactPage() {
       <Container>
         <p className="eyebrow mb-4">Contact</p>
         <h1 className="text-page-title max-w-2xl text-primary">
-          Get in touch with our team
+          Contact Himanshi Biomedical in Nepal
         </h1>
         <p className="text-body mt-4 max-w-xl text-neutral-muted">
-          For product guidance, technical assistance, or after-sales support,
-          send us a message and our team will respond as soon as possible.
+          For CPAP, BiPAP, sleep lab equipment, product guidance, technical
+          assistance, or after-sales support, send us a message and our team
+          will respond as soon as possible.
         </p>
 
         <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
@@ -33,10 +30,10 @@ export default function ContactPage() {
             <div>
               <p className="eyebrow mb-3">Services</p>
               <ul className="text-body-sm space-y-2 text-primary/80">
-                <li>Product guidance & consultation</li>
+                <li>CPAP and BiPAP product guidance</li>
+                <li>Sleep lab and sleep study solutions</li>
                 <li>Medical equipment installation</li>
-                <li>Technical support</li>
-                <li>After-sales service</li>
+                <li>Technical support and after-sales service</li>
               </ul>
             </div>
 
@@ -44,7 +41,8 @@ export default function ContactPage() {
               <p className="eyebrow mb-3">Specialization</p>
               <p className="text-body-sm text-primary/80">
                 Sleep medicine, respiratory care, CPAP/BiPAP solutions, and
-                biomedical equipment — including authorized BMC Medical products.
+                biomedical equipment — including authorized BMC Medical products
+                in Nepal.
               </p>
             </div>
           </div>

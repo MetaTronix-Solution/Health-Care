@@ -12,7 +12,7 @@ export function ProductCard({ product }: { product: Product }) {
       <div className="relative aspect-[4/3] overflow-hidden bg-neutral-bg">
         <Image
           src={product.image}
-          alt={product.name}
+          alt={`${product.name} — ${product.category} equipment`}
           fill
           sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
           className="object-contain p-8 transition-transform duration-300 group-hover:scale-[1.03]"

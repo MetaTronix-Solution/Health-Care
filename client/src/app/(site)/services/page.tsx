@@ -7,18 +7,13 @@ import { ServiceProcess } from "@/src/components/services/ServiceProcess";
 import { WhyChooseMedTech } from "@/src/components/services/WhyChooseMedTech";
 import { ServicesCTA } from "@/src/components/services/ServicesCTA";
 import { services } from "@/src/data/services";
-import { COMPANY } from "@/src/data/company";
+import { servicesMetadata } from "@/src/lib/seo/pages";
 
-export const metadata: Metadata = {
-  title: "Medical Equipment & Support Services",
-  description:
-    `${COMPANY.name} provides medical equipment sales, installation, maintenance, technical support, and after-sales service for sleep and respiratory care in Nepal.`,
-  alternates: { canonical: "/services" },
-};
+export const metadata: Metadata = servicesMetadata;
 
 export default function ServicesPage() {
   return (
-    <main>
+    <>
       <ServicesIntro />
       <ServicesList services={services} />
       <RentalPurchaseSection />
@@ -26,6 +21,6 @@ export default function ServicesPage() {
       <ServiceProcess />
       <WhyChooseMedTech />
       <ServicesCTA />
-    </main>
+    </>
   );
 }

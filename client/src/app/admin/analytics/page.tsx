@@ -3,8 +3,9 @@ import { BarChart3, Eye, MessageSquare, Package } from "lucide-react";
 import { PageHeader } from "@/src/components/ui/PageHeader";
 import { Card, CardContent } from "@/src/components/ui/Card";
 import { EmptyState } from "@/src/components/ui/EmptyState";
+import { createAdminMetadata } from "@/src/lib/seo/metadata";
 
-export const metadata: Metadata = { title: "Analytics" };
+export const metadata: Metadata = createAdminMetadata("Analytics");
 
 const KPI_PLACEHOLDERS = [
   {

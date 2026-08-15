@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/src/components/ui/PageHeader";
 import { AdminBreadcrumbs } from "@/src/components/admin/AdminBreadcrumbs";
 import { ProductForm } from "@/src/components/admin/products/ProductForm";
+import { createAdminMetadata } from "@/src/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Add New Product",
-};
+export const metadata: Metadata = createAdminMetadata("Add New Product");
 
 export default function NewProductPage() {
   return (

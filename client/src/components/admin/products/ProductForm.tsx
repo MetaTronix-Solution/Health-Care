@@ -19,6 +19,8 @@ import { Textarea } from "@/src/components/ui/Textarea";
 import { FormField } from "@/src/components/ui/FormField";
 import { SpecificationList } from "@/src/components/admin/products/SpecificationList";
 import { ProductImageUpload } from "@/src/components/admin/products/ProductImageUpload";
+import { generateProductSeoDefaults } from "@/src/lib/seo/product-seo";
+import { COMPANY } from "@/src/data/company";
 import type {
   AdminProduct as Product,
   ProductSpecification,
@@ -30,11 +32,10 @@ export interface ProductFormProps {
 }
 
 const DEFAULT_MANUFACTURERS = [
-  "MedTech Industries",
+  "BMC Medical",
   "Philips Healthcare",
-  "Siemens Healthineers",
-  "Medtronic",
-  "Stryker",
+  "ResMed",
+  "Fisher & Paykel",
 ];
 
 export function ProductForm({
@@ -63,11 +64,27 @@ export function ProductForm({
   const [metaDescription, setMetaDescription] = useState(
     product?.seo.metaDescription ?? "",
   );
+  const [metaKeywords, setMetaKeywords] = useState("");
   const [slug, setSlug] = useState(product?.seo.slug ?? "");
 
   const isEditing = Boolean(product);
 
+  function applySeoDefaults() {
+    const defaults = generateProductSeoDefaults({
+      name,
+      shortDescription: description.slice(0, 160),
+    });
+    setMetaTitle(defaults.title);
+    setMetaDescription(defaults.metaDescription);
+    if (!slug || !isEditing) setSlug(defaults.slug);
+  }
+
   function submitProduct(publish: boolean) {
+    const seoDefaults = generateProductSeoDefaults({
+      name,
+      shortDescription: description.slice(0, 160),
+    });
+
     console.info("Product form submitted", {
       name,
       sku,
@@ -77,7 +94,12 @@ export function ProductForm({
       basePrice,
       requiresApproval,
       specifications,
-      seo: { title: metaTitle, metaDescription, slug },
+      seo: {
+        title: metaTitle || seoDefaults.title,
+        metaDescription: metaDescription || seoDefaults.metaDescription,
+        slug: slug || seoDefaults.slug,
+        keywords: metaKeywords || undefined,
+      },
     });
   }
 
@@ -174,20 +196,36 @@ export function ProductForm({
           <Card>
             <CardHeader>
               <CardTitle>Search Engine Optimization</CardTitle>
+              <button
+                type="button"
+                onClick={applySeoDefaults}
+                className="text-sm font-medium text-secondary hover:underline"
+              >
+                Generate from product
+              </button>
             </CardHeader>
             <CardContent className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-              <FormField label="Meta Title" htmlFor="seo-title">
+              <FormField label="SEO Title" htmlFor="seo-title">
                 <Input
                   id="seo-title"
-                  placeholder="Title for search engines"
+                  placeholder={`${name || "Product Name"} | ${COMPANY.name} Nepal`}
                   value={metaTitle}
                   onChange={(event) => setMetaTitle(event.target.value)}
                 />
               </FormField>
-              <FormField label="Meta Keywords" htmlFor="seo-keywords">
-                <Input id="seo-keywords" placeholder="medical, monitor, icu" />
+              <FormField label="URL Slug" htmlFor="seo-slug">
+                <Input
+                  id="seo-slug"
+                  placeholder="bmc-g3-a20-auto-cpap"
+                  value={slug}
+                  onChange={(event) => setSlug(event.target.value)}
+                />
               </FormField>
-              <FormField label="Meta Description" htmlFor="seo-description">
+              <FormField
+                label="Meta Description"
+                htmlFor="seo-description"
+                hint="Recommended: 140–160 characters describing the product for search results."
+              >
                 <Textarea
                   id="seo-description"
                   rows={3}
@@ -195,12 +233,16 @@ export function ProductForm({
                   onChange={(event) => setMetaDescription(event.target.value)}
                 />
               </FormField>
-              <FormField label="URL Slug" htmlFor="seo-slug">
+              <FormField
+                label="Meta Keywords (optional)"
+                htmlFor="seo-keywords"
+                hint="Optional. Modern search engines rely primarily on page content and titles."
+              >
                 <Input
-                  id="seo-slug"
-                  placeholder="cardiomonitor-x-200"
-                  value={slug}
-                  onChange={(event) => setSlug(event.target.value)}
+                  id="seo-keywords"
+                  placeholder="CPAP, sleep apnea, BMC Medical, Nepal"
+                  value={metaKeywords}
+                  onChange={(event) => setMetaKeywords(event.target.value)}
                 />
               </FormField>
             </CardContent>

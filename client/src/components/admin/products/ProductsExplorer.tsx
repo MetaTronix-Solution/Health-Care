@@ -4,13 +4,11 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Package } from "lucide-react";
 import { ProductFilters } from "@/src/components/admin/products/ProductFilters";
-import { ProductStatus } from "@/src/components/admin/products/ProductStatus";
 import { ProductRowActions } from "@/src/components/admin/products/ProductRowActions";
 import { EmptyState } from "@/src/components/ui/EmptyState";
 import { Button } from "@/src/components/ui/Button";
 import { Card } from "@/src/components/ui/Card";
-import { formatDate, formatNumber } from "@/src/lib/utils";
-import type { AdminProduct as Product } from "@/src/types/product";
+import type { Product } from "@/src/types/product";
 
 const PAGE_SIZE = 8;
 
@@ -102,12 +100,12 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
               <tbody>
                 {paginated.map((product, index) => (
                   <tr
-                    key={product.id ?? product.sku ?? index}
+                    key={product.slug ?? index}
                     className="hairline"
                   >
                     <td className="px-5 py-4 font-medium text-primary">
                       <Link
-                        href={`/resources/${product.id ?? ""}`}
+                        href={`/admin/products/${product.slug}`}
                         className="hover:underline"
                       >
                         {product.name ?? "Untitled product"}
@@ -116,28 +114,14 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
                     <td className="px-5 py-4 text-neutral-muted">
                       {product.category ?? "—"}
                     </td>
-                    <td className="px-5 py-4 text-neutral-muted">
-                      {product.manufacturer ?? "—"}
-                    </td>
+                    <td className="px-5 py-4 text-neutral-muted">—</td>
                     <td className="px-5 py-4">
-                      {product.status ? (
-                        <ProductStatus status={product.status} />
-                      ) : (
-                        <span className="text-neutral-muted">—</span>
-                      )}
+                      <span className="text-neutral-muted">—</span>
                     </td>
-                    <td className="px-5 py-4 text-neutral-muted">
-                      {product.views != null
-                        ? formatNumber(product.views)
-                        : "—"}
-                    </td>
-                    <td className="px-5 py-4 text-neutral-muted">
-                      {product.lastUpdated
-                        ? formatDate(product.lastUpdated)
-                        : "—"}
-                    </td>
+                    <td className="px-5 py-4 text-neutral-muted">—</td>
+                    <td className="px-5 py-4 text-neutral-muted">—</td>
                     <td className="px-5 py-4">
-                      <ProductRowActions productId={product.id ?? ""} />
+                      <ProductRowActions productId={product.slug} />
                     </td>
                   </tr>
                 ))}

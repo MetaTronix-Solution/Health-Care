@@ -7,12 +7,16 @@ import { ProductGallery } from "@/src/components/products/ProductGallery";
 import { ProductInformation } from "@/src/components/products/ProductInformation";
 import { ProductSpecifications } from "@/src/components/products/ProductSpecifications";
 import { RelatedProducts } from "@/src/components/products/RelatedProducts";
+import { Breadcrumbs } from "@/src/components/seo/Breadcrumbs";
+import { BreadcrumbJsonLd } from "@/src/components/seo/BreadcrumbJsonLd";
+import { ProductJsonLd } from "@/src/components/seo/ProductJsonLd";
 import {
   products,
   getProductBySlug,
   getRelatedProducts,
 } from "@/src/data/products";
 import { COMPANY } from "@/src/data/company";
+import { createProductMetadata } from "@/src/lib/seo/pages";
 
 export function generateStaticParams() {
   return products.map((product) => ({ slug: product.slug }));
@@ -30,16 +34,7 @@ export async function generateMetadata({
     return { title: "Product Not Found" };
   }
 
-  return {
-    title: product.name,
-    description: product.shortDescription,
-    alternates: { canonical: `/products/${product.slug}` },
-    openGraph: {
-      title: product.name,
-      description: product.shortDescription,
-      images: [{ url: product.image }],
-    },
-  };
+  return createProductMetadata(product);
 }
 
 export default async function ProductDetailPage({
@@ -56,27 +51,24 @@ export default async function ProductDetailPage({
 
   const related = getRelatedProducts(product.slug, product.categorySlug);
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: product.name,
-    description: product.description,
-    category: product.category,
-    image: product.image,
-    brand: { "@type": "Brand", name: COMPANY.name },
-  };
+  const breadcrumbs = [
+    { label: "Home", href: "/" },
+    { label: "Products", href: "/products" },
+    { label: product.name },
+  ];
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <ProductJsonLd product={product} />
+      <BreadcrumbJsonLd items={breadcrumbs} />
 
       <section className="border-b border-neutral-line bg-tertiary py-14 lg:py-20">
-        <Container className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
-          <ProductGallery images={product.gallery} productName={product.name} />
-          <ProductInformation product={product} />
+        <Container>
+          <Breadcrumbs items={breadcrumbs} />
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
+            <ProductGallery images={product.gallery} productName={product.name} />
+            <ProductInformation product={product} />
+          </div>
         </Container>
       </section>
 
@@ -107,7 +99,7 @@ export default async function ProductDetailPage({
               </h2>
               <p className="text-body-sm mt-3 text-neutral-muted">
                 Speak with a {COMPANY.name} specialist about the {product.name},
-                including deployment, guidance, and service options.
+                including deployment, guidance, and service options in Nepal.
               </p>
             </div>
             <div className="mt-6">

@@ -16,6 +16,7 @@ import {
   workingSectors,
   focusAreas,
   trustHighlights,
+  faqItems,
 } from "@/src/data/company";
 
 const sectorIcons = [
@@ -286,6 +287,37 @@ export function AboutTeam() {
                 {member.specialization}
               </p>
             </div>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+export function AboutFAQ() {
+  return (
+    <section className="section-padding-sm">
+      <Container>
+        <div className="max-w-2xl">
+          <h2 className="text-section-title text-primary">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-body mt-4 text-neutral-muted">
+            Common questions about our respiratory care, sleep medicine, and
+            biomedical equipment services in Nepal.
+          </p>
+        </div>
+
+        <div className="mt-10 divide-y divide-neutral-line border-y border-neutral-line">
+          {faqItems.map((item) => (
+            <details key={item.question} className="group py-5">
+              <summary className="cursor-pointer list-none text-body font-medium text-primary marker:content-none [&::-webkit-details-marker]:hidden">
+                {item.question}
+              </summary>
+              <p className="text-body-sm mt-3 max-w-3xl text-neutral-muted">
+                {item.answer}
+              </p>
+            </details>
           ))}
         </div>
       </Container>

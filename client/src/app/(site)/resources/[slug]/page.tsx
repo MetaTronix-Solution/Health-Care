@@ -4,12 +4,16 @@ import { notFound } from "next/navigation";
 import { Share2 } from "lucide-react";
 import { Container } from "@/src/components/ui/Container";
 import { ArticleCard } from "@/src/components/resources/ArticleCard";
+import { Breadcrumbs } from "@/src/components/seo/Breadcrumbs";
+import { BreadcrumbJsonLd } from "@/src/components/seo/BreadcrumbJsonLd";
+import { ArticleJsonLd } from "@/src/components/seo/ArticleJsonLd";
 import {
   articles,
   getArticleBySlug,
   getRelatedArticles,
 } from "@/src/data/articles";
 import { formatDate } from "@/src/lib/utils";
+import { createArticleMetadata } from "@/src/lib/seo/pages";
 
 export function generateStaticParams() {
   return articles.map((article) => ({ slug: article.slug }));
@@ -27,19 +31,7 @@ export async function generateMetadata({
     return { title: "Article Not Found" };
   }
 
-  return {
-    title: article.title,
-    description: article.excerpt,
-    alternates: { canonical: `/resources/${article.slug}` },
-    openGraph: {
-      type: "article",
-      title: article.title,
-      description: article.excerpt,
-      images: [{ url: article.image }],
-      publishedTime: article.date,
-      authors: [article.author],
-    },
-  };
+  return createArticleMetadata(article);
 }
 
 export default async function ArticleDetailPage({
@@ -56,26 +48,28 @@ export default async function ArticleDetailPage({
 
   const related = getRelatedArticles(article.slug, article.category);
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: article.title,
-    description: article.excerpt,
-    image: article.image,
-    datePublished: article.date,
-    author: { "@type": "Person", name: article.author },
-  };
+  const breadcrumbs = [
+    { label: "Home", href: "/" },
+    { label: "Resources", href: "/resources" },
+    { label: article.title },
+  ];
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      <ArticleJsonLd
+        title={article.title}
+        description={article.excerpt}
+        image={article.image}
+        datePublished={article.date}
+        author={article.author}
+        slug={article.slug}
       />
+      <BreadcrumbJsonLd items={breadcrumbs} />
 
       <article>
         <section className="border-b border-neutral-line bg-tertiary py-14 lg:py-20">
           <Container>
+            <Breadcrumbs items={breadcrumbs} />
             <div className="mx-auto max-w-3xl">
               <div className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.08em]">
                 <span className="text-secondary">{article.category}</span>
