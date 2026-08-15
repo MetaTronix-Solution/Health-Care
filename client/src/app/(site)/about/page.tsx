@@ -7,20 +7,19 @@ import {
   AboutBMCSection,
   AboutTrust,
   AboutTeam,
+  AboutFAQ,
   AboutCTA,
 } from "@/src/components/about/AboutSections";
-import { COMPANY } from "@/src/data/company";
+import { FaqJsonLd } from "@/src/components/seo/FaqJsonLd";
+import { faqItems } from "@/src/data/company";
+import { aboutMetadata } from "@/src/lib/seo/pages";
 
-export const metadata: Metadata = {
-  title: `About ${COMPANY.name} | Sleep & Respiratory Care in Nepal`,
-  description:
-    "Himanshi Biomedical has been working in Nepal since 2022, specializing in respiratory care, sleep medicine, and biomedical equipment solutions. Authorized BMC Medical distributor.",
-  alternates: { canonical: "/about" },
-};
+export const metadata: Metadata = aboutMetadata;
 
 export default function AboutPage() {
   return (
-    <main>
+    <>
+      <FaqJsonLd items={[...faqItems]} />
       <AboutHero />
       <AboutOverview />
       <AboutWorkingSectors />
@@ -28,7 +27,8 @@ export default function AboutPage() {
       <AboutBMCSection />
       <AboutTrust />
       <AboutTeam />
+      <AboutFAQ />
       <AboutCTA />
-    </main>
+    </>
   );
 }

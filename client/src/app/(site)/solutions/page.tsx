@@ -3,26 +3,23 @@ import Image from "next/image";
 import { Check } from "lucide-react";
 import { Container } from "@/src/components/ui/Container";
 import { solutions } from "@/src/data/solutions";
+import { solutionsMetadata } from "@/src/lib/seo/pages";
 
-export const metadata: Metadata = {
-  title: "Solutions",
-  description:
-    "Integrated critical care, surgical precision, diagnostic imaging, and connected hospital solutions from MedTech Pro.",
-  alternates: { canonical: "/solutions" },
-};
+export const metadata: Metadata = solutionsMetadata;
 
 export default function SolutionsPage() {
   return (
     <>
       <section className="border-b border-neutral-line bg-neutral-bg">
         <Container className="py-16 lg:py-20">
-          <p className="eyebrow mb-4">Capabilities</p>
+          <p className="eyebrow mb-4">Solutions</p>
           <h1 className="max-w-2xl text-4xl sm:text-5xl font-light leading-[1.1] tracking-tight text-primary">
-            Solutions built around clinical environments.
+            Sleep and respiratory care solutions for Nepal
           </h1>
           <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-neutral-muted">
-            Every MedTech Pro solution combines hardware, software, and service
-            into a single accountable platform.
+            Integrated sleep medicine, CPAP/BiPAP therapy, respiratory care, and
+            biomedical equipment solutions for hospitals, clinics, and sleep
+            laboratories.
           </p>
         </Container>
       </section>
@@ -43,7 +40,7 @@ export default function SolutionsPage() {
                 {solution.description}
               </p>
               <ul className="mt-6 flex flex-col gap-3">
-                {solution.capabilities.map((capability) => (
+                {solution.capabilities.map((capability: string) => (
                   <li
                     key={capability}
                     className="flex items-start gap-2.5 text-[13px] text-primary"

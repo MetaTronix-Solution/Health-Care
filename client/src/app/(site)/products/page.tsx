@@ -2,14 +2,9 @@ import type { Metadata } from "next";
 import { Container } from "@/src/components/ui/Container";
 import { ProductFilters } from "@/src/components/products/ProductFilters";
 import { products } from "@/src/data/products";
-import { COMPANY } from "@/src/data/company";
+import { productsMetadata } from "@/src/lib/seo/pages";
 
-export const metadata: Metadata = {
-  title: "Products",
-  description:
-    `Browse medical equipment and sleep & respiratory care solutions from ${COMPANY.name}, authorized BMC Medical distributor in Nepal.`,
-  alternates: { canonical: "/products" },
-};
+export const metadata: Metadata = productsMetadata;
 
 export default function ProductsPage() {
   return (
@@ -18,11 +13,12 @@ export default function ProductsPage() {
         <Container className="section-padding-sm">
           <p className="eyebrow mb-4">Products</p>
           <h1 className="text-page-title max-w-2xl text-primary">
-            Sleep & respiratory care equipment
+            CPAP, BiPAP & respiratory care equipment
           </h1>
           <p className="text-body mt-4 max-w-xl text-neutral-muted">
             Quality biomedical solutions including CPAP, Auto CPAP, BiPAP, and
-            patient monitoring systems — with professional guidance and support.
+            patient monitoring systems — with professional guidance and support
+            from an authorized BMC Medical distributor in Nepal.
           </p>
         </Container>
       </section>

@@ -5,10 +5,9 @@ import { PageHeader } from "@/src/components/ui/PageHeader";
 import { Button } from "@/src/components/ui/Button";
 import { ProductsExplorer } from "@/src/components/admin/products/ProductsExplorer";
 import { products } from "@/src/data/products";
+import { createAdminMetadata } from "@/src/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Products Management",
-};
+export const metadata: Metadata = createAdminMetadata("Products Management");
 
 export default function ProductsPage() {
   return (

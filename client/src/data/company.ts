@@ -47,3 +47,36 @@ export const focusAreas = [
   { title: "Biomedical Equipment", body: "Patient monitoring and diagnostic solutions for clinical settings." },
   { title: "Technical Support", body: "Installation, after-sales service, and dependable customer support." },
 ] as const;
+
+export const faqItems = [
+  {
+    question: "What does Himanshi Biomedical provide?",
+    answer:
+      "Himanshi Biomedical provides sleep lab testing and sleep study solutions, CPAP, Auto CPAP, BiPAP, sleep apnea management, respiratory care equipment, patient monitoring and diagnostic solutions, medical equipment installation, technical support, and after-sales service in Nepal.",
+  },
+  {
+    question: "Does Himanshi Biomedical provide CPAP machines in Nepal?",
+    answer:
+      "Yes. Himanshi Biomedical supplies CPAP and Auto CPAP solutions in Nepal, along with professional guidance, installation support, and after-sales service.",
+  },
+  {
+    question: "What is the BMC G3 Series?",
+    answer:
+      "The BMC G3 Series is a range of BMC Medical sleep therapy devices. Himanshi Biomedical is an authorized distributor of BMC Medical products in Nepal and can provide guidance on BMC G3 Series options.",
+  },
+  {
+    question: "Does Himanshi Biomedical provide BiPAP solutions?",
+    answer:
+      "Yes. Himanshi Biomedical offers BiPAP (Bilevel Positive Airway Pressure) solutions for appropriate clinical and home-care settings, with technical support and after-sales service.",
+  },
+  {
+    question: "Does Himanshi Biomedical provide technical support?",
+    answer:
+      "Yes. Himanshi Biomedical provides medical equipment installation, technical assistance, and ongoing support for hospitals, clinics, sleep laboratories, healthcare professionals, and patients in Nepal.",
+  },
+  {
+    question: "Does Himanshi Biomedical provide after-sales service?",
+    answer:
+      "Yes. After-sales service and customer support are core parts of Himanshi Biomedical's work, helping clients maintain reliable respiratory and sleep care equipment.",
+  },
+] as const;
