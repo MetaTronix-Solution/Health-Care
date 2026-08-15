@@ -1,21 +1,21 @@
 import Image from "next/image";
 import { Container } from "@/src/components/ui/Container";
+import { COMPANY } from "@/src/data/company";
 
 export function ServicesIntro() {
   return (
-    <section className="py-16 lg:py-20">
+    <section className="section-padding-sm">
       <Container>
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-16">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-12">
           <div>
             <p className="eyebrow mb-4">Our Services</p>
-            <h1 className="max-w-lg text-4xl sm:text-5xl font-light leading-[1.1] tracking-tight text-primary">
-              Healthcare Technology. From Equipment to Ongoing Support.
+            <h1 className="text-page-title max-w-lg text-primary">
+              From Equipment to Ongoing Support
             </h1>
-            <p className="mt-6 max-w-md text-[15px] leading-relaxed text-neutral-muted">
+            <p className="text-body mt-5 max-w-md text-neutral-muted">
               From selecting the right medical equipment to installation,
-              rental, maintenance, and ongoing technical support, MedTech Pro
-              helps healthcare organizations build reliable clinical
-              environments.
+              maintenance, and ongoing technical support, {COMPANY.name} helps
+              healthcare organizations and patients across Nepal.
             </p>
           </div>
 

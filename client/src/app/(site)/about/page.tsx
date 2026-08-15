@@ -2,17 +2,19 @@ import type { Metadata } from "next";
 import {
   AboutHero,
   AboutOverview,
+  AboutWorkingSectors,
   AboutExpertiseGrid,
+  AboutBMCSection,
   AboutTrust,
   AboutTeam,
-  AboutImageStory,
   AboutCTA,
 } from "@/src/components/about/AboutSections";
+import { COMPANY } from "@/src/data/company";
 
 export const metadata: Metadata = {
-  title: "About MedTech Pro | Medical Technology & Clinical Expertise",
+  title: `About ${COMPANY.name} | Sleep & Respiratory Care in Nepal`,
   description:
-    "MedTech Pro was founded by surgeons and systems engineers to bridge biomedical engineering and practical clinical application — engineering technology around the reality of healthcare.",
+    "Himanshi Biomedical has been working in Nepal since 2022, specializing in respiratory care, sleep medicine, and biomedical equipment solutions. Authorized BMC Medical distributor.",
   alternates: { canonical: "/about" },
 };
 
@@ -21,10 +23,11 @@ export default function AboutPage() {
     <main>
       <AboutHero />
       <AboutOverview />
+      <AboutWorkingSectors />
       <AboutExpertiseGrid />
+      <AboutBMCSection />
       <AboutTrust />
       <AboutTeam />
-      <AboutImageStory />
       <AboutCTA />
     </main>
   );

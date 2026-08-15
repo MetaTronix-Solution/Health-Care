@@ -12,6 +12,7 @@ import {
   getProductBySlug,
   getRelatedProducts,
 } from "@/src/data/products";
+import { COMPANY } from "@/src/data/company";
 
 export function generateStaticParams() {
   return products.map((product) => ({ slug: product.slug }));
@@ -62,7 +63,7 @@ export default async function ProductDetailPage({
     description: product.description,
     category: product.category,
     image: product.image,
-    brand: { "@type": "Brand", name: "MedTech Pro" },
+    brand: { "@type": "Brand", name: COMPANY.name },
   };
 
   return (
@@ -104,9 +105,9 @@ export default async function ProductDetailPage({
               <h2 className="text-2xl font-medium tracking-tight text-primary">
                 Request Information
               </h2>
-              <p className="mt-3 text-[14px] leading-relaxed text-neutral-muted">
-                Speak with a MedTech Pro specialist about deployment, training,
-                and service options for the {product.name}.
+              <p className="text-body-sm mt-3 text-neutral-muted">
+                Speak with a {COMPANY.name} specialist about the {product.name},
+                including deployment, guidance, and service options.
               </p>
             </div>
             <div className="mt-6">

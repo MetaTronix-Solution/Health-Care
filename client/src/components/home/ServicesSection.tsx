@@ -5,12 +5,12 @@ import { services } from "@/src/data/services";
 
 export function ServicesSection() {
   return (
-    <section className="bg-tertiary py-16 lg:py-24">
+    <section className="bg-tertiary section-padding">
       <Container>
         <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
           <SectionHeading
-            eyebrow="03 // Lifecycle"
-            title="Services That Keep Systems Running"
+            eyebrow="Services"
+            title="Support That Keeps Systems Running"
           />
           <Link
             href="/services"
@@ -26,7 +26,7 @@ export function ServicesSection() {
               key={service.slug}
               className="border-t border-neutral-line pt-6"
             >
-              <p className="eyebrow mb-3">{service.index}</p>
+              <p className="eyebrow mb-3">{service.number}</p>
               <h3 className="text-lg font-medium tracking-tight text-primary">
                 {service.title}
               </h3>

@@ -2,7 +2,7 @@
 
 import { Trash2 } from "lucide-react";
 import { Input } from "@/src/components/ui/Input";
-import type { ProductSpecification } from "@/src/types/admin-product";
+import type { ProductSpecification } from "@/src/types/product";
 
 export interface SpecificationListProps {
   specifications: ProductSpecification[];

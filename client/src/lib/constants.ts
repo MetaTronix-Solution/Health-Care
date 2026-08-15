@@ -23,6 +23,6 @@ export const NAV_ITEMS: NavItem[] = [
 
 export const TOP_NAV_ITEMS = [
   { label: "Dashboard", href: "/dashboard" },
-  { label: "Analytics", href: "/analytics" },
+  { label: "Analytics", href: "/admin/analytics" },
   { label: "Reports", href: "/reports" },
 ];

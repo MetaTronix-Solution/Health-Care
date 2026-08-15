@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import { COMPANY } from "@/src/data/company";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -10,10 +11,10 @@ const jakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "MedTech Pro",
-    template: "%s | MedTech Pro",
+    default: COMPANY.name,
+    template: `%s | ${COMPANY.name}`,
   },
-  description: "MedTech Pro",
+  description: COMPANY.description,
 };
 
 export default function RootLayout({

@@ -9,16 +9,16 @@ export function FeaturedProduct() {
   if (!product) return null;
 
   return (
-    <section className="bg-tertiary py-16 lg:py-24">
+    <section className="bg-tertiary section-padding">
       <Container>
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.85fr_1.5fr_0.85fr]">
           <div className="flex flex-col justify-between">
             <div>
-              <p className="eyebrow mb-4">01 // FLAGSHIP</p>
-              <h3 className="text-3xl font-light tracking-tight text-primary">
-                {product.name}
-              </h3>
-              <p className="mt-3 text-[14px] leading-relaxed text-neutral-muted">
+              <p className="eyebrow mb-3">Featured Product</p>
+          <h3 className="text-card-title text-primary">
+            {product.name}
+          </h3>
+          <p className="text-body-sm mt-3 text-neutral-muted">
                 {product.shortDescription}
               </p>
             </div>

@@ -1,220 +1,121 @@
 import Link from "next/link";
-import { Share2, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Container } from "@/src/components/ui/Container";
 import { Button } from "@/src/components/ui/Button";
+import { COMPANY } from "@/src/data/company";
 
 export function Footer() {
   return (
     <footer className="bg-neutral-bg">
-      {/* Top CTA Section */}
       <div className="border-b border-neutral-line">
-        <Container className="py-20 lg:py-24">
+        <Container className="section-padding-sm">
           <div className="max-w-2xl">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light tracking-tight text-primary mb-6">
-              Let&apos;s Build Better Healthcare Together
+            <h2 className="text-section-title text-primary mb-5">
+              Quality Sleep & Respiratory Care in Nepal
             </h2>
-            <p className="text-lg text-neutral-muted mb-8">
-              Partner with MedTech Pro to integrate advanced medical technology
-              into your clinical environment.
+            <p className="text-body text-neutral-muted mb-8">
+              Partner with {COMPANY.name} for BMC Medical products, professional
+              technical support, and dependable after-sales service.
             </p>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-3">
               <Button href="/contact" icon={<ArrowRight size={15} />}>
-                Contact Sales
+                Contact Us
               </Button>
-              <Button href="/solutions" variant="secondary">
-                Explore Solutions
+              <Button href="/products" variant="outlined">
+                Browse Products
               </Button>
             </div>
           </div>
         </Container>
       </div>
 
-      {/* Main Footer Navigation */}
-      <Container className="py-16">
-        <div className="grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-3 lg:grid-cols-5">
-          {/* Company */}
-          <div>
-            <p className="eyebrow mb-5">Company</p>
-            <ul className="flex flex-col gap-3">
+      <Container className="py-12 lg:py-14">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
+          <div className="col-span-2 sm:col-span-1">
+            <p className="eyebrow mb-4">Company</p>
+            <ul className="flex flex-col gap-2.5">
               <li>
-                <Link
-                  href="/about"
-                  className="text-[14px] text-primary/80 transition-colors hover:text-secondary"
-                >
+                <Link href="/about" className="text-body-sm text-primary/80 transition-colors hover:text-secondary">
                   About
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/careers"
-                  className="text-[14px] text-primary/80 transition-colors hover:text-secondary"
-                >
+                <Link href="/services" className="text-body-sm text-primary/80 transition-colors hover:text-secondary">
+                  Services
+                </Link>
+              </li>
+              <li>
+                <Link href="/careers" className="text-body-sm text-primary/80 transition-colors hover:text-secondary">
                   Careers
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/contact"
-                  className="text-[14px] text-primary/80 transition-colors hover:text-secondary"
-                >
+                <Link href="/contact" className="text-body-sm text-primary/80 transition-colors hover:text-secondary">
                   Contact
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Products */}
           <div>
-            <p className="eyebrow mb-5">Products</p>
-            <ul className="flex flex-col gap-3">
+            <p className="eyebrow mb-4">Products</p>
+            <ul className="flex flex-col gap-2.5">
               <li>
-                <Link
-                  href="/products/medical-equipment"
-                  className="text-[14px] text-primary/80 transition-colors hover:text-secondary"
-                >
-                  Medical Equipment
+                <Link href="/products" className="text-body-sm text-primary/80 transition-colors hover:text-secondary">
+                  All Products
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/products/patient-monitoring"
-                  className="text-[14px] text-primary/80 transition-colors hover:text-secondary"
-                >
-                  Patient Monitoring
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/products/diagnostic"
-                  className="text-[14px] text-primary/80 transition-colors hover:text-secondary"
-                >
-                  Diagnostic
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/products/critical-care"
-                  className="text-[14px] text-primary/80 transition-colors hover:text-secondary"
-                >
-                  Critical Care
+                <Link href="/solutions" className="text-body-sm text-primary/80 transition-colors hover:text-secondary">
+                  Solutions
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Solutions */}
           <div>
-            <p className="eyebrow mb-5">Solutions</p>
-            <ul className="flex flex-col gap-3">
+            <p className="eyebrow mb-4">Support</p>
+            <ul className="flex flex-col gap-2.5">
               <li>
-                <Link
-                  href="/solutions/hospitals"
-                  className="text-[14px] text-primary/80 transition-colors hover:text-secondary"
-                >
-                  Hospitals
+                <Link href="/services" className="text-body-sm text-primary/80 transition-colors hover:text-secondary">
+                  Technical Support
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/solutions/clinics"
-                  className="text-[14px] text-primary/80 transition-colors hover:text-secondary"
-                >
-                  Clinics
+                <Link href="/resources" className="text-body-sm text-primary/80 transition-colors hover:text-secondary">
+                  Resources
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/solutions/healthcare-professionals"
-                  className="text-[14px] text-primary/80 transition-colors hover:text-secondary"
-                >
-                  Healthcare Professionals
+                <Link href="/contact" className="text-body-sm text-primary/80 transition-colors hover:text-secondary">
+                  After-Sales Service
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Resources */}
-          <div>
-            <p className="eyebrow mb-5">Resources</p>
-            <ul className="flex flex-col gap-3">
-              <li>
-                <Link
-                  href="/resources/news"
-                  className="text-[14px] text-primary/80 transition-colors hover:text-secondary"
-                >
-                  News
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/resources/insights"
-                  className="text-[14px] text-primary/80 transition-colors hover:text-secondary"
-                >
-                  Insights
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/resources/downloads"
-                  className="text-[14px] text-primary/80 transition-colors hover:text-secondary"
-                >
-                  Downloads
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/resources/support"
-                  className="text-[14px] text-primary/80 transition-colors hover:text-secondary"
-                >
-                  Support
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <p className="eyebrow mb-5">Contact</p>
-            <ul className="flex flex-col gap-3">
-              <li className="text-[14px] text-primary/80">+1 (800) 555-0199</li>
-              <li className="text-[14px] text-primary/80">
-                contact@medtechpro.com
-              </li>
-              <li className="text-[14px] text-primary/80">
-                100 Innovation Way
-                <br />
-                Medical District, CA 94000
-              </li>
-            </ul>
+          <div className="col-span-2 md:col-span-1 lg:col-span-2">
+            <p className="eyebrow mb-4">About</p>
+            <p className="text-body-sm leading-relaxed text-primary/80">
+              {COMPANY.description}
+            </p>
+            <p className="text-body-sm mt-3 font-medium text-primary">
+              {COMPANY.distributorNote}
+            </p>
           </div>
         </div>
 
-        {/* Bottom Legal/Social Row */}
-        <div className="mt-16 flex flex-col gap-4 border-t border-neutral-line pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-[13px] text-neutral-muted">
-            © {new Date().getFullYear()} MedTech Pro Corporation. All rights
-            reserved.
+        <div className="mt-12 flex flex-col gap-4 border-t border-neutral-line pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-body-sm text-neutral-muted">
+            © {new Date().getFullYear()} {COMPANY.name}. All rights reserved.
           </p>
-          <div className="flex items-center gap-6">
-            <Link
-              href="/legal/privacy"
-              className="text-[13px] text-neutral-muted hover:text-secondary"
-            >
-              Privacy Policy
+          <div className="flex flex-wrap items-center gap-5">
+            <Link href="/about" className="text-body-sm text-neutral-muted hover:text-secondary">
+              About
             </Link>
-            <Link
-              href="/legal/terms"
-              className="text-[13px] text-neutral-muted hover:text-secondary"
-            >
-              Terms
+            <Link href="/contact" className="text-body-sm text-neutral-muted hover:text-secondary">
+              Contact
             </Link>
-            <button
-              type="button"
-              aria-label="Share"
-              className="flex items-center text-[13px] text-neutral-muted transition-colors hover:text-secondary"
-            >
-              <Share2 size={14} className="mr-2" /> Share
-            </button>
           </div>
         </div>
       </Container>

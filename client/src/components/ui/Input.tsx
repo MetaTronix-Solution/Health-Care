@@ -17,11 +17,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         ) : null}
         <input
           ref={ref}
-          className={cn(
-            "h-10 w-full rounded-md border border-neutral-line bg-white px-3 text-sm text-primary placeholder:text-neutral-muted focus-visible:outline-2 focus-visible:outline-secondary",
-            icon && "pl-9",
-            className,
-          )}
+          className={cn("admin-input", icon && "pl-9", className)}
           {...props}
         />
       </div>

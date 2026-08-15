@@ -1,17 +1,21 @@
 import type { ReactNode } from "react";
 import { cn } from "@/src/lib/utils";
 
-export function Container({
+export function AdminContainer({
   children,
   className,
+  narrow,
 }: {
   children: ReactNode;
   className?: string;
+  /** Use for focused forms (~1200px max) */
+  narrow?: boolean;
 }) {
   return (
     <div
       className={cn(
-        "mx-auto w-full max-w-[1280px] px-5 sm:px-6 lg:px-8",
+        "admin-container",
+        narrow && "admin-container-narrow",
         className,
       )}
     >

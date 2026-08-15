@@ -15,12 +15,12 @@ export function FormField({
     <div>
       <label
         htmlFor={htmlFor}
-        className="mb-1.5 block text-sm font-medium text-primary"
+        className="mb-2 block text-[13px] font-medium text-primary"
       >
         {label}
       </label>
       {children}
-      {hint ? <p className="mt-1 text-xs text-neutral-muted">{hint}</p> : null}
+      {hint ? <p className="mt-1.5 text-xs text-neutral-muted">{hint}</p> : null}
     </div>
   );
 }

@@ -9,7 +9,7 @@ export function TopNav() {
   const pathname = usePathname();
 
   return (
-    <nav aria-label="Sections" className="hidden items-center gap-6 md:flex">
+    <nav aria-label="Sections" className="hidden items-center gap-1 md:flex">
       {TOP_NAV_ITEMS.map((item) => {
         const isActive = pathname.startsWith(item.href);
         return (
@@ -18,8 +18,8 @@ export function TopNav() {
             href={item.href}
             aria-current={isActive ? "page" : undefined}
             className={cn(
-              "border-b-2 border-transparent pb-1 text-sm font-medium text-neutral-muted transition-colors hover:text-primary",
-              isActive && "border-secondary text-secondary",
+              "rounded-md px-3 py-2 text-sm font-medium text-neutral-muted transition-colors hover:bg-neutral-bg hover:text-primary",
+              isActive && "bg-neutral-bg text-secondary",
             )}
           >
             {item.label}

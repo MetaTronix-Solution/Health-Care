@@ -14,7 +14,10 @@ const currentUser: AdminUser = {
 
 export function AdminHeader() {
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-neutral-line bg-white px-4 sm:px-6">
+    <header
+      className="sticky top-0 z-30 flex shrink-0 items-center gap-4 border-b border-neutral-line bg-white px-4 sm:px-5 lg:px-8"
+      style={{ height: "var(--admin-header-height)" }}
+    >
       <MobileSidebar />
 
       <div className="relative hidden max-w-sm flex-1 lg:block">
@@ -26,7 +29,7 @@ export function AdminHeader() {
           type="search"
           aria-label="Global search"
           placeholder="Global search..."
-          className="h-10 w-full rounded-md border border-neutral-line bg-neutral-bg pl-9 pr-3 text-sm text-primary placeholder:text-neutral-muted focus-visible:outline-2 focus-visible:outline-secondary"
+          className="admin-input pl-9"
         />
       </div>
 
@@ -34,11 +37,11 @@ export function AdminHeader() {
         <TopNav />
       </div>
 
-      <div className="ml-auto flex items-center gap-2 sm:gap-4">
+      <div className="ml-auto flex items-center gap-2 sm:gap-3">
         <Link
           href="/system/notifications"
           aria-label="View notifications"
-          className="relative flex h-9 w-9 items-center justify-center rounded-md text-primary hover:bg-neutral-bg focus-visible:outline-2 focus-visible:outline-secondary"
+          className="relative flex h-9 w-9 items-center justify-center rounded-lg text-primary transition-colors hover:bg-neutral-bg focus-visible:outline-2 focus-visible:outline-secondary"
         >
           <Bell aria-hidden className="h-[18px] w-[18px]" />
           <span
@@ -49,7 +52,7 @@ export function AdminHeader() {
         <Link
           href="/system"
           aria-label="Open settings"
-          className="hidden h-9 w-9 items-center justify-center rounded-md text-primary hover:bg-neutral-bg focus-visible:outline-2 focus-visible:outline-secondary sm:flex"
+          className="hidden h-9 w-9 items-center justify-center rounded-lg text-primary transition-colors hover:bg-neutral-bg focus-visible:outline-2 focus-visible:outline-secondary sm:flex"
         >
           <Settings aria-hidden className="h-[18px] w-[18px]" />
         </Link>

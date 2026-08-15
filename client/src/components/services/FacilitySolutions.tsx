@@ -1,19 +1,20 @@
 import Image from "next/image";
 import { Container } from "@/src/components/ui/Container";
+import { COMPANY } from "@/src/data/company";
 
 export function FacilitySolutions() {
   return (
-    <section className="py-16 lg:py-20">
+    <section className="section-padding-sm">
       <Container>
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-center lg:gap-12">
           <div className="order-2 lg:order-1">
-            <h2 className="max-w-md text-3xl sm:text-4xl font-light leading-[1.15] tracking-tight text-primary">
+            <h2 className="text-section-title max-w-md text-primary">
               Supporting Healthcare Facilities From Planning to Operation
             </h2>
-            <p className="mt-5 max-w-md text-[14px] leading-relaxed text-neutral-muted">
-              MedTech Pro supports healthcare organizations across equipment
-              selection, facility requirements, clinical technology planning,
-              installation, staff training, maintenance, and technical support.
+            <p className="text-body mt-4 max-w-md text-neutral-muted">
+              {COMPANY.name} supports healthcare organizations across equipment
+              selection, installation, staff guidance, maintenance, and
+              technical support.
             </p>
           </div>
 

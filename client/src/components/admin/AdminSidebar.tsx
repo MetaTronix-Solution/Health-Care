@@ -4,38 +4,39 @@ import { SidebarNav } from "@/src/components/admin/SidebarNav";
 
 export function AdminSidebar() {
   return (
-    <aside className="hidden w-72 shrink-0 flex-col bg-primary text-white lg:flex">
-      <div className="px-6 py-7">
+    <aside
+      className="hidden shrink-0 flex-col bg-primary text-white lg:flex"
+      style={{ width: "var(--admin-sidebar-width)" }}
+    >
+      <div className="px-5 py-6">
         <Link href="/dashboard" className="flex items-center gap-3">
-          <span className="flex h-9 w-9 items-center justify-center rounded-md bg-secondary">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary">
             <ShieldPlus aria-hidden className="h-5 w-5 text-white" />
           </span>
-          <span>
-            <span className="block text-base font-bold leading-tight">
-              MedTech Pro
-              <br />
-              Administration
-            </span>
+          <span className="block text-[15px] font-semibold leading-snug">
+            MedTech Pro
+            <br />
+            Administration
           </span>
         </Link>
-        <p className="mt-2 text-xs text-white/50">Clinical Admin Portal</p>
+        <p className="mt-2 pl-12 text-xs text-white/50">Clinical Admin Portal</p>
       </div>
 
       <SidebarNav />
 
-      <div className="mt-auto space-y-1 border-t border-white/10 px-3 py-4">
+      <div className="mt-auto space-y-0.5 border-t border-white/10 px-3 py-4">
         <Link
           href="/support"
-          className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white"
+          className="flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium text-white/70 transition-colors hover:bg-white/5 hover:text-white"
         >
-          <HelpCircle aria-hidden className="h-[18px] w-[18px]" />
+          <HelpCircle aria-hidden className="h-[18px] w-[18px] shrink-0" />
           Support
         </Link>
         <Link
           href="/login"
-          className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white"
+          className="flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium text-white/70 transition-colors hover:bg-white/5 hover:text-white"
         >
-          <LogOut aria-hidden className="h-[18px] w-[18px]" />
+          <LogOut aria-hidden className="h-[18px] w-[18px] shrink-0" />
           Logout
         </Link>
       </div>
