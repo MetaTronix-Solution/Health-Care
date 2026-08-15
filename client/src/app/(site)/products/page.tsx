@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import { Container } from "@/src/components/ui/Container";
 import { ProductFilters } from "@/src/components/products/ProductFilters";
 import { products } from "@/src/data/products";
+import { COMPANY } from "@/src/data/company";
 
 export const metadata: Metadata = {
   title: "Products",
   description:
-    "Browse MedTech Pro's ultrasound, patient monitoring, surgical robotics, and diagnostic imaging systems.",
+    `Browse medical equipment and sleep & respiratory care solutions from ${COMPANY.name}, authorized BMC Medical distributor in Nepal.`,
   alternates: { canonical: "/products" },
 };
 
@@ -14,19 +15,19 @@ export default function ProductsPage() {
   return (
     <>
       <section className="border-b border-neutral-line bg-neutral-bg">
-        <Container className="py-16 lg:py-20">
-          <p className="eyebrow mb-4">Catalog</p>
-          <h1 className="max-w-2xl text-4xl sm:text-5xl font-light leading-[1.1] tracking-tight text-primary">
-            Precision instruments for every point of care.
+        <Container className="section-padding-sm">
+          <p className="eyebrow mb-4">Products</p>
+          <h1 className="text-page-title max-w-2xl text-primary">
+            Sleep & respiratory care equipment
           </h1>
-          <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-neutral-muted">
-            Every system in the MedTech Pro catalog is engineered, tested, and
-            supported as part of one connected platform.
+          <p className="text-body mt-4 max-w-xl text-neutral-muted">
+            Quality biomedical solutions including CPAP, Auto CPAP, BiPAP, and
+            patient monitoring systems — with professional guidance and support.
           </p>
         </Container>
       </section>
 
-      <section className="py-16 lg:py-20">
+      <section className="section-padding-sm">
         <Container>
           <ProductFilters products={products} />
         </Container>

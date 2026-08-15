@@ -21,7 +21,7 @@ export function ProductCard({ product }: { product: Product }) {
       <div className="flex flex-1 flex-col gap-2 border-t border-neutral-line p-6">
         <span className="eyebrow">{product.category}</span>
         <div className="flex items-start justify-between gap-3">
-          <h3 className="text-lg font-medium tracking-tight text-primary">
+          <h3 className="text-card-title text-primary">
             {product.name}
           </h3>
           <ArrowUpRight
@@ -29,7 +29,7 @@ export function ProductCard({ product }: { product: Product }) {
             className="mt-1 shrink-0 text-neutral-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
           />
         </div>
-        <p className="text-[13px] leading-relaxed text-neutral-muted">
+        <p className="text-body-sm leading-relaxed text-neutral-muted">
           {product.shortDescription}
         </p>
       </div>

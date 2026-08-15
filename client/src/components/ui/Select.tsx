@@ -11,10 +11,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       <div className="relative">
         <select
           ref={ref}
-          className={cn(
-            "h-10 w-full appearance-none rounded-md border border-neutral-line bg-white px-3 pr-9 text-sm text-primary focus-visible:outline-2 focus-visible:outline-secondary",
-            className,
-          )}
+          className={cn("admin-input appearance-none pr-9", className)}
           {...props}
         >
           {children}

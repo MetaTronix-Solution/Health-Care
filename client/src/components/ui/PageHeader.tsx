@@ -10,11 +10,9 @@ export function PageHeader({ title, description, actions }: PageHeaderProps) {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight text-primary sm:text-4xl">
-          {title}
-        </h1>
+        <h1 className="admin-page-title">{title}</h1>
         {description ? (
-          <p className="mt-2 text-sm text-neutral-muted">{description}</p>
+          <p className="admin-page-description">{description}</p>
         ) : null}
       </div>
       {actions ? (

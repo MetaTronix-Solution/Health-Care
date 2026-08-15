@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 
 export default function NewProductPage() {
   return (
-    <div className="flex flex-col gap-8">
+    <div className="admin-page">
       <AdminBreadcrumbs
         items={[
-          { label: "Resources", href: "/resources" },
+          { label: "Products", href: "/admin/products" },
           { label: "Add New Product" },
         ]}
       />

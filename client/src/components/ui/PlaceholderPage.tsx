@@ -1,5 +1,6 @@
 import { Construction } from "lucide-react";
 import { PageHeader } from "@/src/components/ui/PageHeader";
+import { Card } from "@/src/components/ui/Card";
 import { EmptyState } from "@/src/components/ui/EmptyState";
 
 export function PlaceholderPage({
@@ -14,15 +15,16 @@ export function PlaceholderPage({
   emptyDescription: string;
 }) {
   return (
-    <div className="flex flex-col gap-8">
+    <div className="admin-page">
       <PageHeader title={title} description={description} />
-      <div className="rounded-lg border border-neutral-line bg-white">
+      <Card className="min-h-[300px]">
         <EmptyState
           icon={Construction}
           title={emptyTitle}
           description={emptyDescription}
+          compact
         />
-      </div>
+      </Card>
     </div>
   );
 }

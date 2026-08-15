@@ -8,6 +8,7 @@ import { ProductStatus } from "@/src/components/admin/products/ProductStatus";
 import { ProductRowActions } from "@/src/components/admin/products/ProductRowActions";
 import { EmptyState } from "@/src/components/ui/EmptyState";
 import { Button } from "@/src/components/ui/Button";
+import { Card } from "@/src/components/ui/Card";
 import { formatDate, formatNumber } from "@/src/lib/utils";
 import type { AdminProduct as Product } from "@/src/types/product";
 
@@ -43,8 +44,8 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
   );
 
   return (
-    <div className="rounded-lg border border-neutral-line bg-white">
-      <div className="border-b border-neutral-line p-4 sm:p-6">
+    <Card>
+      <div className="border-b border-neutral-line p-5">
         <ProductFilters
           search={search}
           category={category}
@@ -66,12 +67,7 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
           title="No products found"
           description="Add your first medical product to begin managing your catalog."
           action={
-            <Link
-              href="/resources/new"
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-secondary px-4 text-sm font-medium text-white transition-colors hover:bg-secondary/90 focus-visible:outline-2 focus-visible:outline-secondary"
-            >
-              Add Product
-            </Link>
+            <Button href="/admin/products/new">Add Product</Button>
           }
         />
       ) : (
@@ -80,22 +76,22 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="hairline text-xs text-neutral-muted">
-                  <th scope="col" className="px-6 py-3 font-medium">
+                  <th scope="col" className="px-5 py-3 font-medium">
                     Product
                   </th>
-                  <th scope="col" className="px-6 py-3 font-medium">
+                  <th scope="col" className="px-5 py-3 font-medium">
                     Category
                   </th>
-                  <th scope="col" className="px-6 py-3 font-medium">
+                  <th scope="col" className="px-5 py-3 font-medium">
                     Manufacturer
                   </th>
-                  <th scope="col" className="px-6 py-3 font-medium">
+                  <th scope="col" className="px-5 py-3 font-medium">
                     Status
                   </th>
-                  <th scope="col" className="px-6 py-3 font-medium">
+                  <th scope="col" className="px-5 py-3 font-medium">
                     Views
                   </th>
-                  <th scope="col" className="px-6 py-3 font-medium">
+                  <th scope="col" className="px-5 py-3 font-medium">
                     Last Updated
                   </th>
                   <th scope="col" className="px-6 py-3 font-medium text-right">
@@ -109,7 +105,7 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
                     key={product.id ?? product.sku ?? index}
                     className="hairline"
                   >
-                    <td className="px-6 py-4 font-medium text-primary">
+                    <td className="px-5 py-4 font-medium text-primary">
                       <Link
                         href={`/resources/${product.id ?? ""}`}
                         className="hover:underline"
@@ -117,30 +113,30 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
                         {product.name ?? "Untitled product"}
                       </Link>
                     </td>
-                    <td className="px-6 py-4 text-neutral-muted">
+                    <td className="px-5 py-4 text-neutral-muted">
                       {product.category ?? "—"}
                     </td>
-                    <td className="px-6 py-4 text-neutral-muted">
+                    <td className="px-5 py-4 text-neutral-muted">
                       {product.manufacturer ?? "—"}
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-5 py-4">
                       {product.status ? (
                         <ProductStatus status={product.status} />
                       ) : (
                         <span className="text-neutral-muted">—</span>
                       )}
                     </td>
-                    <td className="px-6 py-4 text-neutral-muted">
+                    <td className="px-5 py-4 text-neutral-muted">
                       {product.views != null
                         ? formatNumber(product.views)
                         : "—"}
                     </td>
-                    <td className="px-6 py-4 text-neutral-muted">
+                    <td className="px-5 py-4 text-neutral-muted">
                       {product.lastUpdated
                         ? formatDate(product.lastUpdated)
                         : "—"}
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-5 py-4">
                       <ProductRowActions productId={product.id ?? ""} />
                     </td>
                   </tr>
@@ -149,7 +145,7 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
             </table>
           </div>
 
-          <div className="flex flex-col items-center justify-between gap-3 border-t border-neutral-line px-6 py-4 sm:flex-row">
+          <div className="flex flex-col items-center justify-between gap-3 border-t border-neutral-line px-5 py-4 sm:flex-row">
             <p className="text-sm text-neutral-muted">
               Showing {(currentPage - 1) * PAGE_SIZE + 1} to{" "}
               {Math.min(currentPage * PAGE_SIZE, filtered.length)} of{" "}
@@ -197,6 +193,6 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
           </div>
         </>
       )}
-    </div>
+    </Card>
   );
 }

@@ -6,12 +6,12 @@ import { solutions } from "@/src/data/solutions";
 
 export function SolutionsSection() {
   return (
-    <section className="bg-neutral-bg py-16 lg:py-24">
+    <section className="bg-neutral-bg section-padding">
       <Container>
         <SectionHeading
-          eyebrow="02 // Capabilities"
+          eyebrow="Capabilities"
           title="Healthcare Solutions"
-          description="Integrated platforms built around the clinical environments where they run — not sold as one-size-fits-all hardware."
+          description="Integrated solutions for sleep medicine, respiratory care, and biomedical equipment — tailored for clinical environments across Nepal."
         />
 
         <div className="mt-12 grid grid-cols-1 gap-px border border-neutral-line bg-neutral-line sm:grid-cols-2">

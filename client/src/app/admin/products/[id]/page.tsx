@@ -33,7 +33,7 @@ export default async function ProductDetailPage({
   }
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="admin-page">
       <AdminBreadcrumbs
         items={[
           { label: "Products", href: "/admin/products" },

@@ -7,18 +7,19 @@ import { SolutionsSection } from "@/src/components/home/SolutionsSection";
 import { StatisticsSection } from "@/src/components/home/StatisticsSection";
 import { ServicesSection } from "@/src/components/home/ServicesSection";
 import { CTASection } from "@/src/components/home/CTASection";
+import { COMPANY } from "@/src/data/company";
 
 export const metadata: Metadata = {
-  title: "MedTech Pro | Precision Engineering for Clinical Excellence",
+  title: `${COMPANY.name} | Sleep & Respiratory Care Solutions in Nepal`,
   description:
-    "MedTech Pro engineers ultrasound, patient monitoring, surgical robotics, and diagnostic imaging systems trusted in more than 10,000 clinical deployments.",
+    "Himanshi Biomedical specializes in respiratory care, sleep medicine, and biomedical equipment in Nepal. Authorized BMC Medical distributor providing CPAP, BiPAP, and sleep lab solutions.",
   alternates: { canonical: "/" },
 };
 
 export default function HomePage() {
   return (
     <>
-      <section className="flex min-h-[calc(100svh-64px)] flex-col">
+      <section className="flex min-h-[calc(100svh-4rem)] flex-col">
         <Hero />
         <TrustBar />
       </section>
