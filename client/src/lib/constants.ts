@@ -1,11 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import {
-  LayoutGrid,
-  ClipboardList,
-  Archive,
-  Wallet,
-  Settings as SettingsIcon,
-} from "lucide-react";
+import { LayoutGrid, Archive, Wallet } from "lucide-react";
 
 export type NavItem = {
   label: string;
@@ -14,15 +8,7 @@ export type NavItem = {
 };
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: "Overview", href: "/dashboard", icon: LayoutGrid },
-  { label: "Management", href: "/management", icon: ClipboardList },
-  { label: "Resources", href: "/resources", icon: Archive },
-  { label: "Business", href: "/business", icon: Wallet },
-  { label: "System", href: "/system", icon: SettingsIcon },
-];
-
-export const TOP_NAV_ITEMS = [
-  { label: "Dashboard", href: "/dashboard" },
-  { label: "Analytics", href: "/admin/analytics" },
-  { label: "Reports", href: "/reports" },
+  { label: "Overview", href: "/admin/dashboard", icon: LayoutGrid },
+  { label: "Products", href: "/admin/products", icon: Archive },
+  { label: "Blog", href: "/admin/blog", icon: Wallet },
 ];
