@@ -15,10 +15,8 @@ export function FeaturedProduct() {
           <div className="flex flex-col justify-between">
             <div>
               <p className="eyebrow mb-3">Featured Product</p>
-          <h3 className="text-card-title text-primary">
-            {product.name}
-          </h3>
-          <p className="text-body-sm mt-3 text-neutral-muted">
+              <h3 className="text-card-title text-primary">{product.name}</h3>
+              <p className="text-body-sm mt-3 text-neutral-muted">
                 {product.shortDescription}
               </p>
             </div>
@@ -44,10 +42,6 @@ export function FeaturedProduct() {
             href={`/products/${product.slug}`}
             className="relative order-first flex aspect-[4/3] items-center justify-center bg-neutral-bg lg:order-none"
           >
-            <div className="absolute right-5 top-5 flex items-center gap-1.5 bg-tertiary px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.08em] text-primary shadow-sm">
-              <BarChart2 size={12} />
-              Spec Chart
-            </div>
             <Image
               src={product.image}
               alt={product.name}

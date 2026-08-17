@@ -13,7 +13,7 @@ export function CTASection() {
           </h2>
           <p className="text-body mt-3 max-w-md text-neutral-muted">
             Our team provides product guidance, technical assistance, and
-            dependable after-sales support across Nepal.
+            dependable after sales support across Nepal.
           </p>
         </div>
         <div className="flex flex-wrap gap-3">

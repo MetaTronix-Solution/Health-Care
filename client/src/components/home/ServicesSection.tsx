@@ -12,12 +12,6 @@ export function ServicesSection() {
             eyebrow="Services"
             title="Support That Keeps Systems Running"
           />
-          <Link
-            href="/services"
-            className="text-[13px] font-semibold uppercase tracking-[0.08em] text-secondary hover:underline"
-          >
-            View All Services
-          </Link>
         </div>
 
         <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">

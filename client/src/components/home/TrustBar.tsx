@@ -5,7 +5,7 @@ const items = [
   { label: "Authorized BMC Distributor", icon: ShieldCheck },
   { label: "Sleep & Respiratory Care", icon: Wind },
   { label: "Technical Support", icon: Headphones },
-  { label: "Nepal-Based Service", icon: MapPin },
+  { label: "Nepal Based Service", icon: MapPin },
 ];
 
 export function TrustBar() {
