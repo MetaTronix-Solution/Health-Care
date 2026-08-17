@@ -66,7 +66,10 @@ export default async function ProductDetailPage({
         <Container>
           <Breadcrumbs items={breadcrumbs} />
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
-            <ProductGallery images={product.gallery} productName={product.name} />
+            <ProductGallery
+              images={product.gallery}
+              productName={product.name}
+            />
             <ProductInformation product={product} />
           </div>
         </Container>
