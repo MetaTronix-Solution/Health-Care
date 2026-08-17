@@ -11,7 +11,7 @@ export function SolutionsSection() {
         <SectionHeading
           eyebrow="Capabilities"
           title="Healthcare Solutions"
-          description="Integrated solutions for sleep medicine, respiratory care, and biomedical equipment — tailored for clinical environments across Nepal."
+          description="Integrated solutions for sleep medicine, respiratory care, and biomedical equipment tailored for clinical environments across Nepal."
         />
 
         <div className="mt-12 grid grid-cols-1 gap-px border border-neutral-line bg-neutral-line sm:grid-cols-2">

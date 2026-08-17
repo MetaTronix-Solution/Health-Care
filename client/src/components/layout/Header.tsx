@@ -16,7 +16,10 @@ export function Header() {
           <span className="font-normal text-primary/70"> Biomedical</span>
         </Link>
 
-        <nav aria-label="Primary" className="hidden items-center gap-7 lg:flex xl:gap-8">
+        <nav
+          aria-label="Primary"
+          className="hidden items-center gap-7 lg:flex xl:gap-10"
+        >
           {mainNavigation.map((item) => (
             <Link
               key={item.href}
@@ -27,22 +30,6 @@ export function Header() {
             </Link>
           ))}
         </nav>
-
-        <div className="hidden items-center gap-3 lg:flex">
-          <Link
-            href="/products"
-            className="border border-neutral-line px-4 py-2.5 text-[12px] font-semibold uppercase tracking-[0.06em] text-primary transition-colors hover:bg-neutral-bg"
-          >
-            Products
-          </Link>
-          <Link
-            href="/contact"
-            className="bg-primary px-4 py-2.5 text-[12px] font-semibold uppercase tracking-[0.06em] text-tertiary transition-colors hover:bg-[#132540]"
-          >
-            Contact Us
-          </Link>
-        </div>
-
         <MobileNavigation />
       </Container>
     </header>

@@ -11,7 +11,8 @@ export function Hero() {
         <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
           <div className="max-w-xl">
             <p className="eyebrow mb-4">
-              EST. {COMPANY.established} &nbsp;•&nbsp; NEPAL &nbsp;•&nbsp; BMC MEDICAL DISTRIBUTOR
+              EST. {COMPANY.established} &nbsp;•&nbsp; NEPAL &nbsp;•&nbsp; BMC
+              MEDICAL DISTRIBUTOR
             </p>
 
             <h1 className="text-display text-primary">
@@ -19,9 +20,8 @@ export function Hero() {
             </h1>
 
             <p className="text-body mt-5 max-w-lg text-neutral-muted">
-              Reliable medical technologies, professional support, and
-              patient-focused solutions for sleep-related and respiratory
-              conditions.
+              Reliable medical technologies, professional support, and patient
+              focused solutions for sleep related and respiratory conditions.
             </p>
 
             <div className="mt-7 flex flex-wrap gap-3">
