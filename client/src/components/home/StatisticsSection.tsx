@@ -20,7 +20,7 @@ const stats: Stat[] = [
     label: "Authorized distributor",
   },
   { value: "CPAP", label: "Sleep & respiratory solutions" },
-  { value: "24/7", label: "After-sales support commitment" },
+  { value: "24/7", label: "After sales support commitment" },
 ];
 
 export function StatisticsSection() {

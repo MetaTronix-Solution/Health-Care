@@ -121,7 +121,7 @@ export function Footer() {
         </div>
 
         {/* Middle: logo + social icons */}
-        <div className="mt-14 flex flex-col items-start justify-between gap-6 border-t border-neutral-line pt-8 sm:flex-row sm:items-center">
+        <div className="mt-8 flex flex-col items-start justify-between gap-6 pt-4 sm:flex-row sm:items-center">
           <div className="flex items-center gap-1.5">
             <div className="relative h-10 w-14 shrink-0">
               <Image
