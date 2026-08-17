@@ -4,7 +4,7 @@ import { Button } from "@/src/components/ui/Button";
 
 export function CTASection() {
   return (
-    <section className="bg-neutral-bg section-padding">
+    <section className="bg-accent-bg section-padding">
       <Container className="flex flex-col items-start gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <p className="eyebrow mb-3">Get Started</p>

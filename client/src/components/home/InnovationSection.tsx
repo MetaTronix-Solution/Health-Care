@@ -11,7 +11,7 @@ export function InnovationSection() {
         sizes="100vw"
         className="object-cover"
       />
-      <div className="absolute inset-0 bg-primary/50" aria-hidden />
+      <div className="absolute inset-0 bg-primary/20" aria-hidden />
       <Container className="relative flex h-full min-h-[320px] items-end pb-8 sm:min-h-[400px] sm:pb-10 lg:min-h-[480px] lg:pb-12">
         <div className="max-w-md bg-primary/75 p-5 backdrop-blur-sm sm:p-6">
           <p className="eyebrow mb-2 text-tertiary/70">Respiratory Care</p>

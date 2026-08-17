@@ -46,7 +46,7 @@ export function StatisticsSection() {
   }, []);
 
   return (
-    <section className="bg-primary section-padding">
+    <section className="bg-accent-bg section-padding">
       <Container>
         <div
           ref={sectionRef}
@@ -68,15 +68,16 @@ export function StatisticsSection() {
                     src={stat.image}
                     alt={stat.alt ?? stat.label}
                     fill
+                    sizes="(min-width: 640px) 112px, 96px"
                     className="object-contain object-left"
                   />
                 </div>
               ) : (
-                <p className="text-3xl font-light tracking-tight text-tertiary sm:text-4xl">
+                <p className="text-3xl font-light tracking-tight text-primary sm:text-4xl">
                   {stat.value}
                 </p>
               )}
-              <p className="text-body-sm mt-2.5 uppercase tracking-wide text-tertiary/60">
+              <p className="text-body-sm mt-2.5 uppercase tracking-wide text-neutral-muted">
                 {stat.label}
               </p>
             </div>

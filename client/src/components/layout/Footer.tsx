@@ -83,7 +83,7 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-neutral-line bg-neutral-bg">
+    <footer className="border-t border-neutral-line bg-accent-bg">
       <Container className="py-14 lg:py-16">
         {/* Top: link columns + about blurb */}
         <div className="grid grid-cols-2 gap-x-8 gap-y-10 md:grid-cols-4 lg:grid-cols-5">

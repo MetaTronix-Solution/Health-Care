@@ -7,6 +7,7 @@
   --color-neutral-bg: #f4f7f9;
   --color-neutral-line: #e5e7eb;
   --color-neutral-muted: #6b7280;
+  --color-accent-bg: #edf4fb;
 
   /* Admin design tokens */
   --admin-sidebar-width: 250px;
@@ -30,6 +31,7 @@
   --color-neutral-bg: var(--color-neutral-bg);
   --color-neutral-line: var(--color-neutral-line);
   --color-neutral-muted: var(--color-neutral-muted);
+  --color-accent-bg: var(--color-accent-bg);
   --font-sans: var(--font-jakarta);
 }
 
