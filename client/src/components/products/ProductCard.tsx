@@ -1,38 +1,42 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import type { Product } from "@/src/types/product";
 
-export function ProductCard({ product }: { product: Product }) {
+interface ProductCardProps {
+  product: Product;
+}
+
+export function ProductCard({ product }: ProductCardProps) {
   return (
-    <Link
-      href={`/products/${product.slug}`}
-      className="group flex flex-col border border-neutral-line bg-tertiary transition-colors hover:border-primary"
-    >
-      <div className="relative aspect-[4/3] overflow-hidden bg-neutral-bg">
+    <article className="group flex flex-col rounded-2xl border border-[#E2E8F0] bg-white p-5 transition-shadow hover:shadow-sm">
+      <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#F8FAFC]">
         <Image
           src={product.image}
-          alt={`${product.name} — ${product.category} equipment`}
+          alt={product.name}
           fill
-          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-          className="object-contain p-8 transition-transform duration-300 group-hover:scale-[1.03]"
+          sizes="(min-width: 1280px) 22vw, (min-width: 640px) 45vw, 90vw"
+          className="object-contain p-4 transition-transform duration-200 group-hover:scale-[1.03]"
         />
       </div>
-      <div className="flex flex-1 flex-col gap-2 border-t border-neutral-line p-6">
-        <span className="eyebrow">{product.category}</span>
-        <div className="flex items-start justify-between gap-3">
-          <h3 className="text-card-title text-primary">
-            {product.name}
-          </h3>
-          <ArrowUpRight
-            size={16}
-            className="mt-1 shrink-0 text-neutral-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-          />
-        </div>
-        <p className="text-body-sm leading-relaxed text-neutral-muted">
-          {product.shortDescription}
-        </p>
-      </div>
-    </Link>
+
+      <h3 className="mt-4 text-base font-semibold text-[#0F172A]">
+        {product.name}
+      </h3>
+      <p className="mt-1 line-clamp-2 text-sm text-[#64748B]">
+        {product.description}
+      </p>
+
+      <Link
+        href={`/products/${product.slug}`}
+        className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[#2563EB] hover:underline"
+      >
+        View details
+        <ArrowRight
+          aria-hidden="true"
+          className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
+        />
+      </Link>
+    </article>
   );
 }

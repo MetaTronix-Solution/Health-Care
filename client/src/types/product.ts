@@ -1,7 +1,14 @@
+import type { LucideIcon } from "lucide-react";
 // Public-facing catalog product (marketing site)
 export interface ProductSpec {
   label: string;
   value: string;
+}
+
+export interface ProductCategory {
+  slug: string;
+  label: string;
+  icon: LucideIcon;
 }
 
 export interface ProductDetailSection {
@@ -66,3 +73,7 @@ export type AdminProduct = {
     slug: string;
   };
 };
+
+export type SortOption = "featured" | "name-asc" | "name-desc";
+
+export type ViewMode = "grid" | "list";

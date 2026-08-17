@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Container } from "@/src/components/ui/Container";
-import { ProductFilters } from "@/src/components/products/ProductFilters";
 import { products } from "@/src/data/products";
 import { productsMetadata } from "@/src/lib/seo/pages";
+import { ProductsCatalog } from "@/src/components/products/ProductsCatalog";
 
 export const metadata: Metadata = productsMetadata;
 
@@ -25,7 +25,7 @@ export default function ProductsPage() {
 
       <section className="section-padding-sm">
         <Container>
-          <ProductFilters products={products} />
+          <ProductsCatalog products={products} />
         </Container>
       </section>
     </>
