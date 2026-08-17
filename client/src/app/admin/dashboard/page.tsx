@@ -17,23 +17,7 @@ export const metadata: Metadata = {
 export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-8">
-      <PageHeader
-        title="Overview"
-        description="Real-time performance metrics and system status."
-        actions={
-          <div className="flex items-center gap-3 text-sm text-neutral-muted">
-            <span>Last updated: Just now</span>
-            <button
-              type="button"
-              className="flex items-center gap-1.5 font-medium text-secondary hover:underline"
-            >
-              <RefreshCw aria-hidden className="h-4 w-4" />
-              Refresh
-            </button>
-          </div>
-        }
-      />
-
+      <PageHeader title="Overview" />
       <StatsGrid stats={statSummaries} />
       <AnalyticsOverview data={performanceSeries} />
       <ProductPerformance products={topProducts} />

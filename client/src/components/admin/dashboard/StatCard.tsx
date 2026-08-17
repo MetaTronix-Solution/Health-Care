@@ -9,7 +9,6 @@ export function StatCard({ stat }: { stat: StatSummary }) {
     <div className="rounded-lg border border-neutral-line bg-white p-5">
       <div className="flex items-center justify-between">
         <p className="eyebrow">{stat.label}</p>
-        <span className="text-xs text-neutral-line">{stat.index}</span>
       </div>
       <p className="mt-3 text-3xl font-semibold text-primary">
         {formatNumber(stat.value)}

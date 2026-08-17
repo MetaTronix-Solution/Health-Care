@@ -5,7 +5,7 @@ import { COMPANY } from "@/src/data/company";
 
 export default function NotFound() {
   return (
-    <section className="flex min-h-[60vh] items-center bg-neutral-bg">
+    <section className="flex min-h-screen items-center bg-neutral-bg">
       <Container className="py-24 text-center">
         <p className="eyebrow mb-4">Page Not Found</p>
 
