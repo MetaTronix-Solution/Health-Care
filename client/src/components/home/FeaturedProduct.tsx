@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BarChart2 } from "lucide-react";
 import { Container } from "@/src/components/ui/Container";
 import { getFeaturedProducts } from "@/src/data/products";
 
@@ -39,7 +38,7 @@ export function FeaturedProduct() {
           </div>
 
           <Link
-            href={`/products/${product.slug}`}
+            href={`/products`}
             className="relative order-first flex aspect-[4/3] items-center justify-center bg-neutral-bg lg:order-none"
           >
             <Image
