@@ -24,7 +24,7 @@ export function ProductPerformance({ products }: { products: TopProduct[] }) {
           Top Performing Products
         </h2>
         <Link
-          href="/resources"
+          href="/admin/products"
           className="flex items-center gap-1 text-sm font-medium text-secondary hover:underline"
         >
           View All
