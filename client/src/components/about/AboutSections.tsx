@@ -38,7 +38,7 @@ export function AboutHero() {
 
 export function AboutOverview() {
   return (
-    <section className="bg-tertiary py-16 lg:py-20">
+    <section className=" bg-tertiary py-16 lg:py-20">
       <Container>
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.35fr_0.65fr] lg:gap-16">
           <h2 className="text-3xl sm:text-4xl font-light leading-[1.15] tracking-tight text-primary">
