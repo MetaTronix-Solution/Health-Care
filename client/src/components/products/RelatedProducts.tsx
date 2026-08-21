@@ -11,7 +11,7 @@ export function RelatedProducts({ products }: { products: Product[] }) {
       <Container>
         <SectionHeading eyebrow="Continue Exploring" title="Related Products" />
         <div className="mt-10">
-          <ProductGrid products={products} />
+          <ProductGrid products={products} view="grid" />
         </div>
       </Container>
     </section>
