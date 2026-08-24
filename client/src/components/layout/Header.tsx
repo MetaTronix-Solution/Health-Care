@@ -13,7 +13,10 @@ export function Header() {
           className="shrink-0 text-lg font-semibold tracking-tight text-primary sm:text-[1.125rem]"
         >
           {COMPANY.shortName}
-          <span className="font-normal text-primary/70"> Biomedical</span>
+          <span className="font-normal text-primary/70">
+            {" "}
+            Biomedical Solution
+          </span>
         </Link>
 
         <nav
