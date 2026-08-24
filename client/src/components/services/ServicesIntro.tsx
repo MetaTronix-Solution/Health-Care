@@ -19,7 +19,7 @@ export function ServicesIntro() {
             </p>
           </div>
 
-          <div className="relative aspect-[16/10] w-full overflow-hidden bg-primary lg:aspect-[4/3]">
+          <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-neutral-line bg-neutral-bg lg:aspect-[4/3]">
             <Image
               src="https://images.unsplash.com/photo-1504439468489-c8920d796a29?q=80&w=1800&auto=format&fit=crop"
               alt="Technician setting up medical equipment in a clinical environment"
