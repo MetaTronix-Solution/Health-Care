@@ -18,7 +18,7 @@ export function FacilitySolutions() {
             </p>
           </div>
 
-          <div className="order-1 relative aspect-[4/3] w-full overflow-hidden bg-primary lg:order-2 lg:aspect-[4/3.4]">
+          <div className="order-1 relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-neutral-line bg-neutral-bg lg:order-2 lg:aspect-[4/3.4]">
             <Image
               src="https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=1600&auto=format&fit=crop"
               alt="Hospital corridor with medical technology equipment"

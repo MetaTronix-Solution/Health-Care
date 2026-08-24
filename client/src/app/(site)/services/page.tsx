@@ -5,7 +5,6 @@ import { RentalPurchaseSection } from "@/src/components/services/RentalPurchaseS
 import { FacilitySolutions } from "@/src/components/services/FacilitySolutions";
 import { ServiceProcess } from "@/src/components/services/ServiceProcess";
 import { WhyChooseMedTech } from "@/src/components/services/WhyChooseMedTech";
-import { ServicesCTA } from "@/src/components/services/ServicesCTA";
 import { services } from "@/src/data/services";
 import { servicesMetadata } from "@/src/lib/seo/pages";
 
@@ -20,7 +19,6 @@ export default function ServicesPage() {
       <FacilitySolutions />
       <ServiceProcess />
       <WhyChooseMedTech />
-      <ServicesCTA />
     </>
   );
 }
