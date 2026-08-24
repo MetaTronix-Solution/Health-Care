@@ -7,16 +7,33 @@ import { COMPANY } from "@/src/data/company";
 export function Hero() {
   return (
     <section className="relative flex flex-1 items-center overflow-hidden bg-[#eef2f7]">
+      {/* Mobile Image (Visible on screens smaller than md) */}
       <Image
-        src="/heroBackground.png"
-        alt="CPAP mask and respiratory care setup in a calm bedroom setting"
+        src="/mobileHero.png"
+        alt=""
         fill
         priority
         sizes="100vw"
-        className="object-cover object-right"
+        aria-hidden="true"
+        className="object-cover object-right md:hidden"
       />
 
-      <Container className="relative w-full py-24 sm:py-28 lg:py-36">
+      {/* Desktop Image (Hidden on mobile, visible from md up) */}
+      <Image
+        src="/heroBackground.png"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        aria-hidden="true"
+        className="hidden object-cover object-right md:block"
+      />
+
+      {/* Soft overlay to keep text readable */}
+      <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/55 to-transparent md:from-white/85 md:via-white/30 md:to-transparent" />
+
+      {/* Content */}
+      <Container className="relative z-10 w-full py-20 sm:py-24 lg:py-32">
         <div className="max-w-xl">
           <p className="eyebrow mb-4 text-primary/60">
             EST. {COMPANY.established} &nbsp;•&nbsp; NEPAL &nbsp;•&nbsp; BMC
@@ -36,6 +53,7 @@ export function Hero() {
             <Button href="/products" icon={<ArrowRight size={15} />}>
               View Products
             </Button>
+
             <Button href="/contact" variant="outlined">
               Contact Us
             </Button>
