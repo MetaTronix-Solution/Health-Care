@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateBlogDto } from './dto/create-blog.dto';
+import { UpdateBlogDto } from './dto/update-blog.dto';
 
 @Controller('blog')
 export class BlogController {
@@ -41,5 +42,16 @@ export class BlogController {
     @Get("slug/:slug")
     async findBySlug(@Param("slug") slug: string) {
         return this.blogService.findBySlug(slug);
+    }
+
+    // update blog
+    @Patch(":id")
+    @UseInterceptors(FileInterceptor("image"))
+    async update(
+        @Param("id") id: string,
+        @Body() updateBlogDto: UpdateBlogDto,
+        @UploadedFile() file?: Express.Multer.File,
+    ) {
+        return this.blogService.update(id, updateBlogDto, file)
     }
 }
