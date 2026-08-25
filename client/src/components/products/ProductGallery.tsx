@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { cn } from "@/src/lib/utils";
 
@@ -11,16 +11,44 @@ export function ProductGallery({
   images: string[];
   productName: string;
 }) {
+  const validImages = images.filter(
+    (image): image is string =>
+      typeof image === "string" && image.trim().length > 0,
+  );
+
   const [active, setActive] = useState(0);
+
+  // Reset active image if the product/images change
+  useEffect(() => {
+    setActive(0);
+  }, [images]);
+
+  // No valid images
+  if (validImages.length === 0) {
+    return (
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-bg">
+        <span className="absolute left-4 top-4 z-10 bg-primary px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-tertiary">
+          01 // Overview
+        </span>
+
+        <div className="flex h-full items-center justify-center text-sm text-neutral-500">
+          No product image available
+        </div>
+      </div>
+    );
+  }
+
+  const activeImage = validImages[active] ?? validImages[0];
 
   return (
     <div>
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-bg">
         <span className="absolute left-4 top-4 z-10 bg-primary px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-tertiary">
-          01 // Overview
+          {String(active + 1).padStart(2, "0")} // Overview
         </span>
+
         <Image
-          src={images[active]}
+          src={activeImage}
           alt={`${productName} product photo ${active + 1}`}
           fill
           priority
@@ -29,13 +57,13 @@ export function ProductGallery({
         />
       </div>
 
-      {images.length > 1 && (
+      {validImages.length > 1 && (
         <div className="mt-4 flex gap-3">
-          {images.map((image, index) => (
+          {validImages.map((image, index) => (
             <button
-              key={image}
+              key={`${image}-${index}`}
               type="button"
-              aria-label={`View image ${index + 1} of ${images.length}`}
+              aria-label={`View image ${index + 1} of ${validImages.length}`}
               aria-current={active === index}
               onClick={() => setActive(index)}
               className={cn(

@@ -15,7 +15,7 @@ export function Hero() {
         priority
         sizes="100vw"
         aria-hidden="true"
-        className="object-cover object-right md:hidden"
+        className="object-cover object-right opacity-30 md:hidden"
       />
 
       {/* Desktop Image (Hidden on mobile, visible from md up) */}

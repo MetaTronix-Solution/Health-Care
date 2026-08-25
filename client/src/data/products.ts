@@ -9,24 +9,127 @@ export const productCategories = [
 
 export const products: Product[] = [
   {
+    slug: "bmc-g3-b25vt-b30vt",
+    name: "BMC G3 B25VT / B30VT",
+    category: "Respiratory Therapy",
+    categorySlug: "respiratory-therapy",
+    refCode: "G3 B25VT / B30VT",
+    coordinates: "",
+
+    shortDescription:
+      "Advanced bi-level PAP therapy with S/T mode and Target Tidal Volume for patients with respiratory insufficiency.",
+
+    description:
+      "The BMC G3 B25VT / B30VT is a bi-level PAP system designed for patients with respiratory insufficiency, featuring S/T mode, Target Tidal Volume, automatic leak compensation, and intelligent comfort features.",
+
+    image:
+      "https://en.bmc-medical.com/upload/image/2026-01/col191/1767758356549.jpg",
+
+    gallery: [
+      "https://en.bmc-medical.com/upload/image/2026-01/col191/1767758356549.jpg",
+      "https://en.bmc-medical.com/upload/image/2026-01/col191/1767758368396.jpg",
+      "https://en.bmc-medical.com/upload/image/2026-01/col191/1767758361462.jpg",
+    ],
+
+    featured: true,
+
+    imaging: "Target Tidal Volume",
+    application: "Respiratory Insufficiency Management",
+    transducerTech: "Auto Leak Compensation",
+
+    details: [
+      {
+        index: "02",
+        title: "Target Tidal Volume Therapy",
+        body: "The G3 automatically optimizes IPAP according to the patient's mean tidal volume from the last five breaths and the prescribed target tidal volume.",
+        specs: [
+          {
+            label: "Target Vt",
+            value: "150–1500 mL",
+          },
+          {
+            label: "Pressure Range",
+            value: "4–25 hPa / 4–30 hPa",
+          },
+          {
+            label: "Work Mode",
+            value: "S/T / S / T / CPAP",
+          },
+        ],
+      },
+
+      {
+        index: "03",
+        title: "Intelligent Comfort",
+        body: "The G3 B25VT/B30VT combines pre-heating, Intelligent Auto Humidity control, and adjustable inspiratory and expiratory sensitivity for comfortable therapy.",
+        specs: [
+          {
+            label: "Humidifier",
+            value: "Auto / Level 1 to 5",
+          },
+          {
+            label: "I Sens. / E Sens.",
+            value: "7 levels",
+          },
+          {
+            label: "Water Capacity",
+            value: "360 mL",
+          },
+        ],
+      },
+
+      {
+        index: "04",
+        title: "Smart Monitoring & Connectivity",
+        body: "The G3 supports onboard and SD card data storage together with cellular and WiFi connectivity for therapy monitoring and digital health solutions.",
+        specs: [
+          {
+            label: "Data Transfer",
+            value: "Cellular / WiFi",
+          },
+          {
+            label: "Screen",
+            value: "3.5-inch",
+          },
+          {
+            label: "Sound Pressure",
+            value: "26 dB(A)",
+          },
+        ],
+      },
+    ],
+
+    applications: [
+      "Respiratory Insufficiency",
+      "Bi-level PAP Therapy",
+      "S/T Therapy",
+      "Non-Invasive Ventilation",
+    ],
+
+    downloads: [
+      {
+        label: "Product Brochure (PDF)",
+        href: "#",
+      },
+    ],
+  },
+  {
     slug: "bmc-g3-a20",
     name: "BMC G3 A20",
     category: "Sleep Therapy",
     categorySlug: "sleep-therapy",
     refCode: "G3 A20 / CPAP",
     coordinates: "",
+
     shortDescription:
-      "Advanced AutoCPAP therapy delivering personalized pressure response, accurate respiratory event detection, and comfortable all night therapy.",
+      "Advanced AutoCPAP therapy with smart adaptive pressure response, accurate respiratory event detection, and personalized comfort features.",
+
     description:
-      "The BMC G3 A20 is an AutoCPAP device designed to provide personalized sleep therapy through smart adaptive pressure response, accurate respiratory event detection, and automated comfort features.",
+      "The BMC G3 A20 is an AutoCPAP device designed to provide personalized sleep therapy with intelligent event detection, adaptive pressure response, automated comfort functions, and smart humidification.",
 
     image: "/mainProduct.png",
 
-    gallery: [
-      "/products/g3-a20-01.png",
-      "/products/g3-a20-02.png",
-      "/products/g3-a20-03.png",
-    ],
+    gallery: [],
 
     featured: true,
 
@@ -38,7 +141,7 @@ export const products: Product[] = [
       {
         index: "02",
         title: "Smart Adaptive Therapy",
-        body: "The G3 dynamically adapts to an ideal starting pressure after ramp based on data from the last five effective treatment days. It continuously optimizes minimum and maximum pressure thresholds throughout long-term therapy.",
+        body: "The G3 dynamically adapts to an ideal starting pressure based on the last 5 effective treatment days and continuously optimizes pressure thresholds throughout long-term therapy.",
         specs: [
           {
             label: "Pressure Response",
@@ -46,7 +149,7 @@ export const products: Product[] = [
           },
           {
             label: "Pressure Range",
-            value: "4 20 hPa",
+            value: "4–20 hPa",
           },
           {
             label: "Work Mode",
@@ -58,7 +161,7 @@ export const products: Product[] = [
       {
         index: "03",
         title: "Intelligent Comfort & Humidification",
-        body: "The G3 combines automated therapy controls with intelligent humidification to provide comfortable treatment throughout the night. Auto On, Auto Off, Auto Ramp, Delay Off, pre-heating, and smart humidity and temperature control simplify everyday therapy.",
+        body: "Automated comfort functions including Auto On, Auto Off, Auto Ramp, Delay Off, pre-heating, and intelligent humidity and temperature control provide comfortable therapy throughout the night.",
         specs: [
           {
             label: "Water Chamber",
@@ -66,7 +169,7 @@ export const products: Product[] = [
           },
           {
             label: "Humidification",
-            value: "Auto / Level 1 to 5",
+            value: "Auto / Level 1–5",
           },
           {
             label: "Sound Pressure",
@@ -77,8 +180,42 @@ export const products: Product[] = [
 
       {
         index: "04",
+        title: "Accurate Event Detection",
+        body: "The G3 accurately detects respiratory events including central apneas, hypopneas, Cheyne-Stokes respiration, and flow limitations to provide targeted pressure adjustments.",
+        specs: [
+          {
+            label: "Event Detection",
+            value: "Central Apnea / Hypopnea / CSR",
+          },
+          {
+            label: "Pressure Response",
+            value: "Targeted Adaptive Response",
+          },
+          {
+            label: "Technology",
+            value: "SmartC / SmartA",
+          },
+        ],
+      },
+
+      {
+        index: "05",
         title: "Data-Driven Sleep Management",
-        body: "PAP Link provides Web, PC, and App solutions for monitoring therapy data, configuring treatment parameters, transferring data, generating reports, and supporting healthcare professionals, clinics, distributors, and patients.",
+        body: "PAP Link provides Web, PC, and App solutions for therapy monitoring, parameter settings, data transfer, reports, and personalized therapy management.",
+        specs: [
+          {
+            label: "Connectivity",
+            value: "SD Card / iCode QR / Cellular / WiFi",
+          },
+          {
+            label: "Internal Storage",
+            value: "Up to 512 days summary data",
+          },
+          {
+            label: "SD Storage",
+            value: "Up to 70 days detailed data",
+          },
+        ],
       },
     ],
 
@@ -94,131 +231,111 @@ export const products: Product[] = [
         label: "Product Brochure (PDF)",
         href: "#",
       },
+    ],
+  },
+  {
+    slug: "kjr-y51w",
+    name: "KCAREU KJR-Y51W",
+    category: "Oxygen Therapy",
+    categorySlug: "oxygen-therapy",
+    refCode: "KJR-Y51W / OXYGEN CONCENTRATOR",
+    coordinates: "",
+
+    shortDescription:
+      "5 LPM oxygen concentrator delivering 93% ±3% oxygen purity with adjustable flow, LED display, and integrated nebulizer function.",
+
+    description:
+      "The KCAREU KJR-Y51W is a 5 LPM oxygen concentrator designed for oxygen therapy, featuring high oxygen purity, adjustable flow control, LED display, nebulization support, and continuous oxygen supply.",
+
+    image: "/homepageProduct.png",
+
+    gallery: [],
+
+    featured: true,
+
+    imaging: "High-Purity Oxygen Concentration",
+    application: "Oxygen Therapy",
+    transducerTech: "Molecular Sieve Technology",
+
+    details: [
       {
-        label: "Specification Chart",
+        index: "02",
+        title: "High-Purity Oxygen Delivery",
+        body: "The KJR-Y51W uses a high-quality molecular sieve to provide concentrated oxygen with adjustable flow for oxygen therapy applications.",
+        specs: [
+          {
+            label: "Oxygen Purity",
+            value: "93% ±3%",
+          },
+          {
+            label: "Flow Rate",
+            value: "1–5 L/min",
+          },
+          {
+            label: "Outlet Pressure",
+            value: "20–70 kPa",
+          },
+        ],
+      },
+
+      {
+        index: "03",
+        title: "Integrated Nebulizer Function",
+        body: "The device includes an integrated nebulizer function and supports nebulization accessories for convenient respiratory therapy.",
+        specs: [
+          {
+            label: "Nebulizer",
+            value: "Integrated",
+          },
+          {
+            label: "Display",
+            value: "LED",
+          },
+          {
+            label: "Continuous Operation",
+            value: "Up to 48 hours",
+          },
+        ],
+      },
+
+      {
+        index: "04",
+        title: "Compact & Reliable Design",
+        body: "The KJR-Y51W combines a compact oxygen concentrator design with low operating noise and practical monitoring features for everyday use.",
+        specs: [
+          {
+            label: "Dimensions",
+            value: "345 × 280 × 558 mm",
+          },
+          {
+            label: "Weight",
+            value: "15.5 kg",
+          },
+          {
+            label: "Noise Level",
+            value: "≤45 dB(A)",
+          },
+          {
+            label: "Rated Power",
+            value: "≤400 W",
+          },
+        ],
+      },
+    ],
+
+    applications: [
+      "Oxygen Therapy",
+      "Home Oxygen Therapy",
+      "Respiratory Care",
+      "Nebulization Therapy",
+    ],
+
+    downloads: [
+      {
+        label: "Product Brochure (PDF)",
         href: "#",
       },
     ],
-  },
-  {
-    slug: "vitalscan-monitor",
-    name: "VitalScan Monitor",
-    category: "Patient Monitoring",
-    categorySlug: "monitoring",
-    refCode: "REF_002 / MONITORING",
-    coordinates: "LAT: 42.3601 / LONG: 71.0589",
-    shortDescription:
-      "High-fidelity bedside monitoring with continuous multi-parameter tracking and predictive alerting.",
-    description:
-      "A precision multi-parameter patient monitor built for critical care, combining continuous waveform tracking with predictive early-warning alerts.",
-    image:
-      "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=1200&auto=format&fit=crop",
-    gallery: [
-      "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=1600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?q=80&w=1600&auto=format&fit=crop",
-    ],
-    featured: true,
-    imaging: "WaveformIQ Signal Processing",
-    application: "Critical & Perioperative Care",
-    details: [
-      {
-        index: "02",
-        title: "Signal Processing",
-        body: "WaveformIQ filters motion artifact in real time, isolating clean ECG, SpO2, and respiration signals even during patient movement or transport.",
-        specs: [
-          { label: "Parameters", value: "12+ simultaneous" },
-          { label: "Battery Life", value: "6+ hours" },
-          { label: "Connectivity", value: "HL7 / DICOM" },
-        ],
-      },
-    ],
-    applications: [
-      "Intensive Care",
-      "Operating Room",
-      "Emergency Medicine",
-      "Patient Transport",
-    ],
-    downloads: [{ label: "Spec Sheet (PDF)", href: "#" }],
-  },
-  {
-    slug: "nexus-surgical-arm",
-    name: "Nexus Surgical Arm",
-    category: "Surgical Robotics",
-    categorySlug: "surgical",
-    refCode: "REF_003 / SURGICAL",
-    coordinates: "LAT: 40.7128 / LONG: 74.0060",
-    shortDescription:
-      "Sub-millimeter robotic assistance engineered for minimally invasive procedures.",
-    description:
-      "Robotic-assisted surgical platform delivering sub-millimeter precision and tremor-free instrument control for minimally invasive procedures.",
-    image:
-      "https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?q=80&w=1200&auto=format&fit=crop",
-    gallery: [
-      "https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?q=80&w=1600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1666214280391-8ff5bd3c0bf0?q=80&w=1600&auto=format&fit=crop",
-    ],
-    featured: true,
-    imaging: "TactileSync Feedback Loop",
-    application: "General & Thoracic Surgery",
-    details: [
-      {
-        index: "02",
-        title: "Precision Control",
-        body: "Seamless hardware-software synthesis translates surgeon motion into sub-millimeter instrument response, filtering hand tremor before it reaches the instrument tip.",
-        specs: [
-          { label: "Degrees of Freedom", value: "7 per arm" },
-          { label: "Latency", value: "< 5ms" },
-          { label: "Tremor Reduction", value: "Active" },
-        ],
-      },
-    ],
-    applications: [
-      "General Surgery",
-      "Thoracic Surgery",
-      "Urology",
-      "Gynecologic Surgery",
-    ],
-    downloads: [{ label: "Spec Sheet (PDF)", href: "#" }],
-  },
-  {
-    slug: "clarity-mri-suite",
-    name: "Clarity MRI Suite",
-    category: "Diagnostic Imaging",
-    categorySlug: "imaging",
-    refCode: "REF_004 / IMAGING",
-    coordinates: "LAT: 41.8781 / LONG: 87.6298",
-    shortDescription:
-      "Wide-bore MRI platform balancing image fidelity with patient comfort and shorter scan times.",
-    description:
-      "A wide-bore magnetic resonance imaging suite engineered to shorten scan times without compromising diagnostic image fidelity.",
-    image:
-      "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1200&auto=format&fit=crop",
-    gallery: [
-      "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1631563019676-dade0dbdb8fb?q=80&w=1600&auto=format&fit=crop",
-    ],
-    featured: false,
-    imaging: "QuietField Gradient System",
-    application: "Neurology & Musculoskeletal",
-    details: [
-      {
-        index: "02",
-        title: "Gradient System",
-        body: "QuietField gradients cut acoustic noise by more than half while maintaining the slew rate needed for high-resolution neurological and musculoskeletal protocols.",
-        specs: [
-          { label: "Bore Width", value: "70cm" },
-          { label: "Field Strength", value: "3.0T" },
-          { label: "Acoustic Noise", value: "-55% vs. prior gen" },
-        ],
-      },
-    ],
-    applications: [
-      "Neurology",
-      "Musculoskeletal",
-      "Oncology",
-      "Cardiac Imaging",
-    ],
-    downloads: [{ label: "Spec Sheet (PDF)", href: "#" }],
   },
 ];
 
