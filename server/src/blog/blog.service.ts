@@ -15,6 +15,7 @@ import { Model, Types } from 'mongoose';
 import { ImagekitService } from 'src/imagekit/imagekit.service';
 
 import { CreateBlogDto } from './dto/create-blog.dto';
+import { UpdateBlogDto } from './dto/update-blog.dto';
 
 @Injectable()
 export class BlogService {
@@ -204,4 +205,153 @@ export class BlogService {
     }
   }
 
+
+  //update blog
+  async update(id: string, updateBlogDto: UpdateBlogDto, file?: Express.Multer.File) {
+
+    //Validate Mongo id
+    if(!Types.ObjectId.isValid(id)) {
+      throw new BadRequestException("Invalid blog ID")
+    }
+
+    //find Existing blog
+    const blog = await this.blogModel.findById(id).exec();
+    if(!blog) {
+      throw new BadRequestException("Blog not found")
+    }
+
+    //update slug if title change
+    if(updateBlogDto.title !== undefined &&
+       updateBlogDto.title !== blog.title
+    ) {
+      const newSlug = this.generateSlug(updateBlogDto.title);
+
+
+    //check duplicate slug
+    const existingBlog = await this.blogModel.findOne({
+      slug: newSlug,
+      _id: {$ne: id}
+    });
+
+    if(existingBlog) {
+      throw new BadRequestException("A blog with this title already exists")
+    }
+    blog.title = updateBlogDto.title;
+    blog.slug = newSlug
+  }
+
+  //update basic fields
+  if(updateBlogDto.category !== undefined) {
+    blog.category = updateBlogDto.category;
+  }
+
+  if(updateBlogDto.excerpt !== undefined) {
+    blog.excerpt = updateBlogDto.excerpt
+  }
+
+  if (
+    updateBlogDto.content !== undefined
+  ) {
+    blog.content =
+      updateBlogDto.content;
+  }
+
+  if (
+    updateBlogDto.author !== undefined
+  ) {
+    blog.author =
+      updateBlogDto.author;
+  }
+
+
+
+  // 5. Update published status
+
+
+  if (
+    updateBlogDto.isPublished !== undefined
+  ) {
+
+    blog.isPublished =
+      updateBlogDto.isPublished;
+
+    if (updateBlogDto.isPublished) {
+
+      // Set published date when publishing
+      if (!blog.publishedAt) {
+        blog.publishedAt =
+          new Date();
+      }
+
+    } else {
+
+      // Remove published date
+      blog.publishedAt = undefined;
+    }
+  }
+
+
+
+  // 6. IMAGE UPDATE
+
+  // IMPORTANT:
+  // If no new image is provided,
+  // DO NOTHING.
+  //
+  // Therefore the existing image
+  // will NOT be uploaded again.
+
+
+  if (file) {
+
+    // Delete old ImageKit image
+    if (blog.imageFileId) {
+
+      await this.imagekitService
+        .deleteFile(
+          blog.imageFileId,
+        );
+    }
+
+
+    // Upload new image
+    const uploaded =
+      await this.imagekitService.uploadFile(
+        file,
+        'healthcare/blog',
+      );
+
+
+    // Replace old image
+    blog.image =
+      uploaded.url;
+
+    blog.imageFileId =
+      uploaded.fileId;
+  }
+
+
+
+  // 7. Save updated blog
+
+
+  const updatedBlog =
+    await blog.save();
+
+
+
+  // 8. Response
+
+
+  return {
+    success: true,
+
+    message:
+      'Blog updated successfully',
+
+    blog: updatedBlog,
+
+
+}
+  }
 }
