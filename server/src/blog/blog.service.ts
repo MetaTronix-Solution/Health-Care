@@ -350,8 +350,34 @@ export class BlogService {
       'Blog updated successfully',
 
     blog: updatedBlog,
-
-
 }
+  }
+
+  //delete blog
+  async deleteBlog(id: string) {
+    //validate mongo id
+    if(!Types.ObjectId.isValid(id)) {
+      throw new BadRequestException("Invalid blog id")
+    }
+
+    //find blog
+    const blog = await this.blogModel.findById(id).exec();
+
+    if(!blog) {
+      throw new BadRequestException("Blog not found")
+    }
+
+    //Delete image from imagekit
+    if(blog.imageFileId) {
+      await this.imagekitService.deleteFile(blog.imageFileId);
+    }
+
+    //Delete blog from MongoDb
+    await this.blogModel.findByIdAndDelete(id).exec();
+
+    return {
+      success: true,
+      message: "Blog deleted successfully"
+    }
   }
 }
