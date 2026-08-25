@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateBlogDto } from './dto/create-blog.dto';
@@ -53,5 +53,14 @@ export class BlogController {
         @UploadedFile() file?: Express.Multer.File,
     ) {
         return this.blogService.update(id, updateBlogDto, file)
+    }
+
+
+    //delete blog
+    @Delete(":id")
+    async deleteBlog(
+        @Param("id") id: string,
+    ) {
+        return this.blogService.deleteBlog(id);
     }
 }
