@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import {
   ArrowRight,
@@ -305,6 +308,8 @@ export function AboutTeam() {
 }
 
 export function AboutFAQ() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
   return (
     <section className="section-padding-sm">
       <Container>
@@ -319,23 +324,39 @@ export function AboutFAQ() {
         </div>
 
         <div className="mt-10 divide-y divide-neutral-line border-y border-neutral-line">
-          {faqItems.map((item) => (
-            <details key={item.question} className="group py-5">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-body font-medium text-primary marker:content-none [&::-webkit-details-marker]:hidden">
-                <span className="transition-colors duration-300 group-hover:text-secondary">
-                  {item.question}
-                </span>
-                <Plus
-                  size={18}
-                  className="shrink-0 text-neutral-muted transition-transform duration-300 group-open:rotate-45 group-open:text-secondary"
-                  aria-hidden
-                />
-              </summary>
-              <p className="text-body-sm mt-3 max-w-3xl text-neutral-muted">
-                {item.answer}
-              </p>
-            </details>
-          ))}
+          {faqItems.map((item, index) => {
+            const isOpen = openIndex === index;
+            return (
+              <div key={item.question} className="group py-5">
+                <button
+                  type="button"
+                  onClick={() => setOpenIndex(isOpen ? null : index)}
+                  aria-expanded={isOpen}
+                  className="flex w-full cursor-pointer list-none items-center justify-between gap-4 text-left text-body font-medium text-primary"
+                >
+                  <span
+                    className={`transition-colors duration-300 ${
+                      isOpen ? "text-secondary" : "hover:text-secondary"
+                    }`}
+                  >
+                    {item.question}
+                  </span>
+                  <Plus
+                    size={18}
+                    className={`shrink-0 text-neutral-muted transition-transform duration-300 ${
+                      isOpen ? "rotate-45 text-secondary" : ""
+                    }`}
+                    aria-hidden
+                  />
+                </button>
+                {isOpen && (
+                  <p className="text-body-sm mt-3 max-w-3xl text-neutral-muted">
+                    {item.answer}
+                  </p>
+                )}
+              </div>
+            );
+          })}
         </div>
       </Container>
     </section>
