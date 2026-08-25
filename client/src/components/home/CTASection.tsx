@@ -4,20 +4,24 @@ import { Button } from "@/src/components/ui/Button";
 
 export function CTASection() {
   return (
-    <section className="bg-neutral-bg py-16 lg:py-24">
-      <Container className="flex flex-col items-start gap-8 lg:flex-row lg:items-end lg:justify-between">
+    <section className="bg-accent-bg section-padding">
+      <Container className="flex flex-col items-start gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <p className="eyebrow mb-4">04 // Get Started</p>
-          <h2 className="max-w-lg text-3xl sm:text-4xl font-light leading-[1.1] tracking-tight text-primary">
-            Ready to see it running in your facility?
+          <p className="eyebrow mb-3">Get Started</p>
+          <h2 className="text-section-title max-w-lg text-primary">
+            Need guidance on sleep or respiratory care equipment?
           </h2>
+          <p className="text-body mt-3 max-w-md text-neutral-muted">
+            Our team provides product guidance, technical assistance, and
+            dependable after sales support across Nepal.
+          </p>
         </div>
         <div className="flex flex-wrap gap-3">
           <Button href="/contact" icon={<ArrowRight size={15} />}>
-            Request a Demo
+            Contact Us
           </Button>
-          <Button href="/products" variant="outlined">
-            Browse Products
+          <Button href="/about" variant="outlined">
+            About Us
           </Button>
         </div>
       </Container>

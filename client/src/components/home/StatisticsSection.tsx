@@ -1,23 +1,83 @@
-import { Container } from "@/src/components/ui/Container";
+"use client";
 
-const stats = [
-  { value: "10,000+", label: "Clinical deployments worldwide" },
-  { value: "47", label: "Countries served" },
-  { value: "24/7", label: "Technical support coverage" },
-  { value: "76%", label: "Average diagnostic time reduction" },
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { Container } from "@/src/components/ui/Container";
+import { COMPANY } from "@/src/data/company";
+
+type Stat = {
+  label: string;
+  value?: string;
+  image?: string;
+  alt?: string;
+};
+
+const stats: Stat[] = [
+  { value: String(COMPANY.established), label: "Established in Nepal" },
+  {
+    image: "/BMC.png",
+    alt: "BMC",
+    label: "Authorized distributor",
+  },
+  { value: "CPAP", label: "Sleep & respiratory solutions" },
+  { value: "24/7", label: "After sales support commitment" },
 ];
 
 export function StatisticsSection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="bg-primary py-16 lg:py-24">
+    <section className="bg-accent-bg section-padding">
       <Container>
-        <div className="grid grid-cols-2 gap-10 lg:grid-cols-4">
-          {stats.map((stat) => (
-            <div key={stat.label} className="border-t border-tertiary/20 pt-6">
-              <p className="text-3xl sm:text-4xl font-light tracking-tight text-tertiary">
-                {stat.value}
-              </p>
-              <p className="mt-2 text-[12px] leading-relaxed text-tertiary/60">
+        <div
+          ref={sectionRef}
+          className="grid grid-cols-2 gap-8 lg:grid-cols-4 lg:gap-12"
+        >
+          {stats.map((stat, index) => (
+            <div
+              key={stat.label}
+              className="transition-all duration-700 ease-out"
+              style={{
+                transitionDelay: `${index * 120}ms`,
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? "translateY(0)" : "translateY(16px)",
+              }}
+            >
+              {stat.image ? (
+                <div className="relative h-10 w-24 sm:h-12 sm:w-28">
+                  <Image
+                    src={stat.image}
+                    alt={stat.alt ?? stat.label}
+                    fill
+                    sizes="(min-width: 640px) 112px, 96px"
+                    className="object-contain object-left"
+                  />
+                </div>
+              ) : (
+                <p className="text-3xl font-light tracking-tight text-primary sm:text-4xl">
+                  {stat.value}
+                </p>
+              )}
+              <p className="text-body-sm mt-2.5 uppercase tracking-wide text-neutral-muted">
                 {stat.label}
               </p>
             </div>

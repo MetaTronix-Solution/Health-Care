@@ -1,4 +1,5 @@
 import { Container } from "@/src/components/ui/Container";
+import { COMPANY } from "@/src/data/company";
 
 const reasons = [
   {
@@ -21,10 +22,10 @@ const reasons = [
 
 export function WhyChooseMedTech() {
   return (
-    <section className="py-16 lg:py-20">
+    <section className="section-padding-sm">
       <Container>
-        <h2 className="max-w-md text-3xl sm:text-4xl font-light leading-[1.15] tracking-tight text-primary">
-          Why Choose MedTech Pro
+        <h2 className="text-section-title max-w-md text-primary">
+          Why Choose {COMPANY.name}
         </h2>
 
         <div className="mt-10 grid grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2">
@@ -33,10 +34,10 @@ export function WhyChooseMedTech() {
               key={reason.title}
               className="border-t border-neutral-line pt-4"
             >
-              <h3 className="text-[15px] font-semibold text-primary">
+              <h3 className="text-card-title text-primary">
                 {reason.title}
               </h3>
-              <p className="mt-1 max-w-xs text-[13px] leading-relaxed text-neutral-muted">
+              <p className="text-body-sm mt-1 max-w-xs text-neutral-muted">
                 {reason.body}
               </p>
             </div>

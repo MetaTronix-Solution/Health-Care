@@ -1,56 +1,96 @@
 import Link from "next/link";
+import { forwardRef } from "react";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/src/lib/utils";
 
-type Variant = "primary" | "secondary" | "inverted" | "outlined";
+type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "outlined"
+  | "outline"
+  | "ghost"
+  | "danger";
+type ButtonSize = "sm" | "md" | "lg";
 
-const variantClasses: Record<Variant, string> = {
-  primary: "bg-primary text-tertiary hover:bg-[#132540] border border-primary",
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  href?: string;
+  icon?: ReactNode;
+}
+
+const variantStyles: Record<Exclude<ButtonVariant, "outline">, string> = {
+  primary:
+    "bg-secondary text-white hover:bg-secondary/90 focus-visible:outline-secondary",
   secondary:
-    "bg-neutral-bg text-primary hover:bg-[#e9edf0] border border-neutral-line",
-  inverted:
-    "bg-tertiary text-primary hover:bg-neutral-bg border border-neutral-line",
+    "border border-neutral-line bg-white text-primary hover:bg-neutral-bg focus-visible:outline-secondary",
   outlined:
-    "bg-transparent text-primary hover:bg-primary hover:text-tertiary border border-primary",
+    "border border-neutral-line bg-white text-primary hover:bg-neutral-bg focus-visible:outline-secondary",
+  ghost:
+    "bg-transparent text-neutral-muted hover:bg-neutral-bg hover:text-primary focus-visible:outline-secondary",
+  danger: "bg-red-600 text-white hover:bg-red-700 focus-visible:outline-red-600",
 };
 
-const baseClasses =
-  "inline-flex items-center justify-center gap-2 px-6 py-3.5 text-[13px] font-semibold uppercase tracking-[0.08em] transition-colors duration-200 whitespace-nowrap";
+const sizeStyles: Record<ButtonSize, string> = {
+  sm: "h-9 px-3.5 text-xs",
+  md: "h-10 px-4 text-sm",
+  lg: "h-11 px-5 text-sm",
+};
 
-interface ButtonProps extends Omit<
-  ButtonHTMLAttributes<HTMLButtonElement>,
-  "className"
-> {
-  variant?: Variant;
-  className?: string;
-  children: ReactNode;
-  icon?: ReactNode;
-  href?: string;
-}
+const baseStyles =
+  "inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2";
 
-export function Button({
-  variant = "primary",
-  className,
+function ButtonContent({
   children,
   icon,
-  href,
-  ...rest
-}: ButtonProps) {
-  const classes = cn(baseClasses, variantClasses[variant], className);
-
-  if (href) {
-    return (
-      <Link href={href} className={classes}>
-        {children}
-        {icon}
-      </Link>
-    );
-  }
-
+}: {
+  children: ReactNode;
+  icon?: ReactNode;
+}) {
   return (
-    <button className={classes} {...rest}>
-      {children}
+    <>
       {icon}
-    </button>
+      {children}
+    </>
   );
 }
+
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      className,
+      variant = "primary",
+      size = "md",
+      type = "button",
+      href,
+      icon,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
+    const resolvedVariant = variant === "outline" ? "outlined" : variant;
+    const classes = cn(
+      baseStyles,
+      variantStyles[resolvedVariant],
+      sizeStyles[size],
+      className,
+    );
+
+    if (href) {
+      return (
+        <Link href={href} className={classes}>
+          <ButtonContent icon={icon}>{children}</ButtonContent>
+        </Link>
+      );
+    }
+
+    return (
+      <button ref={ref} type={type} className={classes} {...props}>
+        <ButtonContent icon={icon}>{children}</ButtonContent>
+      </button>
+    );
+  },
+);
+
+Button.displayName = "Button";

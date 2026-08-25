@@ -9,57 +9,95 @@ export const productCategories = [
 
 export const products: Product[] = [
   {
-    slug: "epiq-elite",
-    name: "EPIQ Elite",
-    category: "Ultrasound",
-    categorySlug: "ultrasound",
-    refCode: "REF_001 / DIAGNOSTIC",
-    coordinates: "LAT: 47.6062 / LONG: 122.3321",
+    slug: "bmc-g3-a20",
+    name: "BMC G3 A20",
+    category: "Sleep Therapy",
+    categorySlug: "sleep-therapy",
+    refCode: "G3 A20 / CPAP",
+    coordinates: "",
     shortDescription:
-      "Premium ultrasound architecture delivering exceptional clinical performance and workflow efficiency.",
+      "Advanced AutoCPAP therapy delivering personalized pressure response, accurate respiratory event detection, and comfortable all night therapy.",
     description:
-      "Premium ultrasound system delivering exceptional clinical performance and workflow efficiency for the most demanding diagnostic environments.",
-    image:
-      "https://images.unsplash.com/photo-1583911860205-72f8ac8ddcbe?q=80&w=1200&auto=format&fit=crop",
+      "The BMC G3 A20 is an AutoCPAP device designed to provide personalized sleep therapy through smart adaptive pressure response, accurate respiratory event detection, and automated comfort features.",
+
+    image: "/mainProduct.png",
+
     gallery: [
-      "https://images.unsplash.com/photo-1583911860205-72f8ac8ddcbe?q=80&w=1600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1631563019676-dade0dbdb8fb?q=80&w=1600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?q=80&w=1600&auto=format&fit=crop",
+      "/products/g3-a20-01.png",
+      "/products/g3-a20-02.png",
+      "/products/g3-a20-03.png",
     ],
+
     featured: true,
-    imaging: "nSIGHT Plus Architecture",
-    application: "General & Cardiovascular",
-    transducerTech: "nSIGHT",
+
+    imaging: "Smart Adaptive Algorithm",
+    application: "Sleep Apnea Management",
+    transducerTech: "SmartC / SmartA",
+
     details: [
       {
         index: "02",
-        title: "Imaging Architecture",
-        body: "nSIGHT imaging architecture introduces a totally new approach to forming ultrasound images. Unlike conventional systems that form the image line by line, nSIGHT creates images with superb resolution down to the pixel level.",
+        title: "Smart Adaptive Therapy",
+        body: "The G3 dynamically adapts to an ideal starting pressure after ramp based on data from the last five effective treatment days. It continuously optimizes minimum and maximum pressure thresholds throughout long-term therapy.",
         specs: [
-          { label: "Frame Rate", value: "Up to 2000 FPS" },
-          { label: "Penetration", value: "Enhanced 76%" },
-          { label: "Resolution", value: "Pixel-Level" },
+          {
+            label: "Pressure Response",
+            value: "Fast / Standard / Soft",
+          },
+          {
+            label: "Pressure Range",
+            value: "4 20 hPa",
+          },
+          {
+            label: "Work Mode",
+            value: "CPAP / AutoCPAP",
+          },
         ],
       },
+
       {
         index: "03",
-        title: "Diagnostic Visualization",
-        body: "Real-time physiological mapping rendered in high-fidelity environments, giving clinical teams a clear, immediate read on patient status.",
-        images: [
-          "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=1200&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?q=80&w=1200&auto=format&fit=crop",
+        title: "Intelligent Comfort & Humidification",
+        body: "The G3 combines automated therapy controls with intelligent humidification to provide comfortable treatment throughout the night. Auto On, Auto Off, Auto Ramp, Delay Off, pre-heating, and smart humidity and temperature control simplify everyday therapy.",
+        specs: [
+          {
+            label: "Water Chamber",
+            value: "360 ± 30 mL",
+          },
+          {
+            label: "Humidification",
+            value: "Auto / Level 1 to 5",
+          },
+          {
+            label: "Sound Pressure",
+            value: "28 ± 2 dB(A)",
+          },
         ],
       },
+
+      {
+        index: "04",
+        title: "Data-Driven Sleep Management",
+        body: "PAP Link provides Web, PC, and App solutions for monitoring therapy data, configuring treatment parameters, transferring data, generating reports, and supporting healthcare professionals, clinics, distributors, and patients.",
+      },
     ],
+
     applications: [
-      "General Radiology",
-      "Cardiovascular",
-      "Obstetrics",
-      "Point of Care",
+      "Sleep Apnea Management",
+      "OSA Therapy",
+      "CPAP Therapy",
+      "AutoCPAP Therapy",
     ],
+
     downloads: [
-      { label: "Spec Sheet (PDF)", href: "#" },
-      { label: "Clinical Brochure (PDF)", href: "#" },
+      {
+        label: "Product Brochure (PDF)",
+        href: "#",
+      },
+      {
+        label: "Specification Chart",
+        href: "#",
+      },
     ],
   },
   {

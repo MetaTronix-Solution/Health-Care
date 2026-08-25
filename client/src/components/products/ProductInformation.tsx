@@ -5,10 +5,10 @@ export function ProductInformation({ product }: { product: Product }) {
   return (
     <div className="flex flex-col">
       <p className="eyebrow mb-3">{product.refCode}</p>
-      <h1 className="text-4xl sm:text-5xl font-light tracking-tight text-primary">
+      <h1 className="text-page-title text-primary">
         {product.name}
       </h1>
-      <p className="mt-5 max-w-md text-[15px] leading-relaxed text-neutral-muted">
+      <p className="text-body mt-5 max-w-md text-neutral-muted">
         {product.description}
       </p>
 

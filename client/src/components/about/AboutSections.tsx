@@ -1,29 +1,55 @@
 import Image from "next/image";
-import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Check,
+  Wind,
+  Moon,
+  Activity,
+  Wrench,
+  Headphones,
+} from "lucide-react";
 import { Container } from "@/src/components/ui/Container";
 import { Button } from "@/src/components/ui/Button";
+import {
+  COMPANY,
+  workingSectors,
+  focusAreas,
+  trustHighlights,
+  faqItems,
+} from "@/src/data/company";
+
+const sectorIcons = [
+  Moon,
+  Wind,
+  Wind,
+  Wind,
+  Activity,
+  Wind,
+  Activity,
+  Wrench,
+  Headphones,
+];
 
 export function AboutHero() {
   return (
-    <section className="max-h-[60vh] min-h-[420px] py-16 lg:py-20">
+    <section className="section-padding-sm">
       <Container>
-        <div className="grid h-full grid-cols-1 gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-16">
+        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
           <div>
             <p className="eyebrow mb-4">About Us</p>
-            <h1 className="max-w-lg text-4xl sm:text-5xl font-light leading-[1.1] tracking-tight text-primary">
-              Engineering Healthcare Through Technology
+            <h1 className="text-page-title max-w-lg text-primary">
+              Respiratory Care & Sleep Medicine in Nepal
             </h1>
-            <p className="mt-5 max-w-md text-[15px] leading-relaxed text-neutral-muted">
-              MedTech Pro develops medical technology built on engineering rigor
-              and clinical understanding — designed to perform in real
-              healthcare environments.
+            <p className="text-body mt-5 max-w-md text-neutral-muted">
+              {COMPANY.description}
             </p>
           </div>
 
-          <div className="relative aspect-[16/10] w-full overflow-hidden bg-primary">
+          <div className="relative aspect-[16/10] w-full overflow-hidden border border-neutral-line bg-neutral-bg">
             <Image
-              src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=1800&auto=format&fit=crop"
-              alt="Surgeon reviewing a 3D anatomical display during a procedure"
+              src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?q=80&w=1800&auto=format&fit=crop"
+              alt="Medical equipment for respiratory and sleep care"
               fill
               priority
               sizes="(min-width: 1024px) 50vw, 100vw"
@@ -37,6 +63,7 @@ export function AboutHero() {
 }
 
 export function AboutOverview() {
+<<<<<<< HEAD
   return (
     <section className=" bg-tertiary py-16 lg:py-20">
       <Container>
@@ -44,25 +71,39 @@ export function AboutOverview() {
           <h2 className="text-3xl sm:text-4xl font-light leading-[1.15] tracking-tight text-primary">
             Who We Are
           </h2>
+=======
+  const highlights = [
+    { label: "Established", value: String(COMPANY.established) },
+    { label: "Focus", value: "Respiratory Care" },
+    { label: "Specialization", value: "Sleep Medicine" },
+    { label: "Support", value: "Technical & After-Sales" },
+  ];
+>>>>>>> adefc29c3c631297135001afe7a531ca82713269
 
-          <div className="max-w-2xl space-y-4 text-[15px] leading-relaxed text-neutral-muted">
-            <p>
-              MedTech Pro is a medical technology company founded by surgeons
-              and systems engineers, built on the belief that healthcare
-              technology should be engineered around how care is actually
-              delivered — not around what is technically possible in isolation.
+  return (
+    <section className="bg-neutral-bg section-padding-sm">
+      <Container>
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.4fr_0.6fr] lg:gap-14">
+          <div>
+            <h2 className="text-section-title text-primary">Who We Are</h2>
+            <p className="text-body mt-4 text-neutral-muted">
+              We are committed to providing reliable medical technologies,
+              professional support, and patient-focused solutions for better
+              diagnosis and management of sleep-related and respiratory
+              conditions.
             </p>
-            <p>
-              We design and build medical equipment, diagnostic systems, and
-              clinical integration tools, working directly with healthcare
-              organizations to fit technology into existing clinical workflows
-              rather than forcing workflows to adapt to technology.
-            </p>
-            <p>
-              Our involvement doesn&apos;t end at deployment. We provide ongoing
-              technical and clinical support so the systems we build continue to
-              perform throughout their operational life.
-            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
+            {highlights.map((item) => (
+              <div
+                key={item.label}
+                className="border border-neutral-line bg-tertiary p-4"
+              >
+                <p className="eyebrow mb-2">{item.label}</p>
+                <p className="text-card-title text-primary">{item.value}</p>
+              </div>
+            ))}
           </div>
         </div>
       </Container>
@@ -70,40 +111,54 @@ export function AboutOverview() {
   );
 }
 
-const expertiseAreas = [
-  {
-    title: "Medical Equipment",
-    body: "Devices engineered for reliable clinical performance.",
-  },
-  {
-    title: "Diagnostic Systems",
-    body: "Precision tools for accurate, timely diagnosis.",
-  },
-  {
-    title: "Clinical Integration",
-    body: "Technology that fits into real hospital workflows.",
-  },
-  {
-    title: "Technical Support",
-    body: "Ongoing support throughout the system lifecycle.",
-  },
-];
+export function AboutWorkingSectors() {
+  return (
+    <section className="section-padding-sm">
+      <Container>
+        <div className="max-w-2xl">
+          <h2 className="text-section-title text-primary">Our Key Working Sectors</h2>
+          <p className="text-body mt-4 text-neutral-muted">
+            Comprehensive solutions across sleep medicine, respiratory care, and
+            biomedical equipment — from diagnosis to ongoing support.
+          </p>
+        </div>
+
+        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {workingSectors.map((sector, index) => {
+            const Icon = sectorIcons[index] ?? Wind;
+            return (
+              <div
+                key={sector}
+                className="flex items-start gap-3 border border-neutral-line bg-tertiary p-5"
+              >
+                <Icon
+                  size={18}
+                  className="mt-0.5 shrink-0 text-secondary"
+                  aria-hidden
+                />
+                <p className="text-body-sm font-medium text-primary">{sector}</p>
+              </div>
+            );
+          })}
+        </div>
+      </Container>
+    </section>
+  );
+}
 
 export function AboutExpertiseGrid() {
   return (
-    <section className="py-16 lg:py-20">
+    <section className="bg-neutral-bg section-padding-sm">
       <Container>
-        <h2 className="max-w-md text-3xl sm:text-4xl font-light leading-[1.15] tracking-tight text-primary">
+        <h2 className="text-section-title max-w-md text-primary">
           Our Areas of Expertise
         </h2>
 
-        <div className="mt-10 grid grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2">
-          {expertiseAreas.map((area) => (
+        <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:gap-10">
+          {focusAreas.map((area) => (
             <div key={area.title}>
-              <h3 className="text-[16px] font-semibold text-primary">
-                {area.title}
-              </h3>
-              <p className="mt-2 max-w-sm text-[14px] leading-relaxed text-neutral-muted">
+              <h3 className="text-card-title text-primary">{area.title}</h3>
+              <p className="text-body-sm mt-2 max-w-sm text-neutral-muted">
                 {area.body}
               </p>
             </div>
@@ -114,33 +169,86 @@ export function AboutExpertiseGrid() {
   );
 }
 
-const trustPoints = [
-  "Engineering Expertise",
-  "Clinical Understanding",
-  "Reliable Support",
-  "Long-Term Partnership",
-];
+export function AboutBMCSection() {
+  return (
+    <section className="section-padding-sm">
+      <Container>
+        <div className="grid grid-cols-1 items-center gap-8 border border-neutral-line bg-tertiary lg:grid-cols-2 lg:gap-0">
+          <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-bg lg:aspect-auto lg:min-h-[360px]">
+            <Image
+              src="https://images.unsplash.com/photo-1583911860205-72f8ac8ddcbe?q=80&w=1800&auto=format&fit=crop"
+              alt="BMC Medical sleep and respiratory care equipment"
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+            />
+          </div>
+
+          <div className="p-6 sm:p-8 lg:p-10">
+            <p className="eyebrow mb-3">Authorized Distributor</p>
+            <h2 className="text-section-title text-primary">
+              BMC Medical in Nepal
+            </h2>
+            <p className="text-body mt-4 text-neutral-muted">
+              {COMPANY.name} is an{" "}
+              <strong className="font-medium text-primary">
+                Authorized Distributor of BMC Medical products in Nepal
+              </strong>
+              , providing BMC&apos;s advanced sleep and respiratory care
+              solutions, including the{" "}
+              <strong className="font-medium text-primary">BMC G3 Series</strong>.
+            </p>
+            <p className="text-body mt-4 text-neutral-muted">
+              Our goal is to make quality sleep and respiratory care technology
+              more accessible in Nepal while providing customers with
+              appropriate product guidance, technical assistance, and dependable
+              after-sales support.
+            </p>
+            <div className="mt-6">
+              <Button href="/products" icon={<ArrowRight size={15} />}>
+                View BMC Products
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </section>
+  );
+}
 
 export function AboutTrust() {
   return (
-    <section className="bg-tertiary py-16 lg:py-20">
+    <section className="bg-neutral-bg section-padding-sm">
       <Container>
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.4fr_0.6fr] lg:gap-16 lg:items-center">
-          <h2 className="max-w-sm text-3xl sm:text-4xl font-light leading-[1.15] tracking-tight text-primary">
-            Why Healthcare Teams Trust MedTech Pro
-          </h2>
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.4fr_0.6fr] lg:items-center lg:gap-14">
+          <div>
+            <h2 className="text-section-title max-w-sm text-primary">
+              Our Commitment to Healthcare
+            </h2>
+            <p className="text-body mt-4 text-neutral-muted">
+              At {COMPANY.name}, we believe that access to the right technology,
+              combined with professional support, can make a meaningful
+              difference in healthcare.
+            </p>
+          </div>
 
-          <ul className="grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2">
-            {trustPoints.map((point) => (
-              <li key={point} className="flex items-start gap-3">
+          <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            {trustHighlights.map((point) => (
+              <li key={point.label} className="flex items-start gap-3">
                 <Check
                   size={16}
                   strokeWidth={2.5}
-                  className="mt-0.5 shrink-0 text-primary"
+                  className="mt-0.5 shrink-0 text-secondary"
+                  aria-hidden
                 />
-                <span className="text-[15px] font-medium text-primary">
-                  {point}
-                </span>
+                <div>
+                  <span className="text-body-sm font-medium text-primary">
+                    {point.label}
+                  </span>
+                  <p className="text-body-sm mt-0.5 text-neutral-muted">
+                    {point.description}
+                  </p>
+                </div>
               </li>
             ))}
           </ul>
@@ -157,22 +265,19 @@ type TeamMember = {
   imageSrc: string;
 };
 
-// TODO: Replace with real team members (name, title, specialization,
-// and a real photo path). This section renders nothing until populated —
-// do not fill this with placeholder or invented people.
 const team: TeamMember[] = [];
 
 export function AboutTeam() {
   if (team.length === 0) return null;
 
   return (
-    <section className="py-16 lg:py-20">
+    <section className="section-padding-sm">
       <Container>
-        <h2 className="max-w-md text-3xl sm:text-4xl font-light leading-[1.15] tracking-tight text-primary">
+        <h2 className="text-section-title max-w-md text-primary">
           Meet Our Experts
         </h2>
 
-        <div className="mt-10 grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {team.map((member) => (
             <div key={member.name}>
               <div className="relative aspect-[3/4] w-full overflow-hidden bg-primary">
@@ -184,13 +289,11 @@ export function AboutTeam() {
                   className="object-cover"
                 />
               </div>
-              <h3 className="mt-4 text-[15px] font-semibold text-primary">
+              <h3 className="text-body mt-3 font-semibold text-primary">
                 {member.name}
               </h3>
-              <p className="mt-0.5 text-[13px] text-neutral-muted">
-                {member.role}
-              </p>
-              <p className="mt-0.5 text-[12px] uppercase tracking-[0.04em] text-neutral-muted">
+              <p className="text-body-sm text-neutral-muted">{member.role}</p>
+              <p className="text-body-sm uppercase tracking-wide text-neutral-muted">
                 {member.specialization}
               </p>
             </div>
@@ -201,22 +304,31 @@ export function AboutTeam() {
   );
 }
 
-export function AboutImageStory() {
+export function AboutFAQ() {
   return (
-    <section className="relative py-16 lg:py-20">
+    <section className="section-padding-sm">
       <Container>
-        <div className="relative aspect-[16/9] w-full overflow-hidden bg-primary lg:aspect-[21/9]">
-          <Image
-            src="https://images.unsplash.com/photo-1666214280391-8ff5bd3c0bf0?q=80&w=1800&auto=format&fit=crop"
-            alt="Clinical environment with medical technology in use"
-            fill
-            sizes="100vw"
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-primary/10 to-transparent" />
-          <p className="absolute bottom-6 left-6 max-w-md text-xl sm:text-2xl font-light leading-snug tracking-tight text-white lg:bottom-10 lg:left-10">
-            Technology designed around real clinical environments.
+        <div className="max-w-2xl">
+          <h2 className="text-section-title text-primary">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-body mt-4 text-neutral-muted">
+            Common questions about our respiratory care, sleep medicine, and
+            biomedical equipment services in Nepal.
           </p>
+        </div>
+
+        <div className="mt-10 divide-y divide-neutral-line border-y border-neutral-line">
+          {faqItems.map((item) => (
+            <details key={item.question} className="group py-5">
+              <summary className="cursor-pointer list-none text-body font-medium text-primary marker:content-none [&::-webkit-details-marker]:hidden">
+                {item.question}
+              </summary>
+              <p className="text-body-sm mt-3 max-w-3xl text-neutral-muted">
+                {item.answer}
+              </p>
+            </details>
+          ))}
         </div>
       </Container>
     </section>
@@ -225,18 +337,23 @@ export function AboutImageStory() {
 
 export function AboutCTA() {
   return (
-    <section className="py-16 lg:py-20">
+    <section className="section-padding-sm">
       <Container>
-        <div className="lg:flex lg:items-end lg:justify-between lg:gap-16">
+        <div className="lg:flex lg:items-end lg:justify-between lg:gap-14">
           <div>
-            <h2 className="max-w-md text-3xl sm:text-4xl font-light leading-[1.15] tracking-tight text-primary">
-              Let&apos;s Move Healthcare Forward
+            <h2 className="text-section-title max-w-md text-primary">
+              Quality Products, Reliable Service
             </h2>
+            <p className="text-body mt-4 max-w-lg text-neutral-muted">
+              We work to provide quality products, reliable service, and trusted
+              biomedical solutions to hospitals, clinics, sleep laboratories,
+              healthcare professionals, and patients across Nepal.
+            </p>
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-4 lg:mt-0 lg:shrink-0">
-            <Button href="/solutions" icon={<ArrowRight size={15} />}>
-              Explore Solutions
+          <div className="mt-8 flex flex-wrap gap-3 lg:mt-0 lg:shrink-0">
+            <Button href="/products" icon={<ArrowRight size={15} />}>
+              Browse Products
             </Button>
             <Button
               href="/contact"

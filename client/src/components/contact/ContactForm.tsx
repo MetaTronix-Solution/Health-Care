@@ -23,10 +23,10 @@ const initialValues: FormValues = {
 
 const inquiryOptions = [
   "General Inquiry",
-  "Product Demo Request",
+  "Product Information",
   "Technical Support",
-  "Service & Maintenance",
-  "Partnership",
+  "Installation & Service",
+  "After-Sales Support",
 ];
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -36,7 +36,7 @@ function validate(values: FormValues): FormErrors {
   if (!values.firstName.trim()) errors.firstName = "First name is required.";
   if (!values.lastName.trim()) errors.lastName = "Last name is required.";
   if (!values.email.trim()) {
-    errors.email = "Corporate email is required.";
+    errors.email = "Email address is required.";
   } else if (!EMAIL_PATTERN.test(values.email)) {
     errors.email = "Enter a valid email address.";
   }
@@ -98,7 +98,7 @@ export function ContactForm() {
           Inquiry received.
         </h2>
         <p className="text-[13px] leading-relaxed text-neutral-muted">
-          A MedTech Pro specialist will follow up within one business day.
+          A Himanshi Biomedical team member will follow up as soon as possible.
         </p>
         <button
           type="button"
@@ -163,7 +163,7 @@ export function ContactForm() {
 
       <div className="flex flex-col gap-2 sm:col-span-2">
         <label htmlFor="email" className="eyebrow">
-          Corporate Email
+          Email Address
         </label>
         <input
           id="email"
@@ -173,7 +173,7 @@ export function ContactForm() {
           onChange={(event) => updateField("email", event.target.value)}
           aria-invalid={Boolean(errors.email)}
           aria-describedby={errors.email ? "email-error" : undefined}
-          placeholder="email@organization.com"
+          placeholder="your@email.com"
           className="border-0 border-b border-neutral-line bg-transparent pb-3 text-[14px] text-primary placeholder:text-neutral-muted/70 focus-visible:outline-none focus-visible:border-secondary"
         />
         {errors.email && (
