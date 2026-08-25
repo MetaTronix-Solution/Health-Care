@@ -1,8 +1,12 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import {
   ArrowRight,
   ArrowUpRight,
   Check,
+  Plus,
   Wind,
   Moon,
   Activity,
@@ -33,7 +37,7 @@ const sectorIcons = [
 
 export function AboutHero() {
   return (
-    <section className="section-padding-sm">
+    <section className="flex min-h-[50vh] flex-col justify-center section-padding-sm">
       <Container>
         <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
           <div>
@@ -81,7 +85,7 @@ export function AboutOverview() {
 >>>>>>> adefc29c3c631297135001afe7a531ca82713269
 
   return (
-    <section className="bg-neutral-bg section-padding-sm">
+    <section className="bg-neutral-bg flex min-h-[50vh] flex-col justify-center section-padding-sm">
       <Container>
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.4fr_0.6fr] lg:gap-14">
           <div>
@@ -98,9 +102,11 @@ export function AboutOverview() {
             {highlights.map((item) => (
               <div
                 key={item.label}
-                className="border border-neutral-line bg-tertiary p-4"
+                className="group rounded-2xl border border-neutral-line bg-tertiary p-4 transition-all duration-300 hover:-translate-y-1 hover:border-secondary hover:shadow-lg hover:shadow-secondary/10"
               >
-                <p className="eyebrow mb-2">{item.label}</p>
+                <p className="eyebrow mb-2 transition-colors duration-300 group-hover:text-secondary">
+                  {item.label}
+                </p>
                 <p className="text-card-title text-primary">{item.value}</p>
               </div>
             ))}
@@ -116,7 +122,9 @@ export function AboutWorkingSectors() {
     <section className="section-padding-sm">
       <Container>
         <div className="max-w-2xl">
-          <h2 className="text-section-title text-primary">Our Key Working Sectors</h2>
+          <h2 className="text-section-title text-primary">
+            Our Key Working Sectors
+          </h2>
           <p className="text-body mt-4 text-neutral-muted">
             Comprehensive solutions across sleep medicine, respiratory care, and
             biomedical equipment — from diagnosis to ongoing support.
@@ -136,7 +144,9 @@ export function AboutWorkingSectors() {
                   className="mt-0.5 shrink-0 text-secondary"
                   aria-hidden
                 />
-                <p className="text-body-sm font-medium text-primary">{sector}</p>
+                <p className="text-body-sm font-medium text-primary">
+                  {sector}
+                </p>
               </div>
             );
           })}
@@ -196,7 +206,10 @@ export function AboutBMCSection() {
               </strong>
               , providing BMC&apos;s advanced sleep and respiratory care
               solutions, including the{" "}
-              <strong className="font-medium text-primary">BMC G3 Series</strong>.
+              <strong className="font-medium text-primary">
+                BMC G3 Series
+              </strong>
+              .
             </p>
             <p className="text-body mt-4 text-neutral-muted">
               Our goal is to make quality sleep and respiratory care technology
@@ -305,6 +318,8 @@ export function AboutTeam() {
 }
 
 export function AboutFAQ() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
   return (
     <section className="section-padding-sm">
       <Container>
@@ -319,16 +334,39 @@ export function AboutFAQ() {
         </div>
 
         <div className="mt-10 divide-y divide-neutral-line border-y border-neutral-line">
-          {faqItems.map((item) => (
-            <details key={item.question} className="group py-5">
-              <summary className="cursor-pointer list-none text-body font-medium text-primary marker:content-none [&::-webkit-details-marker]:hidden">
-                {item.question}
-              </summary>
-              <p className="text-body-sm mt-3 max-w-3xl text-neutral-muted">
-                {item.answer}
-              </p>
-            </details>
-          ))}
+          {faqItems.map((item, index) => {
+            const isOpen = openIndex === index;
+            return (
+              <div key={item.question} className="group py-5">
+                <button
+                  type="button"
+                  onClick={() => setOpenIndex(isOpen ? null : index)}
+                  aria-expanded={isOpen}
+                  className="flex w-full cursor-pointer list-none items-center justify-between gap-4 text-left text-body font-medium text-primary"
+                >
+                  <span
+                    className={`transition-colors duration-300 ${
+                      isOpen ? "text-secondary" : "hover:text-secondary"
+                    }`}
+                  >
+                    {item.question}
+                  </span>
+                  <Plus
+                    size={18}
+                    className={`shrink-0 text-neutral-muted transition-transform duration-300 ${
+                      isOpen ? "rotate-45 text-secondary" : ""
+                    }`}
+                    aria-hidden
+                  />
+                </button>
+                {isOpen && (
+                  <p className="text-body-sm mt-3 max-w-3xl text-neutral-muted">
+                    {item.answer}
+                  </p>
+                )}
+              </div>
+            );
+          })}
         </div>
       </Container>
     </section>
