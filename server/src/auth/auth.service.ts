@@ -91,7 +91,6 @@ export class AuthService {
 
     // Response
 
-
     return {
       message: 'Login successful',
       accessToken: tokens.accessToken,
@@ -233,9 +232,9 @@ export class AuthService {
 
 
 
-  // =====================================================
+
   // GENERATE TOKENS
-  // =====================================================
+
 
   private async generateTokens(
   adminId: string,
@@ -258,9 +257,9 @@ export class AuthService {
     jti: refreshTokenId,
   };
 
-  // =========================
+
   // ACCESS TOKEN
-  // =========================
+
 
   const accessToken =
     await this.jwtService.signAsync(
@@ -278,9 +277,9 @@ export class AuthService {
       },
     );
 
-  // =========================
+
   // REFRESH TOKEN
-  // =========================
+
 
   const refreshToken =
     await this.jwtService.signAsync(

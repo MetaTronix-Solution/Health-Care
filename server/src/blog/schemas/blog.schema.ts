@@ -1,81 +1,81 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument } from "mongoose";
-
-
-
-
-
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument } from 'mongoose';
 
 export type BlogDocument = HydratedDocument<Blog>;
 
-
 @Schema({
-    timestamps: true
+  timestamps: true,
 })
-
 export class Blog {
-    @Prop({
-        required: true,
-        trim: true
-    })
-    title!: string;
+  // Blog title
+  @Prop({
+    required: true,
+    trim: true,
+  })
+  title!: string;
 
-    @Prop({
-        required: true,
-        unique: true,
-        lowercase: true,
-        trim: true,
-        index: true
-    })
-    slug!: string;
+  // Unique URL slug
+  @Prop({
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true,
+    index: true,
+  })
+  slug!: string;
 
-    @Prop({
-        required: true,
-        trim: true,
-        index: true
-    })
-    category!: string;
+  // Blog category
+  @Prop({
+    required: true,
+    trim: true,
+    index: true,
+  })
+  category!: string;
 
+  // ImageKit image URL
+  @Prop({
+    required: true,
+  })
+  image!: string;
 
-    @Prop({
-        required: true,
-    })
-    image!: string;
+  // ImageKit file ID
+  @Prop({
+    required: true,
+  })
+  imageFileId!: string;
 
-    @Prop({
-        required: true,
-    })
-    imageField!: string;
+  // Short description
+  @Prop({
+    required: true,
+    trim: true,
+  })
+  excerpt!: string;
 
+  // Full blog content
+  @Prop({
+    required: true,
+  })
+  content!: string;
 
-    @Prop({
-        required: true,
-        trim: true
-    })
-    excerpt!: string;
+  // Author
+  @Prop({
+    default: 'Healthcare Team',
+    trim: true,
+  })
+  author!: string;
 
-    @Prop({
-        required: true
-    })
-    content!: string;
+  // Published status
+  @Prop({
+    default: true,
+  })
+  isPublished!: boolean;
 
-    @Prop({
-        default: "Healthcare Team",
-        trim: true
-    })
-    author!: string;
-
-    @Prop({
-        default: true
-    })
-    isPublished!: boolean;
-
-    @Prop({
-        default: Date.now,
-    })
-    publishedAt!: Date;
+  // Publication date
+  @Prop({
+    default: null,
+    type: Date,
+  })
+  publishedAt?: Date | null;
 }
-
-
 
 export const BlogSchema = SchemaFactory.createForClass(Blog);

@@ -47,11 +47,11 @@ export class AuthController {
   }
 
   @Post('logout')
-@UseGuards(JwtAuthGuard)
-async logout(@Req() request: any) {
+  @UseGuards(JwtAuthGuard)
+  async logout(@Req() request: any) {
 
   return this.authService.logout(
     request.user.adminId,
   );
-}
+  }
 }
