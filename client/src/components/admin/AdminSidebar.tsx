@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { HelpCircle, LogOut, ShieldPlus } from "lucide-react";
+import { LogOut, ShieldPlus } from "lucide-react";
 import { SidebarNav } from "@/src/components/admin/SidebarNav";
 
 export function AdminSidebar() {
@@ -14,24 +14,17 @@ export function AdminSidebar() {
             <ShieldPlus aria-hidden className="h-5 w-5 text-white" />
           </span>
           <span className="block text-[15px] font-semibold leading-snug">
-            MedTech Pro
+            Himanshi-biomedical
             <br />
             Administration
           </span>
         </Link>
-        <p className="mt-2 pl-12 text-xs text-white/50">Clinical Admin Portal</p>
+        <p className="mt-2 pl-12 text-xs text-white/50">Admin Portal</p>
       </div>
 
       <SidebarNav />
 
       <div className="mt-auto space-y-0.5 border-t border-white/10 px-3 py-4">
-        <Link
-          href="/support"
-          className="flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium text-white/70 transition-colors hover:bg-white/5 hover:text-white"
-        >
-          <HelpCircle aria-hidden className="h-[18px] w-[18px] shrink-0" />
-          Support
-        </Link>
         <Link
           href="/login"
           className="flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium text-white/70 transition-colors hover:bg-white/5 hover:text-white"

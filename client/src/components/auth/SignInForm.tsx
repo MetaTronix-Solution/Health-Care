@@ -29,7 +29,7 @@ export function SignInForm() {
           id="email"
           type="email"
           autoComplete="email"
-          placeholder="admin@medtechpro.com"
+          placeholder="admin@HimanshiBiomedical.com"
           style={{ paddingLeft: "2.25rem" }}
           icon={<Mail aria-hidden className="h-4 w-4" />}
           value={email}

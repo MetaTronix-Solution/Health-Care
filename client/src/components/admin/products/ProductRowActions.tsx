@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Archive, Copy, Eye, MoreHorizontal, Pencil } from "lucide-react";
+import { Eye, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 
 export function ProductRowActions({ productId }: { productId: string }) {
   const [open, setOpen] = useState(false);
@@ -18,6 +18,12 @@ export function ProductRowActions({ productId }: { productId: string }) {
     document.addEventListener("mousedown", onClickAway);
     return () => document.removeEventListener("mousedown", onClickAway);
   }, [open]);
+
+  function handleDelete() {
+    setOpen(false);
+    // TODO: replace with your actual delete-product API call
+    console.log("Deleting product:", productId);
+  }
 
   return (
     <div ref={containerRef} className="relative flex justify-end">
@@ -45,7 +51,7 @@ export function ProductRowActions({ productId }: { productId: string }) {
             <Eye aria-hidden className="h-4 w-4" /> View
           </Link>
           <Link
-            href={`/resources/${productId}`}
+            href={`/admin/products/${productId}`}
             role="menuitem"
             className="flex items-center gap-2 px-3 py-2 text-sm text-primary hover:bg-neutral-bg"
           >
@@ -54,16 +60,10 @@ export function ProductRowActions({ productId }: { productId: string }) {
           <button
             type="button"
             role="menuitem"
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-primary hover:bg-neutral-bg"
+            onClick={handleDelete}
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
           >
-            <Copy aria-hidden className="h-4 w-4" /> Duplicate
-          </button>
-          <button
-            type="button"
-            role="menuitem"
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-600 hover:bg-neutral-bg"
-          >
-            <Archive aria-hidden className="h-4 w-4" /> Archive
+            <Trash2 aria-hidden className="h-4 w-4" /> Delete
           </button>
         </div>
       ) : null}
