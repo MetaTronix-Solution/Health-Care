@@ -1,53 +1,72 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { Eye, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 
 export function BlogRowActions({ slug }: { slug: string }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onClickAway = (event: MouseEvent) => {
+      if (!containerRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", onClickAway);
+    return () => document.removeEventListener("mousedown", onClickAway);
+  }, [open]);
+
+  function handleDelete() {
+    setOpen(false);
+    // TODO: replace with your actual delete-article API call
+    console.log("Deleting article:", slug);
+  }
 
   return (
-    <div className="relative flex justify-end">
+    <div ref={containerRef} className="relative flex justify-end">
       <button
         type="button"
-        aria-label="Open actions menu"
-        onClick={() => setIsOpen((value) => !value)}
-        className="rounded-md p-1.5 text-neutral-muted hover:bg-neutral-bg hover:text-primary"
+        onClick={() => setOpen((value) => !value)}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-label="Open article actions"
+        className="flex h-8 w-8 items-center justify-center rounded-md text-neutral-muted hover:bg-neutral-bg hover:text-primary focus-visible:outline-2 focus-visible:outline-secondary"
       >
         <MoreHorizontal aria-hidden className="h-4 w-4" />
       </button>
 
-      {isOpen && (
-        <>
-          <div
-            className="fixed inset-0 z-10"
-            onClick={() => setIsOpen(false)}
-          />
-          <div className="absolute right-0 top-full z-20 mt-1 w-36 overflow-hidden rounded-md border border-neutral-line bg-white shadow-lg">
-            <Link
-              href={`/admin/blog/${slug}`}
-              className="flex items-center gap-2 px-3 py-2 text-sm text-primary hover:bg-neutral-bg"
-              onClick={() => setIsOpen(false)}
-            >
-              <Pencil aria-hidden className="h-3.5 w-3.5" />
-              Edit
-            </Link>
-            <button
-              type="button"
-              onClick={() => {
-                // TODO: replace with your actual delete-article API call
-                console.log("Deleting article:", slug);
-                setIsOpen(false);
-              }}
-              className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
-            >
-              <Trash2 aria-hidden className="h-3.5 w-3.5" />
-              Delete
-            </button>
-          </div>
-        </>
-      )}
+      {open ? (
+        <div
+          role="menu"
+          className="absolute right-0 top-9 z-20 w-40 rounded-md border border-neutral-line bg-white py-1 text-left shadow-lg"
+        >
+          <Link
+            href={`/blog/${slug}`}
+            role="menuitem"
+            className="flex items-center gap-2 px-3 py-2 text-sm text-primary hover:bg-neutral-bg"
+          >
+            <Eye aria-hidden className="h-4 w-4" /> View
+          </Link>
+          <Link
+            href={`/admin/blog/${slug}`}
+            role="menuitem"
+            className="flex items-center gap-2 px-3 py-2 text-sm text-primary hover:bg-neutral-bg"
+          >
+            <Pencil aria-hidden className="h-4 w-4" /> Edit
+          </Link>
+          <button
+            type="button"
+            role="menuitem"
+            onClick={handleDelete}
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+          >
+            <Trash2 aria-hidden className="h-4 w-4" /> Delete
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }

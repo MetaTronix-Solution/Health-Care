@@ -47,7 +47,9 @@ export default function LoginPage() {
             <span className="flex h-9 w-9 items-center justify-center rounded-md bg-secondary">
               <ShieldPlus aria-hidden className="h-5 w-5 text-white" />
             </span>
-            <span className="text-lg font-bold text-white">MedTech Pro</span>
+            <span className="text-lg font-bold text-white">
+              Himanshi-biomedical
+            </span>
           </div>
         </div>
 
@@ -58,11 +60,13 @@ export default function LoginPage() {
             Absolute structural integrity.
           </h2>
           <p className="mt-4 max-w-md text-sm text-white/70">
-            High-density, command-and-control interface for comprehensive
+            High density, command and control interface for comprehensive
             healthcare administration and clinical data management.
           </p>
           <div className="mt-10 flex items-center justify-between text-xs text-white/50">
-            <span>© {new Date().getFullYear()} MedTech Pro Inc.</span>
+            <span>
+              © {new Date().getFullYear()} Himanshi biomedical Solutions.
+            </span>
             <div className="flex gap-4">
               <a href="/privacy" className="hover:text-white/80">
                 Privacy
@@ -81,7 +85,9 @@ export default function LoginPage() {
             <span className="flex h-9 w-9 items-center justify-center rounded-md bg-secondary">
               <ShieldPlus aria-hidden className="h-5 w-5 text-white" />
             </span>
-            <span className="text-lg font-bold text-primary">MedTech Pro</span>
+            <span className="text-lg font-bold text-primary">
+              Himanshi-biomedical
+            </span>
           </div>
 
           <h1 className="text-3xl font-semibold text-primary sm:text-4xl">

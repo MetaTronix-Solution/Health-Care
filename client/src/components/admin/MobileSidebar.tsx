@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { HelpCircle, LogOut, Menu, ShieldPlus, X } from "lucide-react";
+import { LogOut, Menu, ShieldPlus, X } from "lucide-react";
 import { SidebarNav } from "@/src/components/admin/SidebarNav";
 
 export function MobileSidebar() {
@@ -56,7 +56,7 @@ export function MobileSidebar() {
                   <ShieldPlus aria-hidden className="h-5 w-5 text-white" />
                 </span>
                 <span className="text-sm font-semibold leading-snug">
-                  MedTech Pro
+                  Himanshi-biomedical
                   <br />
                   Administration
                 </span>
@@ -74,14 +74,6 @@ export function MobileSidebar() {
             <SidebarNav onNavigate={() => setOpen(false)} />
 
             <div className="mt-auto space-y-0.5 border-t border-white/10 px-3 py-4">
-              <Link
-                href="/support"
-                onClick={() => setOpen(false)}
-                className="flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium text-white/70 transition-colors hover:bg-white/5 hover:text-white"
-              >
-                <HelpCircle aria-hidden className="h-[18px] w-[18px] shrink-0" />
-                Support
-              </Link>
               <Link
                 href="/login"
                 onClick={() => setOpen(false)}
