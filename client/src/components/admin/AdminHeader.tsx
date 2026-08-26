@@ -29,6 +29,7 @@ export function AdminHeader() {
           aria-label="Global search"
           placeholder="Global search..."
           className="admin-input pl-9"
+          style={{ paddingLeft: "2.25rem" }}
         />
       </div>
     </header>

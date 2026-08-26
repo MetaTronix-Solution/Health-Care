@@ -27,6 +27,7 @@ export function ProductFilters({
           icon={<Search aria-hidden className="h-4 w-4" />}
           placeholder="Search products..."
           aria-label="Search products"
+          style={{ paddingLeft: "2.25rem" }}
           value={search}
           onChange={(event) => onSearchChange(event.target.value)}
         />
