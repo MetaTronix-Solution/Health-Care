@@ -30,6 +30,7 @@ export function SignInForm() {
           type="email"
           autoComplete="email"
           placeholder="admin@medtechpro.com"
+          style={{ paddingLeft: "2.25rem" }}
           icon={<Mail aria-hidden className="h-4 w-4" />}
           value={email}
           onChange={(event) => setEmail(event.target.value)}
@@ -49,6 +50,7 @@ export function SignInForm() {
             placeholder="••••••••"
             icon={<Lock aria-hidden className="h-4 w-4" />}
             value={password}
+            style={{ paddingLeft: "2.25rem" }}
             onChange={(event) => setPassword(event.target.value)}
             required
             className="pr-10"
