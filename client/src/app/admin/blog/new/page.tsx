@@ -9,6 +9,8 @@ import type { Article } from "@/src/types/article";
 
 export default function NewArticlePage() {
   const router = useRouter();
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>("");
   const [form, setForm] = useState({
     title: "",
     category: articleCategories[0] as Article["category"],
@@ -128,15 +130,57 @@ export default function NewArticlePage() {
               />
             </Field>
 
-            <Field label="Cover image URL" htmlFor="image">
+            <Field label="Cover image" htmlFor="image">
               <input
                 id="image"
-                type="url"
-                value={form.image}
-                onChange={(e) => setForm({ ...form, image: e.target.value })}
-                className="admin-input"
-                placeholder="https://..."
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0] ?? null;
+                  setImageFile(file);
+                  setImagePreview(file ? URL.createObjectURL(file) : "");
+                }}
+                className="hidden"
               />
+
+              {imagePreview ? (
+                <div className="flex items-center gap-3 rounded-md border border-neutral-line p-2">
+                  <img
+                    src={imagePreview}
+                    alt="Cover preview"
+                    className="h-14 w-14 shrink-0 rounded-md border border-neutral-line object-cover"
+                  />
+                  <span className="flex-1 truncate text-sm text-primary">
+                    {imageFile?.name}
+                  </span>
+                  <label
+                    htmlFor="image"
+                    className="cursor-pointer rounded-md border border-neutral-line bg-white px-3 py-1.5 text-xs font-medium text-primary hover:bg-neutral-bg"
+                  >
+                    Change
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setImageFile(null);
+                      setImagePreview("");
+                    }}
+                    className="rounded-md border border-neutral-line bg-white px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ) : (
+                <label
+                  htmlFor="image"
+                  className="admin-input flex cursor-pointer items-center justify-between text-neutral-muted hover:bg-neutral-bg"
+                >
+                  <span>Choose an image...</span>
+                  <span className="rounded-md border border-neutral-line bg-white px-3 py-1 text-xs font-medium text-primary">
+                    Browse
+                  </span>
+                </label>
+              )}
             </Field>
           </div>
 
