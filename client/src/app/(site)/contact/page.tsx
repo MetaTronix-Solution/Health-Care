@@ -49,6 +49,22 @@ export default function ContactPage() {
 
           <ContactForm />
         </div>
+        <div className="mt-16 border-t border-neutral-line pt-12">
+          <p className="eyebrow mb-4">Find Us</p>
+          <div className="aspect-[21/9] w-full overflow-hidden border border-neutral-line">
+            <iframe
+              title="Himanshi Biomedical location"
+              src={`https://www.google.com/maps?q=${encodeURIComponent(
+                COMPANY.location,
+              )}&output=embed`}
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
+        </div>
       </Container>
     </section>
   );
