@@ -5,7 +5,7 @@ import { SidebarNav } from "@/src/components/admin/SidebarNav";
 export function AdminSidebar() {
   return (
     <aside
-      className="hidden shrink-0 flex-col bg-primary text-white lg:flex"
+      className="sticky top-0 hidden h-screen shrink-0 flex-col overflow-y-auto bg-primary text-white lg:flex"
       style={{ width: "var(--admin-sidebar-width)" }}
     >
       <div className="px-5 py-6">
