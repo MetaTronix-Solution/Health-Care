@@ -16,6 +16,11 @@ export const products: Product[] = [
     refCode: "G3 B25VT / B30VT",
     coordinates: "",
 
+    manufacturer: "BMC Medical",
+    status: "Published",
+    views: 14250,
+    updatedAt: "2026-08-15",
+
     shortDescription:
       "Advanced bi-level PAP therapy with S/T mode and Target Tidal Volume for patients with respiratory insufficiency.",
 
@@ -43,58 +48,29 @@ export const products: Product[] = [
         title: "Target Tidal Volume Therapy",
         body: "The G3 automatically optimizes IPAP according to the patient's mean tidal volume from the last five breaths and the prescribed target tidal volume.",
         specs: [
-          {
-            label: "Target Vt",
-            value: "150–1500 mL",
-          },
-          {
-            label: "Pressure Range",
-            value: "4–25 hPa / 4–30 hPa",
-          },
-          {
-            label: "Work Mode",
-            value: "S/T / S / T / CPAP",
-          },
+          { label: "Target Vt", value: "150–1500 mL" },
+          { label: "Pressure Range", value: "4–25 hPa / 4–30 hPa" },
+          { label: "Work Mode", value: "S/T / S / T / CPAP" },
         ],
       },
-
       {
         index: "03",
         title: "Intelligent Comfort",
         body: "The G3 B25VT/B30VT combines pre-heating, Intelligent Auto Humidity control, and adjustable inspiratory and expiratory sensitivity for comfortable therapy.",
         specs: [
-          {
-            label: "Humidifier",
-            value: "Auto / Level 1 to 5",
-          },
-          {
-            label: "I Sens. / E Sens.",
-            value: "7 levels",
-          },
-          {
-            label: "Water Capacity",
-            value: "360 mL",
-          },
+          { label: "Humidifier", value: "Auto / Level 1 to 5" },
+          { label: "I Sens. / E Sens.", value: "7 levels" },
+          { label: "Water Capacity", value: "360 mL" },
         ],
       },
-
       {
         index: "04",
         title: "Smart Monitoring & Connectivity",
         body: "The G3 supports onboard and SD card data storage together with cellular and WiFi connectivity for therapy monitoring and digital health solutions.",
         specs: [
-          {
-            label: "Data Transfer",
-            value: "Cellular / WiFi",
-          },
-          {
-            label: "Screen",
-            value: "3.5-inch",
-          },
-          {
-            label: "Sound Pressure",
-            value: "26 dB(A)",
-          },
+          { label: "Data Transfer", value: "Cellular / WiFi" },
+          { label: "Screen", value: "3.5-inch" },
+          { label: "Sound Pressure", value: "26 dB(A)" },
         ],
       },
     ],
@@ -106,12 +82,7 @@ export const products: Product[] = [
       "Non-Invasive Ventilation",
     ],
 
-    downloads: [
-      {
-        label: "Product Brochure (PDF)",
-        href: "#",
-      },
-    ],
+    downloads: [{ label: "Product Brochure (PDF)", href: "#" }],
   },
   {
     slug: "bmc-g3-a20",
@@ -120,6 +91,11 @@ export const products: Product[] = [
     categorySlug: "sleep-therapy",
     refCode: "G3 A20 / CPAP",
     coordinates: "",
+
+    manufacturer: "BMC Medical",
+    status: "Published",
+    views: 9840,
+    updatedAt: "2026-08-10",
 
     shortDescription:
       "Advanced AutoCPAP therapy with smart adaptive pressure response, accurate respiratory event detection, and personalized comfort features.",
@@ -143,61 +119,31 @@ export const products: Product[] = [
         title: "Smart Adaptive Therapy",
         body: "The G3 dynamically adapts to an ideal starting pressure based on the last 5 effective treatment days and continuously optimizes pressure thresholds throughout long-term therapy.",
         specs: [
-          {
-            label: "Pressure Response",
-            value: "Fast / Standard / Soft",
-          },
-          {
-            label: "Pressure Range",
-            value: "4–20 hPa",
-          },
-          {
-            label: "Work Mode",
-            value: "CPAP / AutoCPAP",
-          },
+          { label: "Pressure Response", value: "Fast / Standard / Soft" },
+          { label: "Pressure Range", value: "4–20 hPa" },
+          { label: "Work Mode", value: "CPAP / AutoCPAP" },
         ],
       },
-
       {
         index: "03",
         title: "Intelligent Comfort & Humidification",
         body: "Automated comfort functions including Auto On, Auto Off, Auto Ramp, Delay Off, pre-heating, and intelligent humidity and temperature control provide comfortable therapy throughout the night.",
         specs: [
-          {
-            label: "Water Chamber",
-            value: "360 ± 30 mL",
-          },
-          {
-            label: "Humidification",
-            value: "Auto / Level 1–5",
-          },
-          {
-            label: "Sound Pressure",
-            value: "28 ± 2 dB(A)",
-          },
+          { label: "Water Chamber", value: "360 ± 30 mL" },
+          { label: "Humidification", value: "Auto / Level 1–5" },
+          { label: "Sound Pressure", value: "28 ± 2 dB(A)" },
         ],
       },
-
       {
         index: "04",
         title: "Accurate Event Detection",
         body: "The G3 accurately detects respiratory events including central apneas, hypopneas, Cheyne-Stokes respiration, and flow limitations to provide targeted pressure adjustments.",
         specs: [
-          {
-            label: "Event Detection",
-            value: "Central Apnea / Hypopnea / CSR",
-          },
-          {
-            label: "Pressure Response",
-            value: "Targeted Adaptive Response",
-          },
-          {
-            label: "Technology",
-            value: "SmartC / SmartA",
-          },
+          { label: "Event Detection", value: "Central Apnea / Hypopnea / CSR" },
+          { label: "Pressure Response", value: "Targeted Adaptive Response" },
+          { label: "Technology", value: "SmartC / SmartA" },
         ],
       },
-
       {
         index: "05",
         title: "Data-Driven Sleep Management",
@@ -207,14 +153,8 @@ export const products: Product[] = [
             label: "Connectivity",
             value: "SD Card / iCode QR / Cellular / WiFi",
           },
-          {
-            label: "Internal Storage",
-            value: "Up to 512 days summary data",
-          },
-          {
-            label: "SD Storage",
-            value: "Up to 70 days detailed data",
-          },
+          { label: "Internal Storage", value: "Up to 512 days summary data" },
+          { label: "SD Storage", value: "Up to 70 days detailed data" },
         ],
       },
     ],
@@ -226,12 +166,7 @@ export const products: Product[] = [
       "AutoCPAP Therapy",
     ],
 
-    downloads: [
-      {
-        label: "Product Brochure (PDF)",
-        href: "#",
-      },
-    ],
+    downloads: [{ label: "Product Brochure (PDF)", href: "#" }],
   },
   {
     slug: "kjr-y51w",
@@ -240,6 +175,11 @@ export const products: Product[] = [
     categorySlug: "oxygen-therapy",
     refCode: "KJR-Y51W / OXYGEN CONCENTRATOR",
     coordinates: "",
+
+    manufacturer: "KCAREU",
+    status: "Published",
+    views: 6120,
+    updatedAt: "2026-07-28",
 
     shortDescription:
       "5 LPM oxygen concentrator delivering 93% ±3% oxygen purity with adjustable flow, LED display, and integrated nebulizer function.",
@@ -263,62 +203,30 @@ export const products: Product[] = [
         title: "High-Purity Oxygen Delivery",
         body: "The KJR-Y51W uses a high-quality molecular sieve to provide concentrated oxygen with adjustable flow for oxygen therapy applications.",
         specs: [
-          {
-            label: "Oxygen Purity",
-            value: "93% ±3%",
-          },
-          {
-            label: "Flow Rate",
-            value: "1–5 L/min",
-          },
-          {
-            label: "Outlet Pressure",
-            value: "20–70 kPa",
-          },
+          { label: "Oxygen Purity", value: "93% ±3%" },
+          { label: "Flow Rate", value: "1–5 L/min" },
+          { label: "Outlet Pressure", value: "20–70 kPa" },
         ],
       },
-
       {
         index: "03",
         title: "Integrated Nebulizer Function",
         body: "The device includes an integrated nebulizer function and supports nebulization accessories for convenient respiratory therapy.",
         specs: [
-          {
-            label: "Nebulizer",
-            value: "Integrated",
-          },
-          {
-            label: "Display",
-            value: "LED",
-          },
-          {
-            label: "Continuous Operation",
-            value: "Up to 48 hours",
-          },
+          { label: "Nebulizer", value: "Integrated" },
+          { label: "Display", value: "LED" },
+          { label: "Continuous Operation", value: "Up to 48 hours" },
         ],
       },
-
       {
         index: "04",
         title: "Compact & Reliable Design",
         body: "The KJR-Y51W combines a compact oxygen concentrator design with low operating noise and practical monitoring features for everyday use.",
         specs: [
-          {
-            label: "Dimensions",
-            value: "345 × 280 × 558 mm",
-          },
-          {
-            label: "Weight",
-            value: "15.5 kg",
-          },
-          {
-            label: "Noise Level",
-            value: "≤45 dB(A)",
-          },
-          {
-            label: "Rated Power",
-            value: "≤400 W",
-          },
+          { label: "Dimensions", value: "345 × 280 × 558 mm" },
+          { label: "Weight", value: "15.5 kg" },
+          { label: "Noise Level", value: "≤45 dB(A)" },
+          { label: "Rated Power", value: "≤400 W" },
         ],
       },
     ],
@@ -330,12 +238,7 @@ export const products: Product[] = [
       "Nebulization Therapy",
     ],
 
-    downloads: [
-      {
-        label: "Product Brochure (PDF)",
-        href: "#",
-      },
-    ],
+    downloads: [{ label: "Product Brochure (PDF)", href: "#" }],
   },
 ];
 

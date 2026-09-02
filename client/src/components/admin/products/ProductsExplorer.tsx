@@ -12,6 +12,26 @@ import type { Product } from "@/src/types/product";
 
 const PAGE_SIZE = 8;
 
+function StatusBadge({ status }: { status?: Product["status"] }) {
+  if (!status) return <span className="text-neutral-muted">—</span>;
+
+  const styles: Record<string, string> = {
+    Published: "bg-emerald-50 text-emerald-700",
+    Draft: "bg-amber-50 text-amber-700",
+    Archived: "bg-neutral-bg text-neutral-muted",
+  };
+
+  return (
+    <span
+      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${
+        styles[status] ?? "bg-neutral-bg text-neutral-muted"
+      }`}
+    >
+      {status}
+    </span>
+  );
+}
+
 export function ProductsExplorer({ products }: { products: Product[] }) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
@@ -64,9 +84,7 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
           icon={Package}
           title="No products found"
           description="Add your first medical product to begin managing your catalog."
-          action={
-            <Button href="/admin/products/new">Add Product</Button>
-          }
+          action={<Button href="/admin/products/new">Add Product</Button>}
         />
       ) : (
         <>
@@ -99,10 +117,7 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
               </thead>
               <tbody>
                 {paginated.map((product, index) => (
-                  <tr
-                    key={product.slug ?? index}
-                    className="hairline"
-                  >
+                  <tr key={product.slug ?? index} className="hairline">
                     <td className="px-5 py-4 font-medium text-primary">
                       <Link
                         href={`/admin/products/${product.slug}`}
@@ -114,12 +129,25 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
                     <td className="px-5 py-4 text-neutral-muted">
                       {product.category ?? "—"}
                     </td>
-                    <td className="px-5 py-4 text-neutral-muted">—</td>
-                    <td className="px-5 py-4">
-                      <span className="text-neutral-muted">—</span>
+                    <td className="px-5 py-4 text-neutral-muted">
+                      {product.manufacturer ?? "—"}
                     </td>
-                    <td className="px-5 py-4 text-neutral-muted">—</td>
-                    <td className="px-5 py-4 text-neutral-muted">—</td>
+                    <td className="px-5 py-4">
+                      <StatusBadge status={product.status} />
+                    </td>
+                    <td className="px-5 py-4 text-neutral-muted">
+                      {product.views !== undefined
+                        ? product.views.toLocaleString()
+                        : "—"}
+                    </td>
+                    <td className="px-5 py-4 text-neutral-muted">
+                      {product.updatedAt
+                        ? new Date(product.updatedAt).toLocaleDateString(
+                            "en-US",
+                            { month: "short", day: "numeric", year: "numeric" },
+                          )
+                        : "—"}
+                    </td>
                     <td className="px-5 py-4">
                       <ProductRowActions productId={product.slug} />
                     </td>

@@ -33,6 +33,10 @@ export interface Product {
   featured: boolean;
   imaging: string;
   application: string;
+  manufacturer?: string;
+  status?: "Published" | "Draft" | "Archived";
+  views?: number;
+  updatedAt?: string; // ISO date, e.g. "2026-08-15"
   transducerTech?: string;
   details: ProductDetailSection[];
   applications: string[];
