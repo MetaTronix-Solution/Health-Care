@@ -1,6 +1,29 @@
-import Image from "next/image";
+import { ClipboardList, Wrench, GraduationCap, LifeBuoy } from "lucide-react";
 import { Container } from "@/src/components/ui/Container";
 import { COMPANY } from "@/src/data/company";
+
+const stages = [
+  {
+    icon: ClipboardList,
+    label: "Plan",
+    detail: "Assess facility needs and equipment fit",
+  },
+  {
+    icon: Wrench,
+    label: "Install",
+    detail: "Setup, configuration, and commissioning",
+  },
+  {
+    icon: GraduationCap,
+    label: "Support",
+    detail: "Staff training and technical guidance",
+  },
+  {
+    icon: LifeBuoy,
+    label: "Operate",
+    detail: "Ongoing maintenance and service",
+  },
+];
 
 export function FacilitySolutions() {
   return (
@@ -18,14 +41,25 @@ export function FacilitySolutions() {
             </p>
           </div>
 
-          <div className="order-1 relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-neutral-line bg-neutral-bg lg:order-2 lg:aspect-[4/3.4]">
-            <Image
-              src="https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=1600&auto=format&fit=crop"
-              alt="Hospital corridor with medical technology equipment"
-              fill
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              className="object-cover"
-            />
+          <div className="order-1 grid grid-cols-2 gap-4 lg:order-2">
+            {stages.map((stage) => (
+              <div
+                key={stage.label}
+                className="rounded-2xl border border-neutral-line p-5 transition-colors hover:border-secondary/40 hover:bg-secondary/5"
+              >
+                <stage.icon
+                  aria-hidden
+                  className="h-6 w-6 text-secondary"
+                  strokeWidth={1.75}
+                />
+                <p className="text-body mt-4 font-semibold text-primary">
+                  {stage.label}
+                </p>
+                <p className="text-body-sm mt-1 text-neutral-muted">
+                  {stage.detail}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </Container>
