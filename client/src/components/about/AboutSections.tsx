@@ -12,6 +12,10 @@ import {
   Activity,
   Wrench,
   Headphones,
+  Calendar,
+  Stethoscope,
+  Moon as MoonIcon,
+  LifeBuoy,
 } from "lucide-react";
 import { Container } from "@/src/components/ui/Container";
 import { Button } from "@/src/components/ui/Button";
@@ -37,30 +41,15 @@ const sectorIcons = [
 
 export function AboutHero() {
   return (
-    <section className="flex min-h-[50vh] flex-col justify-center section-padding-sm">
-      <Container>
-        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
-          <div>
-            <p className="eyebrow mb-4">About Us</p>
-            <h1 className="text-page-title max-w-lg text-primary">
-              Respiratory Care & Sleep Medicine in Nepal
-            </h1>
-            <p className="text-body mt-5 max-w-md text-neutral-muted">
-              {COMPANY.description}
-            </p>
-          </div>
-
-          <div className="relative aspect-[16/10] w-full overflow-hidden border border-neutral-line bg-neutral-bg">
-            <Image
-              src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?q=80&w=1800&auto=format&fit=crop"
-              alt="Medical equipment for respiratory and sleep care"
-              fill
-              priority
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              className="object-cover"
-            />
-          </div>
-        </div>
+    <section className="border-b border-neutral-line bg-neutral-bg">
+      <Container className="section-padding-sm">
+        <p className="eyebrow mb-4">About Us</p>
+        <h1 className="text-page-title max-w-2xl text-primary">
+          Respiratory Care & Sleep Medicine in Nepal
+        </h1>
+        <p className="text-body mt-4 max-w-xl text-neutral-muted">
+          {COMPANY.description}
+        </p>
       </Container>
     </section>
   );
@@ -68,39 +57,61 @@ export function AboutHero() {
 
 export function AboutOverview() {
   const highlights = [
-    { label: "Established", value: String(COMPANY.established) },
-    { label: "Focus", value: "Respiratory Care" },
-    { label: "Specialization", value: "Sleep Medicine" },
-    { label: "Support", value: "Technical & After-Sales" },
+    {
+      icon: Calendar,
+      label: "Established",
+      value: "2022",
+      detail: "Serving healthcare providers across Nepal",
+    },
+    {
+      icon: Stethoscope,
+      label: "Focus",
+      value: "Respiratory Care",
+      detail: "CPAP, BiPAP, and respiratory support equipment",
+    },
+    {
+      icon: MoonIcon,
+      label: "Specialization",
+      value: "Sleep Medicine",
+      detail: "Sleep lab and sleep study solutions",
+    },
+    {
+      icon: LifeBuoy,
+      label: "Support",
+      value: "Technical & After-Sales",
+      detail: "Installation, maintenance, and ongoing assistance",
+    },
   ];
 
   return (
-    <section className="bg-neutral-bg flex min-h-[50vh] flex-col justify-center section-padding-sm">
+    <section className="section-padding-sm">
       <Container>
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.4fr_0.6fr] lg:gap-14">
-          <div>
-            <h2 className="text-section-title text-primary">Who We Are</h2>
-            <p className="text-body mt-4 text-neutral-muted">
-              We are committed to providing reliable medical technologies,
-              professional support, and patient-focused solutions for better
-              diagnosis and management of sleep-related and respiratory
-              conditions.
-            </p>
-          </div>
+        <div className="max-w-2xl">
+          <h2 className="text-section-title text-primary">Who We Are</h2>
+          <p className="text-body mt-4 text-neutral-muted">
+            We are committed to providing reliable medical technologies,
+            professional support, and patient-focused solutions for better
+            diagnosis and management of sleep-related and respiratory
+            conditions.
+          </p>
+        </div>
 
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
-            {highlights.map((item) => (
-              <div
-                key={item.label}
-                className="group rounded-2xl border border-neutral-line bg-tertiary p-4 transition-all duration-300 hover:-translate-y-1 hover:border-secondary hover:shadow-lg hover:shadow-secondary/10"
-              >
-                <p className="eyebrow mb-2 transition-colors duration-300 group-hover:text-secondary">
-                  {item.label}
-                </p>
-                <p className="text-card-title text-primary">{item.value}</p>
-              </div>
-            ))}
-          </div>
+        <div className="mt-12 grid grid-cols-1 divide-y divide-neutral-line border-t border-neutral-line sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
+          {highlights.map((item) => (
+            <div key={item.label} className="group py-8 sm:px-6 sm:first:pl-0">
+              <item.icon
+                size={28}
+                className="text-secondary transition-transform duration-300 group-hover:-translate-y-0.5"
+                strokeWidth={1.5}
+                aria-hidden
+              />
+              <p className="eyebrow mt-5 text-[13px]">{item.label}</p>
+              <p className="mt-2 text-2xl font-semibold leading-tight text-primary sm:text-[26px]">
+                {item.value}
+              </p>
+              <p className="text-body mt-3 text-neutral-muted">{item.detail}</p>
+            </div>
+          ))}
         </div>
       </Container>
     </section>
@@ -109,7 +120,7 @@ export function AboutOverview() {
 
 export function AboutWorkingSectors() {
   return (
-    <section className="section-padding-sm">
+    <section className="bg-neutral-bg section-padding-sm">
       <Container>
         <div className="max-w-2xl">
           <h2 className="text-section-title text-primary">
@@ -127,7 +138,7 @@ export function AboutWorkingSectors() {
             return (
               <div
                 key={sector}
-                className="flex items-start gap-3 border border-neutral-line bg-tertiary p-5"
+                className="flex items-start gap-3 border border-neutral-line bg-white p-5"
               >
                 <Icon
                   size={18}
@@ -148,7 +159,7 @@ export function AboutWorkingSectors() {
 
 export function AboutExpertiseGrid() {
   return (
-    <section className="bg-neutral-bg section-padding-sm">
+    <section className="section-padding-sm">
       <Container>
         <h2 className="text-section-title max-w-md text-primary">
           Our Areas of Expertise
@@ -171,9 +182,9 @@ export function AboutExpertiseGrid() {
 
 export function AboutBMCSection() {
   return (
-    <section className="section-padding-sm">
+    <section className="bg-neutral-bg section-padding-sm">
       <Container>
-        <div className="grid grid-cols-1 items-center gap-8 border border-neutral-line bg-tertiary lg:grid-cols-2 lg:gap-0">
+        <div className="grid grid-cols-1 items-center gap-8 border border-neutral-line bg-white lg:grid-cols-2 lg:gap-0">
           <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-bg lg:aspect-auto lg:min-h-[360px]">
             <Image
               src="https://images.unsplash.com/photo-1583911860205-72f8ac8ddcbe?q=80&w=1800&auto=format&fit=crop"
@@ -221,7 +232,7 @@ export function AboutBMCSection() {
 
 export function AboutTrust() {
   return (
-    <section className="bg-neutral-bg section-padding-sm">
+    <section className="section-padding-sm">
       <Container>
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.4fr_0.6fr] lg:items-center lg:gap-14">
           <div>
@@ -274,7 +285,7 @@ export function AboutTeam() {
   if (team.length === 0) return null;
 
   return (
-    <section className="section-padding-sm">
+    <section className="bg-neutral-bg section-padding-sm">
       <Container>
         <h2 className="text-section-title max-w-md text-primary">
           Meet Our Experts
@@ -365,7 +376,7 @@ export function AboutFAQ() {
 
 export function AboutCTA() {
   return (
-    <section className="section-padding-sm">
+    <section className="bg-neutral-bg section-padding-sm">
       <Container>
         <div className="lg:flex lg:items-end lg:justify-between lg:gap-14">
           <div>
