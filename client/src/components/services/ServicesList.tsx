@@ -12,7 +12,7 @@ function ServiceItem({
 }) {
   return (
     <Link
-      href={`/services/${service.slug}`}
+      href={service.href ?? `/services/${service.slug}`}
       className={`group flex items-center justify-between gap-6 rounded-xl px-4 py-6 transition-colors duration-200 hover:bg-tertiary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary ${
         isFirst ? "" : "mt-0 border-t border-neutral-line"
       }`}
