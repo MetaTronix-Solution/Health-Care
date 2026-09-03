@@ -61,9 +61,17 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
     currentPage * PAGE_SIZE,
   );
 
+  function formatDate(date: string) {
+    return new Date(date).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  }
+
   return (
     <Card>
-      <div className="border-b border-neutral-line p-5">
+      <div className="border-b border-neutral-line p-4 sm:p-5">
         <ProductFilters
           search={search}
           category={category}
@@ -88,7 +96,8 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
         />
       ) : (
         <>
-          <div className="overflow-x-auto">
+          {/* Desktop / tablet table */}
+          <div className="hidden overflow-x-auto sm:block">
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="hairline text-xs text-neutral-muted">
@@ -141,12 +150,7 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
                         : "—"}
                     </td>
                     <td className="px-5 py-4 text-neutral-muted">
-                      {product.updatedAt
-                        ? new Date(product.updatedAt).toLocaleDateString(
-                            "en-US",
-                            { month: "short", day: "numeric", year: "numeric" },
-                          )
-                        : "—"}
+                      {product.updatedAt ? formatDate(product.updatedAt) : "—"}
                     </td>
                     <td className="px-5 py-4">
                       <ProductRowActions productId={product.slug} />
@@ -157,8 +161,53 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
             </table>
           </div>
 
-          <div className="flex flex-col items-center justify-between gap-3 border-t border-neutral-line px-5 py-4 sm:flex-row">
-            <p className="text-sm text-neutral-muted">
+          {/* Mobile stacked cards */}
+          <div className="divide-y divide-neutral-line sm:hidden">
+            {paginated.map((product, index) => (
+              <div
+                key={product.slug ?? index}
+                className="flex flex-col gap-2 px-4 py-4"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <Link
+                    href={`/admin/products/${product.slug}`}
+                    className="min-w-0 truncate font-medium text-primary hover:underline"
+                  >
+                    {product.name ?? "Untitled product"}
+                  </Link>
+                  <div className="shrink-0">
+                    <ProductRowActions productId={product.slug} />
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <StatusBadge status={product.status} />
+                  {product.category && (
+                    <span className="text-xs text-neutral-muted">
+                      {product.category}
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-neutral-muted">
+                  <span>{product.manufacturer ?? "—"}</span>
+                  <span aria-hidden>·</span>
+                  <span>
+                    {product.views !== undefined
+                      ? `${product.views.toLocaleString()} views`
+                      : "— views"}
+                  </span>
+                  <span aria-hidden>·</span>
+                  <span>
+                    {product.updatedAt ? formatDate(product.updatedAt) : "—"}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-col items-center justify-between gap-3 border-t border-neutral-line px-4 py-4 sm:flex-row sm:px-5">
+            <p className="text-xs text-neutral-muted sm:text-sm">
               Showing {(currentPage - 1) * PAGE_SIZE + 1} to{" "}
               {Math.min(currentPage * PAGE_SIZE, filtered.length)} of{" "}
               {filtered.length} entries
