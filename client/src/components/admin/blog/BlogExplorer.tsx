@@ -41,9 +41,17 @@ export function BlogExplorer({ articles }: { articles: Article[] }) {
     currentPage * PAGE_SIZE,
   );
 
+  function formatDate(date: string) {
+    return new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  }
+
   return (
     <Card>
-      <div className="border-b border-neutral-line p-5">
+      <div className="border-b border-neutral-line p-4 sm:p-5">
         <BlogFilters
           search={search}
           category={category}
@@ -68,7 +76,8 @@ export function BlogExplorer({ articles }: { articles: Article[] }) {
         />
       ) : (
         <>
-          <div className="overflow-x-auto">
+          {/* Desktop / tablet table */}
+          <div className="hidden overflow-x-auto sm:block">
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="hairline text-xs text-neutral-muted">
@@ -107,11 +116,7 @@ export function BlogExplorer({ articles }: { articles: Article[] }) {
                       {article.author}
                     </td>
                     <td className="px-5 py-4 text-neutral-muted">
-                      {new Date(article.date).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })}
+                      {formatDate(article.date)}
                     </td>
                     <td className="px-5 py-4">
                       <BlogRowActions slug={article.slug} />
@@ -122,8 +127,35 @@ export function BlogExplorer({ articles }: { articles: Article[] }) {
             </table>
           </div>
 
-          <div className="flex flex-col items-center justify-between gap-3 border-t border-neutral-line px-5 py-4 sm:flex-row">
-            <p className="text-sm text-neutral-muted">
+          {/* Mobile stacked cards */}
+          <div className="divide-y divide-neutral-line sm:hidden">
+            {paginated.map((article) => (
+              <div key={article.slug} className="flex flex-col gap-2 px-4 py-4">
+                <div className="flex items-start justify-between gap-3">
+                  <Link
+                    href={`/admin/blog/${article.slug}`}
+                    className="min-w-0 truncate font-medium text-primary hover:underline"
+                  >
+                    {article.title}
+                  </Link>
+                  <div className="shrink-0">
+                    <BlogRowActions slug={article.slug} />
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-neutral-muted">
+                  <span>{article.category}</span>
+                  <span aria-hidden>·</span>
+                  <span>{article.author}</span>
+                  <span aria-hidden>·</span>
+                  <span>{formatDate(article.date)}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-col items-center justify-between gap-3 border-t border-neutral-line px-4 py-4 sm:flex-row sm:px-5">
+            <p className="text-xs text-neutral-muted sm:text-sm">
               Showing {(currentPage - 1) * PAGE_SIZE + 1} to{" "}
               {Math.min(currentPage * PAGE_SIZE, filtered.length)} of{" "}
               {filtered.length} entries

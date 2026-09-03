@@ -20,7 +20,7 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
             onClick={onNavigate}
             aria-current={isActive ? "page" : undefined}
             className={cn(
-              "flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium text-white/70 transition-colors hover:bg-white/5 hover:text-white",
+              "flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium text-white/70 transition-coloxrs hover:bg-white/5 hover:text-white",
               isActive && "bg-secondary text-white hover:bg-secondary/90",
             )}
           >
