@@ -49,7 +49,7 @@ export function InquiryDetailModal({
         role="dialog"
         aria-modal="true"
         aria-label="Inquiry details"
-        className="relative w-full max-w-lg rounded-xl bg-white p-6 shadow-2xl sm:p-8"
+        className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl bg-white p-5 shadow-2xl sm:p-8"
       >
         <button
           type="button"

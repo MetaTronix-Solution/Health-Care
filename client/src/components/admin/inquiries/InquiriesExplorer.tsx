@@ -53,10 +53,18 @@ export function InquiriesExplorer({
     );
   }
 
+  function formatDate(date: string) {
+    return new Date(date).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  }
+
   return (
     <>
       <Card>
-        <div className="border-b border-neutral-line p-5">
+        <div className="border-b border-neutral-line p-4 sm:p-5">
           <InquiryFilters
             search={search}
             status={status}
@@ -79,7 +87,8 @@ export function InquiriesExplorer({
           />
         ) : (
           <>
-            <div className="overflow-x-auto">
+            {/* Desktop / tablet table */}
+            <div className="hidden overflow-x-auto sm:block">
               <table className="w-full text-left text-sm">
                 <thead>
                   <tr className="hairline text-xs text-neutral-muted">
@@ -137,10 +146,7 @@ export function InquiriesExplorer({
                         <InquiryStatusBadge status={inquiry.status} />
                       </td>
                       <td className="px-5 py-4 text-neutral-muted">
-                        {new Date(inquiry.createdAt).toLocaleDateString(
-                          "en-US",
-                          { month: "short", day: "numeric", year: "numeric" },
-                        )}
+                        {formatDate(inquiry.createdAt)}
                       </td>
                       <td className="px-5 py-4 text-right">
                         <Button
@@ -157,8 +163,48 @@ export function InquiriesExplorer({
               </table>
             </div>
 
-            <div className="flex flex-col items-center justify-between gap-3 border-t border-neutral-line px-5 py-4 sm:flex-row">
-              <p className="text-sm text-neutral-muted">
+            {/* Mobile stacked cards */}
+            <div className="divide-y divide-neutral-line sm:hidden">
+              {paginated.map((inquiry) => (
+                <button
+                  key={inquiry._id}
+                  type="button"
+                  onClick={() => setSelected(inquiry)}
+                  className="flex w-full flex-col gap-2 px-4 py-4 text-left"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex min-w-0 items-center gap-2">
+                      {!inquiry.isRead && (
+                        <span
+                          className="h-1.5 w-1.5 shrink-0 rounded-full bg-secondary"
+                          aria-label="Unread"
+                        />
+                      )}
+                      <div className="min-w-0">
+                        <p className="truncate font-medium text-primary">
+                          {inquiry.name}
+                        </p>
+                        <p className="truncate text-xs text-neutral-muted">
+                          {inquiry.email}
+                        </p>
+                      </div>
+                    </div>
+                    <InquiryStatusBadge status={inquiry.status} />
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-neutral-muted">
+                    <span>{inquiry.subject}</span>
+                    <span aria-hidden>·</span>
+                    <span>{inquiry.phone}</span>
+                    <span aria-hidden>·</span>
+                    <span>{formatDate(inquiry.createdAt)}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            <div className="flex flex-col items-center justify-between gap-3 border-t border-neutral-line px-4 py-4 sm:flex-row sm:px-5">
+              <p className="text-xs text-neutral-muted sm:text-sm">
                 Showing {(currentPage - 1) * PAGE_SIZE + 1} to{" "}
                 {Math.min(currentPage * PAGE_SIZE, filtered.length)} of{" "}
                 {filtered.length} entries
