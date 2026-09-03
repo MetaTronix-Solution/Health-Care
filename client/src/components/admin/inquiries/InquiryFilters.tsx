@@ -24,10 +24,7 @@ export function InquiryFilters({
   onStatusChange,
 }: InquiryFiltersProps) {
   return (
-    <div
-      className="grid gap-3 sm:items-center"
-      style={{ gridTemplateColumns: "1fr 12rem auto" }}
-    >
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_12rem_auto] sm:items-center">
       <div className="relative">
         <Search
           aria-hidden
@@ -39,8 +36,8 @@ export function InquiryFilters({
           onChange={(event) => onSearchChange(event.target.value)}
           placeholder="Search by name, email, or phone..."
           aria-label="Search inquiries"
-          className="admin-input pl-9"
-          style={{ width: "100%", paddingLeft: "2.25rem" }}
+          style={{ paddingLeft: "2.25rem" }}
+          className="admin-input w-full pl-9"
         />
       </div>
 
@@ -50,8 +47,7 @@ export function InquiryFilters({
           onStatusChange(event.target.value as InquiryStatus | "all")
         }
         aria-label="Filter by status"
-        className="admin-input"
-        style={{ width: "100%" }}
+        className="admin-input w-full"
       >
         <option value="all">All Statuses</option>
         {STATUS_OPTIONS.map((option) => (
@@ -63,7 +59,7 @@ export function InquiryFilters({
 
       <button
         type="button"
-        className="flex items-center justify-center gap-2 rounded-md border border-neutral-line px-4 py-2.5 text-sm font-medium text-primary hover:bg-neutral-bg"
+        className="flex w-full items-center justify-center gap-2 rounded-md border border-neutral-line px-4 py-2.5 text-sm font-medium text-primary hover:bg-neutral-bg sm:w-auto"
       >
         <SlidersHorizontal aria-hidden className="h-4 w-4" />
         Filters
