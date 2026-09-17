@@ -17,7 +17,7 @@ export default function ProductsPage() {
           </h1>
           <p className="text-body mt-4 max-w-xl text-neutral-muted">
             Quality biomedical solutions including CPAP, Auto CPAP, BiPAP, and
-            patient monitoring systems — with professional guidance and support
+            patient monitoring systems with professional guidance and support
             from an authorized BMC Medical distributor in Nepal.
           </p>
         </Container>
