@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import type { Product, SortOption, ViewMode } from "@/src/types/product";
-import { Container } from "@/src/components/ui/Container";
 import { ProductToolbar } from "./ProductToolbar";
 import { ProductGrid } from "./ProductGrid";
 
@@ -29,20 +28,18 @@ export function ProductsCatalog({ products }: ProductsCatalogProps) {
   }, [products, sortBy]);
 
   return (
-    <section className="relative rounded-t-3xl bg-white">
-      <Container className="py-10 lg:py-16">
-        <div className="mb-6">
-          <ProductToolbar
-            count={visibleProducts.length}
-            sortBy={sortBy}
-            onSortChange={setSortBy}
-            view={view}
-            onViewChange={setView}
-          />
-        </div>
+    <div>
+      <div className="mb-6">
+        <ProductToolbar
+          count={visibleProducts.length}
+          sortBy={sortBy}
+          onSortChange={setSortBy}
+          view={view}
+          onViewChange={setView}
+        />
+      </div>
 
-        <ProductGrid products={visibleProducts} view={view} />
-      </Container>
-    </section>
+      <ProductGrid products={visibleProducts} view={view} />
+    </div>
   );
 }
