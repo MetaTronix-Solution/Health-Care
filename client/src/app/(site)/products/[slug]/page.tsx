@@ -7,7 +7,6 @@ import { ProductGallery } from "@/src/components/products/ProductGallery";
 import { ProductInformation } from "@/src/components/products/ProductInformation";
 import { ProductSpecifications } from "@/src/components/products/ProductSpecifications";
 import { RelatedProducts } from "@/src/components/products/RelatedProducts";
-import { Breadcrumbs } from "@/src/components/seo/Breadcrumbs";
 import { BreadcrumbJsonLd } from "@/src/components/seo/BreadcrumbJsonLd";
 import { ProductJsonLd } from "@/src/components/seo/ProductJsonLd";
 import {
@@ -64,7 +63,6 @@ export default async function ProductDetailPage({
 
       <section className="border-b border-neutral-line bg-tertiary py-14 lg:py-20">
         <Container>
-          <Breadcrumbs items={breadcrumbs} />
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
             <ProductGallery
               images={product.gallery}
