@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Share2 } from "lucide-react";
+import { ShareButton } from "@/src/components/resources/ShareButton";
 import { Container } from "@/src/components/ui/Container";
 import { ArticleCard } from "@/src/components/resources/ArticleCard";
-import { Breadcrumbs } from "@/src/components/seo/Breadcrumbs";
 import { BreadcrumbJsonLd } from "@/src/components/seo/BreadcrumbJsonLd";
 import { ArticleJsonLd } from "@/src/components/seo/ArticleJsonLd";
 import {
@@ -69,7 +68,6 @@ export default async function ArticleDetailPage({
       <article>
         <section className="border-b border-neutral-line bg-tertiary py-14 lg:py-20">
           <Container>
-            <Breadcrumbs items={breadcrumbs} />
             <div className="mx-auto max-w-3xl">
               <div className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.08em]">
                 <span className="text-secondary">{article.category}</span>
@@ -114,13 +112,10 @@ export default async function ArticleDetailPage({
 
               <div className="mt-10 flex items-center gap-3 border-t border-neutral-line pt-6">
                 <span className="eyebrow">Share</span>
-                <button
-                  type="button"
-                  aria-label="Share this article"
-                  className="flex h-9 w-9 items-center justify-center border border-neutral-line text-primary transition-colors hover:bg-neutral-bg"
-                >
-                  <Share2 size={15} />
-                </button>
+                <ShareButton
+                  title={article.title}
+                  url={`https://yourdomain.com/resources/${article.slug}`}
+                />
               </div>
             </div>
           </Container>
