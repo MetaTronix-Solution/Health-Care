@@ -7,6 +7,7 @@ export const COMPANY = {
   description:
     "Hemanshi Biomedical has been working in Nepal since 2022, specializing in respiratory care, sleep medicine, and biomedical equipment solutions.",
   distributorNote: "Authorized Distributor of BMC Medical products in Nepal",
+  phone: "+977-1-4123456",
 } as const;
 
 export const workingSectors = [
