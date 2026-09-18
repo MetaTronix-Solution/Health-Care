@@ -46,6 +46,7 @@ export default function NewArticlePage() {
         .split("\n\n")
         .map((p) => p.trim())
         .filter(Boolean),
+      status: "draft",
     };
 
     // TODO: replace with your actual create-article API call

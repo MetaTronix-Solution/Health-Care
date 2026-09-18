@@ -8,13 +8,25 @@ import { BlogRowActions } from "@/src/components/admin/blog/BlogRowActions";
 import { EmptyState } from "@/src/components/ui/EmptyState";
 import { Button } from "@/src/components/ui/Button";
 import { Card } from "@/src/components/ui/Card";
+import { Badge } from "@/src/components/ui/Badge";
 import type { Article } from "@/src/types/article";
 
 const PAGE_SIZE = 8;
 
+const statusVariant = {
+  published: "success",
+  draft: "warning",
+} as const;
+
+const statusLabel = {
+  published: "Published",
+  draft: "Draft",
+} as const;
+
 export function BlogExplorer({ articles }: { articles: Article[] }) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
+  const [status, setStatus] = useState("all");
   const [page, setPage] = useState(1);
 
   const categories = useMemo(
@@ -30,9 +42,10 @@ export function BlogExplorer({ articles }: { articles: Article[] }) {
         article.author.toLowerCase().includes(search.trim().toLowerCase());
       const matchesCategory =
         category === "all" || article.category === category;
-      return matchesSearch && matchesCategory;
+      const matchesStatus = status === "all" || article.status === status;
+      return matchesSearch && matchesCategory && matchesStatus;
     });
-  }, [articles, search, category]);
+  }, [articles, search, category, status]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
@@ -56,12 +69,17 @@ export function BlogExplorer({ articles }: { articles: Article[] }) {
           search={search}
           category={category}
           categories={categories}
+          status={status}
           onSearchChange={(value) => {
             setSearch(value);
             setPage(1);
           }}
           onCategoryChange={(value) => {
             setCategory(value);
+            setPage(1);
+          }}
+          onStatusChange={(value) => {
+            setStatus(value);
             setPage(1);
           }}
         />
@@ -93,6 +111,9 @@ export function BlogExplorer({ articles }: { articles: Article[] }) {
                   <th scope="col" className="px-5 py-3 font-medium">
                     Date
                   </th>
+                  <th scope="col" className="px-5 py-3 font-medium">
+                    Status
+                  </th>
                   <th scope="col" className="px-6 py-3 font-medium text-right">
                     Actions
                   </th>
@@ -117,6 +138,11 @@ export function BlogExplorer({ articles }: { articles: Article[] }) {
                     </td>
                     <td className="px-5 py-4 text-neutral-muted">
                       {formatDate(article.date)}
+                    </td>
+                    <td className="px-5 py-4">
+                      <Badge variant={statusVariant[article.status]}>
+                        {statusLabel[article.status]}
+                      </Badge>
                     </td>
                     <td className="px-5 py-4">
                       <BlogRowActions slug={article.slug} />
@@ -149,6 +175,12 @@ export function BlogExplorer({ articles }: { articles: Article[] }) {
                   <span>{article.author}</span>
                   <span aria-hidden>·</span>
                   <span>{formatDate(article.date)}</span>
+                </div>
+
+                <div>
+                  <Badge variant={statusVariant[article.status]}>
+                    {statusLabel[article.status]}
+                  </Badge>
                 </div>
               </div>
             ))}
