@@ -25,14 +25,14 @@ export function AnalyticsOverview({ data }: { data: PerformancePoint[] }) {
           </span>
           <span className="flex items-center gap-1.5">
             <span
-              className="h-0.5 w-4 rounded-full bg-orange-500"
+              className="h-0.5 w-4 rounded-full border-t-2 border-dashed border-orange-500"
               aria-hidden
             />
             Inquiries
           </span>
         </div>
       </div>
-      <div className="h-72 px-4 py-4 sm:px-6">
+      <div className="h-72 px-4 py-4 sm:px-6 [&_.recharts-surface]:outline-none [&_.recharts-wrapper]:outline-none [&_*]:focus:outline-none">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
             data={data}
@@ -51,6 +51,7 @@ export function AnalyticsOverview({ data }: { data: PerformancePoint[] }) {
               axisLine={false}
               tick={{ fill: "#6b7280", fontSize: 12 }}
               width={40}
+              domain={[0, "dataMax + 100"]}
             />
             <YAxis
               yAxisId="right"
@@ -59,6 +60,7 @@ export function AnalyticsOverview({ data }: { data: PerformancePoint[] }) {
               axisLine={false}
               tick={{ fill: "#6b7280", fontSize: 12 }}
               width={40}
+              domain={[0, "dataMax + 20"]}
             />
             <Tooltip
               cursor={{ stroke: "#dfe4e8", strokeWidth: 1 }}
@@ -83,6 +85,7 @@ export function AnalyticsOverview({ data }: { data: PerformancePoint[] }) {
               dataKey="inquiries"
               stroke="#f97316"
               strokeWidth={2}
+              strokeDasharray="5 4"
               dot={false}
               activeDot={{ r: 5 }}
             />

@@ -46,6 +46,7 @@ export const performanceSeries: PerformancePoint[] = [
   { label: "Thu", views: 610, inquiries: 74 },
   { label: "Fri", views: 540, inquiries: 66 },
   { label: "Sat", views: 690, inquiries: 82 },
+  { label: "Sun", views: 430, inquiries: 48 },
 ];
 
 export const topProducts: TopProduct[] = [
