@@ -22,6 +22,7 @@ export const articles: Article[] = [
       "The result is a meaningful jump in resolution at the pixel level, particularly in tissue boundaries that are historically difficult to resolve with line-based scanning.",
       "In early clinical deployments, sonographers reported faster scan completion and fewer repeat passes, translating into measurable gains in daily throughput.",
     ],
+    status: "published",
   },
   {
     slug: "nexus-arm-fda-clearance",
@@ -38,6 +39,7 @@ export const articles: Article[] = [
       "The clearance covers a range of minimally invasive procedures where sub-millimeter instrument control materially changes recovery outcomes.",
       "Hospitals with existing Nexus installations will receive access to the expanded indication through a standard software update.",
     ],
+    status: "published",
   },
   {
     slug: "ten-thousand-deployments-milestone",
@@ -54,6 +56,7 @@ export const articles: Article[] = [
       "The milestone reflects a decade of iteration grounded in the same founding premise: technology should disappear into clinical workflow, not complicate it.",
       "We remain focused on the same question that started the company — how engineering precision translates into better outcomes at the bedside.",
     ],
+    status: "published",
   },
 ];
 

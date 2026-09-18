@@ -6,19 +6,23 @@ interface BlogFiltersProps {
   search: string;
   category: string;
   categories: string[];
+  status: string;
   onSearchChange: (value: string) => void;
   onCategoryChange: (value: string) => void;
+  onStatusChange: (value: string) => void;
 }
 
 export function BlogFilters({
   search,
   category,
   categories,
+  status,
   onSearchChange,
   onCategoryChange,
+  onStatusChange,
 }: BlogFiltersProps) {
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_12rem_auto] sm:items-center">
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_10rem_10rem_auto] sm:items-center">
       <div className="relative">
         <Search
           aria-hidden
@@ -47,6 +51,17 @@ export function BlogFilters({
             {cat}
           </option>
         ))}
+      </select>
+
+      <select
+        value={status}
+        onChange={(event) => onStatusChange(event.target.value)}
+        aria-label="Filter by status"
+        className="admin-input w-full"
+      >
+        <option value="all">All Statuses</option>
+        <option value="published">Published</option>
+        <option value="draft">Draft</option>
       </select>
 
       <button

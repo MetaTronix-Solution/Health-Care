@@ -52,6 +52,7 @@ export default function EditArticlePage({
         .split("\n\n")
         .map((p) => p.trim())
         .filter(Boolean),
+      status: "draft",
     };
 
     // TODO: replace with your actual update-article API call

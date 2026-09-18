@@ -7,4 +7,5 @@ export interface Article {
   excerpt: string;
   image: string;
   content: string[];
+  status: "published" | "draft";
 }
