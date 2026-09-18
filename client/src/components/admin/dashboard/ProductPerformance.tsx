@@ -19,8 +19,8 @@ const statusLabel = {
 export function ProductPerformance({ products }: { products: TopProduct[] }) {
   return (
     <div className="rounded-lg border border-neutral-line bg-white">
-      <div className="flex items-center justify-between border-b border-neutral-line px-6 py-4">
-        <h2 className="text-lg font-semibold text-primary">
+      <div className="flex flex-col gap-3 border-b border-neutral-line px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+        <h2 className="text-base font-semibold text-primary sm:text-lg">
           Top Performing Products
         </h2>
         <Link
@@ -31,7 +31,27 @@ export function ProductPerformance({ products }: { products: TopProduct[] }) {
           <ArrowRight aria-hidden className="h-4 w-4" />
         </Link>
       </div>
-      <div className="overflow-x-auto">
+
+      {/* Mobile: card list */}
+      <div className="flex flex-col divide-y divide-neutral-line sm:hidden">
+        {products.map((product) => (
+          <div key={product.id} className="flex flex-col gap-2 px-4 py-4">
+            <div className="flex items-start justify-between gap-3">
+              <p className="font-medium text-primary">{product.name}</p>
+              <Badge variant={statusVariant[product.status]}>
+                {statusLabel[product.status]}
+              </Badge>
+            </div>
+            <div className="flex items-center justify-between text-xs text-neutral-muted">
+              <span>{product.category}</span>
+              <span>{formatNumber(product.views)} views</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Tablet+: table */}
+      <div className="hidden overflow-x-auto sm:block">
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="hairline text-xs text-neutral-muted">
