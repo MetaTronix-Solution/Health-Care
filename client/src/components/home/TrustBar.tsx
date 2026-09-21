@@ -13,7 +13,7 @@ const features = [
   {
     icon: BedDouble,
     title: "Sleep & Respiratory Care",
-    description: "Advanced solutions for better care.",
+    description: "Best solutions for better care.",
   },
   {
     icon: Headphones,
