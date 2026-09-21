@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { LogOut, ShieldPlus } from "lucide-react";
+import { ShieldPlus } from "lucide-react";
 import { SidebarNav } from "@/src/components/admin/SidebarNav";
+import { LogoutButton } from "@/src/components/admin/LogoutButton";
 
 export function AdminSidebar() {
   return (
@@ -25,13 +26,7 @@ export function AdminSidebar() {
       <SidebarNav />
 
       <div className="mt-auto space-y-0.5 border-t border-white/10 px-3 py-4">
-        <Link
-          href="/login"
-          className="flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium text-white/70 transition-colors hover:bg-white/5 hover:text-white"
-        >
-          <LogOut aria-hidden className="h-[18px] w-[18px] shrink-0" />
-          Logout
-        </Link>
+        <LogoutButton /> {/* replaces the whole <Link href="/login"> block */}
       </div>
     </aside>
   );
