@@ -32,7 +32,8 @@ const inquiryOptions = [
 ];
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const PHONE_PATTERN = /^\d{10}$/;
+// Nepal mobile numbers: 10 digits, starting with 97 or 98 — matches the backend DTO
+const PHONE_PATTERN = /^9[78]\d{8}$/;
 const NAME_PATTERN = /^[a-zA-Z\s'-]+$/;
 
 // Blocks characters commonly used in script/HTML injection payloads
@@ -74,7 +75,7 @@ function validate(values: FormValues): FormErrors {
   if (!values.phone.trim()) {
     errors.phone = "Phone number is required.";
   } else if (!PHONE_PATTERN.test(values.phone.trim())) {
-    errors.phone = "Enter a valid 10-digit phone number.";
+    errors.phone = "Enter a valid Nepal mobile number (e.g. 98XXXXXXXX).";
   }
 
   if (!values.inquiryType) {
@@ -107,6 +108,7 @@ export function ContactForm() {
   const [status, setStatus] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   function updateField<K extends keyof FormValues>(
     field: K,
@@ -133,16 +135,37 @@ export function ContactForm() {
     }
 
     setStatus("loading");
+    setErrorMessage("");
 
     try {
-      // Simulated request. Replace with `await fetch("/api/contact", { ... })`
-      // once a backend endpoint is available — the form state and UI below
-      // do not need to change. Always re-validate/sanitize on the server too;
-      // client-side checks are UX only, not a security boundary.
-      await new Promise((resolve) => setTimeout(resolve, 1200));
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: `${values.firstName.trim()} ${values.lastName.trim()}`,
+          email: values.email.trim(),
+          phone: values.phone.trim(),
+          subject: values.inquiryType,
+          message: values.message.trim(),
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        setErrorMessage(
+          data?.message ??
+            "Something went wrong submitting your inquiry. Please try again.",
+        );
+        setStatus("error");
+        return;
+      }
+
       setStatus("success");
       setValues(initialValues);
     } catch {
+      setErrorMessage(
+        "Could not reach the server. Please check your connection and try again.",
+      );
       setStatus("error");
     }
   }
@@ -288,7 +311,9 @@ export function ContactForm() {
           className={fieldClassName}
           style={fieldStyle}
         >
-          <option value="">Select an option...</option>
+          <option value="" disabled hidden>
+            Select an option...
+          </option>
           {inquiryOptions.map((option) => (
             <option key={option} value={option}>
               {option}
@@ -328,9 +353,7 @@ export function ContactForm() {
 
       <div className="sm:col-span-2">
         {status === "error" && (
-          <p className="mb-4 text-[13px] text-red-600">
-            Something went wrong submitting your inquiry. Please try again.
-          </p>
+          <p className="mb-4 text-[13px] text-red-600">{errorMessage}</p>
         )}
         <button
           type="submit"
