@@ -1,28 +1,27 @@
 import { Transform } from 'class-transformer';
 import {
   IsBoolean,
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
   MaxLength,
 } from 'class-validator';
-
+import { BlogCategory } from '../schemas/blog.schema';
 
 export class UpdateBlogDto {
-
   @IsString()
   @IsOptional()
   @IsNotEmpty()
   @MaxLength(200)
   title?: string;
 
-
-  @IsString()
+  @IsEnum(BlogCategory, {
+    message:
+      'category must be one of: Clinical Insights, Product Updates, Company News',
+  })
   @IsOptional()
-  @IsNotEmpty()
-  @MaxLength(100)
-  category?: string;
-
+  category?: BlogCategory;
 
   @IsString()
   @IsOptional()
@@ -30,17 +29,14 @@ export class UpdateBlogDto {
   @MaxLength(500)
   excerpt?: string;
 
-
   @IsString()
   @IsOptional()
   @IsNotEmpty()
   content?: string;
 
-
   @IsString()
   @IsOptional()
   author?: string;
-
 
   @IsBoolean()
   @IsOptional()
