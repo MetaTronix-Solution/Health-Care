@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { X, Mail, Phone } from "lucide-react";
 import { Button } from "@/src/components/ui/Button";
 import { InquiryStatusBadge } from "./InquiryStatusBadge";
+import { api } from "@/src/lib/api/client";
+import { ApiError } from "@/src/lib/api/errors";
 import type { Inquiry, InquiryStatus } from "@/src/types/inquiry";
 
 const statusOptions: InquiryStatus[] = [
@@ -27,14 +29,33 @@ export function InquiryDetailModal({
 }) {
   const [status, setStatus] = useState<InquiryStatus>(inquiry.status);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  // mark as read the moment the modal opens (backend does this in GET /:id)
+  useEffect(() => {
+    if (inquiry.isRead) return;
+    api(`/contact/${inquiry._id}`).catch(() => {}); // best-effort, ignore failure
+    onUpdate(inquiry._id, { isRead: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inquiry._id]);
 
   async function handleSave() {
     setSaving(true);
-    // TODO: replace with PATCH /contact/:id { status, isRead: true }
-    await new Promise((resolve) => setTimeout(resolve, 400));
-    onUpdate(inquiry._id, { status, isRead: true });
-    setSaving(false);
-    onClose();
+    setError("");
+    try {
+      await api(`/contact/${inquiry._id}/status`, {
+        method: "PATCH",
+        body: JSON.stringify({ status }),
+      });
+      onUpdate(inquiry._id, { status });
+      onClose();
+    } catch (err) {
+      setError(
+        err instanceof ApiError ? err.message : "Failed to update status",
+      );
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -64,12 +85,6 @@ export function InquiryDetailModal({
           <p className="text-xs font-medium uppercase tracking-wide text-neutral-muted">
             {inquiry.subject}
           </p>
-          {!inquiry.isRead && (
-            <span
-              className="h-1.5 w-1.5 rounded-full bg-secondary"
-              aria-label="Unread"
-            />
-          )}
         </div>
         <h2 className="mt-1 text-lg font-semibold text-primary">
           {inquiry.name}
@@ -129,6 +144,8 @@ export function InquiryDetailModal({
             ))}
           </select>
         </div>
+
+        {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
 
         <div className="mt-6 flex justify-end gap-3">
           <Button variant="secondary" onClick={onClose}>

@@ -9,43 +9,44 @@ import { EmptyState } from "@/src/components/ui/EmptyState";
 import { Button } from "@/src/components/ui/Button";
 import { Card } from "@/src/components/ui/Card";
 import { Badge } from "@/src/components/ui/Badge";
-import type { Article } from "@/src/types/article";
+import type { Blog } from "@/src/types/blog";
 
 const PAGE_SIZE = 8;
 
 const statusVariant = {
-  published: "success",
-  draft: "warning",
+  true: "success",
+  false: "warning",
 } as const;
 
 const statusLabel = {
-  published: "Published",
-  draft: "Draft",
+  true: "Published",
+  false: "Draft",
 } as const;
 
-export function BlogExplorer({ articles }: { articles: Article[] }) {
+export function BlogExplorer({ blogs }: { blogs: Blog[] }) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [status, setStatus] = useState("all");
   const [page, setPage] = useState(1);
 
   const categories = useMemo(
-    () =>
-      Array.from(new Set(articles.map((article) => article.category))).sort(),
-    [articles],
+    () => Array.from(new Set(blogs.map((blog) => blog.category))).sort(),
+    [blogs],
   );
 
   const filtered = useMemo(() => {
-    return articles.filter((article) => {
+    return blogs.filter((blog) => {
       const matchesSearch =
-        article.title.toLowerCase().includes(search.trim().toLowerCase()) ||
-        article.author.toLowerCase().includes(search.trim().toLowerCase());
-      const matchesCategory =
-        category === "all" || article.category === category;
-      const matchesStatus = status === "all" || article.status === status;
+        blog.title.toLowerCase().includes(search.trim().toLowerCase()) ||
+        blog.author.toLowerCase().includes(search.trim().toLowerCase());
+      const matchesCategory = category === "all" || blog.category === category;
+      const matchesStatus =
+        status === "all" ||
+        (status === "published" && blog.isPublished) ||
+        (status === "draft" && !blog.isPublished);
       return matchesSearch && matchesCategory && matchesStatus;
     });
-  }, [articles, search, category, status]);
+  }, [blogs, search, category, status]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
@@ -54,7 +55,8 @@ export function BlogExplorer({ articles }: { articles: Article[] }) {
     currentPage * PAGE_SIZE,
   );
 
-  function formatDate(date: string) {
+  function formatDate(date: string | null) {
+    if (!date) return "—";
     return new Date(date).toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
@@ -120,32 +122,42 @@ export function BlogExplorer({ articles }: { articles: Article[] }) {
                 </tr>
               </thead>
               <tbody>
-                {paginated.map((article) => (
-                  <tr key={article.slug} className="hairline">
+                {paginated.map((blog) => (
+                  <tr key={blog._id} className="hairline">
                     <td className="px-5 py-4 font-medium text-primary">
                       <Link
-                        href={`/admin/blog/${article.slug}`}
+                        href={`/admin/blog/${blog._id}`}
                         className="hover:underline"
                       >
-                        {article.title}
+                        {blog.title}
                       </Link>
                     </td>
                     <td className="px-5 py-4 text-neutral-muted">
-                      {article.category}
+                      {blog.category}
                     </td>
                     <td className="px-5 py-4 text-neutral-muted">
-                      {article.author}
+                      {blog.author}
                     </td>
                     <td className="px-5 py-4 text-neutral-muted">
-                      {formatDate(article.date)}
+                      {formatDate(blog.publishedAt)}
                     </td>
                     <td className="px-5 py-4">
-                      <Badge variant={statusVariant[article.status]}>
-                        {statusLabel[article.status]}
+                      <Badge
+                        variant={
+                          statusVariant[
+                            String(blog.isPublished) as "true" | "false"
+                          ]
+                        }
+                      >
+                        {
+                          statusLabel[
+                            String(blog.isPublished) as "true" | "false"
+                          ]
+                        }
                       </Badge>
                     </td>
                     <td className="px-5 py-4">
-                      <BlogRowActions slug={article.slug} />
+                      <BlogRowActions id={blog._id} slug={blog.slug} />
                     </td>
                   </tr>
                 ))}
@@ -155,31 +167,37 @@ export function BlogExplorer({ articles }: { articles: Article[] }) {
 
           {/* Mobile stacked cards */}
           <div className="divide-y divide-neutral-line sm:hidden">
-            {paginated.map((article) => (
-              <div key={article.slug} className="flex flex-col gap-2 px-4 py-4">
+            {paginated.map((blog) => (
+              <div key={blog._id} className="flex flex-col gap-2 px-4 py-4">
                 <div className="flex items-start justify-between gap-3">
                   <Link
-                    href={`/admin/blog/${article.slug}`}
+                    href={`/admin/blog/${blog._id}`}
                     className="min-w-0 truncate font-medium text-primary hover:underline"
                   >
-                    {article.title}
+                    {blog.title}
                   </Link>
                   <div className="shrink-0">
-                    <BlogRowActions slug={article.slug} />
+                    <BlogRowActions id={blog._id} slug={blog.slug} />
                   </div>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-neutral-muted">
-                  <span>{article.category}</span>
+                  <span>{blog.category}</span>
                   <span aria-hidden>·</span>
-                  <span>{article.author}</span>
+                  <span>{blog.author}</span>
                   <span aria-hidden>·</span>
-                  <span>{formatDate(article.date)}</span>
+                  <span>{formatDate(blog.publishedAt)}</span>
                 </div>
 
                 <div>
-                  <Badge variant={statusVariant[article.status]}>
-                    {statusLabel[article.status]}
+                  <Badge
+                    variant={
+                      statusVariant[
+                        String(blog.isPublished) as "true" | "false"
+                      ]
+                    }
+                  >
+                    {statusLabel[String(blog.isPublished) as "true" | "false"]}
                   </Badge>
                 </div>
               </div>

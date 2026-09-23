@@ -1,6 +1,21 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { BlogService } from './blog.service';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import 'multer';
+import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 import { AdminAuthGuard } from 'src/auth/guards/admin-auth.guard';
@@ -18,33 +33,61 @@ export class BlogController {
 
     async create(
         @Body() createBlogDto: CreateBlogDto,
+import { FindBlogsDto } from './dto/find-blogs.dto';
+import { AdminAuthGuard } from '../auth/guards/admin-auth.guard';
+import { ImagekitService } from '../imagekit/imagekit.service';
 
-        @UploadedFile() file: Express.Multer.File
-    ) {
-        return this.blogService.create(createBlogDto, file)
-    }
+@Controller('blog')
+export class BlogController {
+  constructor(
+    private readonly blogService: BlogService,
+    private readonly imagekitService: ImagekitService,
+  ) {}
 
-    //get all blogs
-    @Get()
-    async findAll() {
-        return this.blogService.findAll();
-    }
+  // ADMIN ROUTES
 
+  @UseGuards(AdminAuthGuard)
+  @Post()
+  @UseInterceptors(FileInterceptor('image'))
+  async create(
+    @Body() dto: CreateBlogDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const uploaded = await this.imagekitService.uploadFile(file, 'blog');
+    return this.blogService.create(dto, uploaded);
+  }
 
-    // get by id
-    @Get(":id")
-    async findOne(
-        @Param("id") id: string
-    ) {
-        return this.blogService.findOne(id)
-    }
+  @UseGuards(AdminAuthGuard)
+  @Get('admin')
+  async findAllForAdmin(@Query() query: FindBlogsDto) {
+    return this.blogService.findAllForAdmin(query);
+  }
 
+  @UseGuards(AdminAuthGuard)
+  @Get('admin/:id')
+  async findOneForAdmin(@Param('id') id: string) {
+    return this.blogService.findOneForAdmin(id);
+  }
 
-    // get by slug
-    @Get("slug/:slug")
-    async findBySlug(@Param("slug") slug: string) {
-        return this.blogService.findBySlug(slug);
-    }
+  @UseGuards(AdminAuthGuard)
+  @Patch(':id')
+  @UseInterceptors(FileInterceptor('image'))
+  async update(
+    @Param('id') id: string,
+    @Body() dto: UpdateBlogDto,
+    @UploadedFile() file?: Express.Multer.File,
+  ) {
+    const uploaded = file
+      ? await this.imagekitService.uploadFile(file, 'blog')
+      : undefined;
+    return this.blogService.update(id, dto, uploaded);
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    return this.blogService.remove(id);
+  }
 
     // update blog
     @Patch(":id")
@@ -57,7 +100,12 @@ export class BlogController {
     ) {
         return this.blogService.update(id, updateBlogDto, file)
     }
+  // PUBLIC ROUTES
 
+  @Get()
+  async findPublished(@Query() query: FindBlogsDto) {
+    return this.blogService.findPublished(query);
+  }
 
     //delete blog
     @Delete(":id")
@@ -67,4 +115,8 @@ export class BlogController {
     ) {
         return this.blogService.deleteBlog(id);
     }
+  @Get(':slug')
+  async findPublishedBySlug(@Param('slug') slug: string) {
+    return this.blogService.findPublishedBySlug(slug);
+  }
 }

@@ -1,31 +1,30 @@
-import type { Metadata } from "next";
-import { Plus } from "lucide-react";
-
-import { PageHeader } from "@/src/components/ui/PageHeader";
-import { Button } from "@/src/components/ui/Button";
 import { BlogExplorer } from "@/src/components/admin/blog/BlogExplorer";
-import { articles } from "@/src/data/articles";
-import { createAdminMetadata } from "@/src/lib/seo/metadata";
+import { apiServer } from "@/src/lib/api/server";
+import type { Blog } from "@/src/types/blog";
+import { Button } from "@/src/components/ui/Button";
 
-export const metadata: Metadata = createAdminMetadata("Blog Management");
+interface BlogListResponse {
+  items: Blog[];
+  total: number;
+}
 
-export default function BlogPage() {
+export default async function AdminBlogPage() {
+  const data = await apiServer<BlogListResponse>("/blog/admin?limit=1000");
+
   return (
-    <div className="admin-page">
-      <PageHeader
-        title="Blog Management"
-        description="Manage and publish clinical insights, product updates, and company news."
-        actions={
-          <Button
-            href="/admin/blog/new"
-            icon={<Plus aria-hidden className="h-4 w-4" />}
-          >
-            Add Article
-          </Button>
-        }
-      />
+    <div>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-primary sm:text-3xl">Blog</h1>
+          <p className="mt-1 text-sm text-neutral-muted">
+            Manage articles published to your site.
+          </p>
+        </div>
 
-      <BlogExplorer articles={articles} />
+        <Button href="/admin/blog/new">Add Article</Button>
+      </div>
+
+      <BlogExplorer blogs={data.items} />
     </div>
   );
 }

@@ -1,7 +1,15 @@
 import { InquiriesExplorer } from "@/src/components/admin/inquiries/InquiriesExplorer";
-import { inquiries } from "@/src/data/inquiries";
+import { apiServer } from "@/src/lib/api/server";
+import type { Inquiry } from "@/src/types/inquiry";
 
-export default function AdminInquiriesPage() {
+interface InquiryListResponse {
+  items: Inquiry[];
+  total: number;
+}
+
+export default async function AdminInquiriesPage() {
+  const data = await apiServer<InquiryListResponse>("/contact?limit=1000");
+
   return (
     <div>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
@@ -15,7 +23,7 @@ export default function AdminInquiriesPage() {
         </div>
       </div>
 
-      <InquiriesExplorer inquiries={inquiries} />
+      <InquiriesExplorer inquiries={data.items} />
     </div>
   );
 }

@@ -89,7 +89,8 @@ export function createArticleMetadata(article: {
   excerpt: string;
   slug: string;
   image: string;
-  date: string;
+  publishedAt: string | null;
+  createdAt: string;
   author: string;
 }) {
   return createPageMetadata({
@@ -101,7 +102,7 @@ export function createArticleMetadata(article: {
       title: article.title,
       description: article.excerpt,
       images: [{ url: article.image, alt: article.title }],
-      publishedTime: article.date,
+      publishedTime: article.publishedAt ?? article.createdAt,
       authors: [article.author],
     },
   });

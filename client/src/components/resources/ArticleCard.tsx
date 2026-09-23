@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import type { Article } from "@/src/types/article";
+import type { Blog } from "@/src/types/blog";
 import { formatDate } from "@/src/lib/utils";
 
-export function ArticleCard({ article }: { article: Article }) {
+export function ArticleCard({ article }: { article: Blog }) {
   return (
     <Link
       href={`/resources/${article.slug}`}
@@ -23,7 +23,7 @@ export function ArticleCard({ article }: { article: Article }) {
         <div className="flex items-center justify-between">
           <span className="eyebrow">{article.category}</span>
           <span className="text-[11px] text-neutral-muted">
-            {formatDate(article.date)}
+            {article.publishedAt ? formatDate(article.publishedAt) : ""}
           </span>
         </div>
         <div className="flex items-start justify-between gap-3">

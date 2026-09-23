@@ -3,6 +3,12 @@ import { HydratedDocument } from 'mongoose';
 
 export type BlogDocument = HydratedDocument<Blog>;
 
+export enum BlogCategory {
+  CLINICAL_INSIGHTS = 'Clinical Insights',
+  PRODUCT_UPDATES = 'Product Updates',
+  COMPANY_NEWS = 'Company News',
+}
+
 @Schema({
   timestamps: true,
 })
@@ -26,11 +32,12 @@ export class Blog {
 
   // Blog category
   @Prop({
+    type: String,
+    enum: BlogCategory,
     required: true,
-    trim: true,
     index: true,
   })
-  category!: string;
+  category!: BlogCategory;
 
   // ImageKit image URL
   @Prop({
