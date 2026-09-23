@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
+import { AdminAuthGuard } from 'src/auth/guards/admin-auth.guard';
 
 @Controller('blog')
 export class BlogController {
@@ -12,6 +13,7 @@ export class BlogController {
 
     //create blog
     @Post()
+    @UseGuards(AdminAuthGuard)
     @UseInterceptors(FileInterceptor("image"))
 
     async create(
@@ -46,6 +48,7 @@ export class BlogController {
 
     // update blog
     @Patch(":id")
+    @UseGuards(AdminAuthGuard)
     @UseInterceptors(FileInterceptor("image"))
     async update(
         @Param("id") id: string,
@@ -58,6 +61,7 @@ export class BlogController {
 
     //delete blog
     @Delete(":id")
+    @UseGuards(AdminAuthGuard)
     async deleteBlog(
         @Param("id") id: string,
     ) {
