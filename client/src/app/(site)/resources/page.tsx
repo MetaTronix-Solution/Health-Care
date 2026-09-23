@@ -1,12 +1,20 @@
 import type { Metadata } from "next";
 import { Container } from "@/src/components/ui/Container";
 import { ArticleFilters } from "@/src/components/resources/ArticleFilters";
-import { articles } from "@/src/data/articles";
+import { apiPublic } from "@/src/lib/api/public";
+import type { Blog } from "@/src/types/blog";
 import { resourcesMetadata } from "@/src/lib/seo/pages";
 
 export const metadata: Metadata = resourcesMetadata;
 
-export default function ResourcesPage() {
+interface BlogListResponse {
+  items: Blog[];
+  total: number;
+}
+
+export default async function ResourcesPage() {
+  const data = await apiPublic<BlogListResponse>("/blog?limit=100");
+
   return (
     <>
       <section className="border-b border-neutral-line bg-neutral-bg">
@@ -24,7 +32,7 @@ export default function ResourcesPage() {
 
       <section className="py-16 lg:py-20">
         <Container>
-          <ArticleFilters articles={articles} />
+          <ArticleFilters articles={data.items} />
         </Container>
       </section>
     </>
