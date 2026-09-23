@@ -1,383 +1,211 @@
 import {
-  BadRequestException,
   Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  ConflictException,
 } from '@nestjs/common';
-
 import { InjectModel } from '@nestjs/mongoose';
-
-import {
-  Blog,
-  BlogDocument,
-} from './schemas/blog.schema';
-
-import { Model, Types } from 'mongoose';
-
-import { ImagekitService } from 'src/imagekit/imagekit.service';
-
+import { Blog, BlogDocument, BlogCategory } from './schemas/blog.schema';
+import { Model } from 'mongoose';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
+import { FindBlogsDto } from './dto/find-blogs.dto';
 
 @Injectable()
 export class BlogService {
-
   constructor(
-
     @InjectModel(Blog.name)
     private readonly blogModel: Model<BlogDocument>,
-
-    private readonly imagekitService: ImagekitService,
-
   ) {}
 
-  // GENERATE SLUG
+  // Slug helper
 
-  private generateSlug(title: string): string {
-
+  private slugify(title: string) {
     return title
       .toLowerCase()
       .trim()
       .replace(/[^a-z0-9\s-]/g, '')
       .replace(/\s+/g, '-')
       .replace(/-+/g, '-');
-
   }
 
+  private async generateUniqueSlug(title: string, excludeId?: string) {
+    const base = this.slugify(title);
+    let slug = base;
+    let counter = 1;
 
-  // CREATE BLOG
-  async create(
-    createBlogDto: CreateBlogDto,
-    file: Express.Multer.File,
-  ) {
-
-
-    // 1. Check image
-    if (!file) {
-
-      throw new BadRequestException(
-        'Blog image is required',
-      );
-
+    while (
+      await this.blogModel.exists({
+        slug,
+        ...(excludeId && { _id: { $ne: excludeId } }),
+      })
+    ) {
+      slug = `${base}-${counter}`;
+      counter++;
     }
 
+    return slug;
+  }
 
-    // 2. Generate slug
+  // Admin — create
 
-    const slug =
-      this.generateSlug(
-        createBlogDto.title,
-      );
+  async create(dto: CreateBlogDto, image: { url: string; fileId: string }) {
+    try {
+      const slug = await this.generateUniqueSlug(dto.title);
 
-
-
-    // 3. Check duplicate slug
-    const existingBlog =
-      await this.blogModel.findOne({
+      const blog = await this.blogModel.create({
+        ...dto,
         slug,
-      }).exec();
-
-
-    if (existingBlog) {
-
-      throw new BadRequestException(
-        'A blog with this title already exists',
-      );
-
-    }
-
-    // 4. Upload image to ImageKit
-    const uploaded =
-      await this.imagekitService.uploadFile(
-        file,
-        'healthcare/blog',
-      );
-
-
-
-    // 5. Determine publish status
-
-    const isPublished =
-      createBlogDto.isPublished ?? true;
-
-
-
-    // 6. Create blog
-    const blog =
-      await this.blogModel.create({
-
-        title:
-          createBlogDto.title,
-
-        slug,
-
-        category:
-          createBlogDto.category,
-
-        image:
-          uploaded.url,
-
-        imageFileId:
-          uploaded.fileId,
-
-        excerpt:
-          createBlogDto.excerpt,
-
-        content:
-          createBlogDto.content,
-
-        author:
-          createBlogDto.author ||
-          'Healthcare Team',
-
-        isPublished,
-
-        publishedAt:
-          isPublished
-            ? new Date()
-            : null,
-
+        image: image.url,
+        imageFileId: image.fileId,
+        publishedAt: dto.isPublished === false ? null : new Date(),
       });
 
+      return blog;
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException('Failed to create blog post');
+    }
+  }
 
-    // 7. Response
+  // Admin — list everything (draft + published)
+
+  async findAllForAdmin(query: FindBlogsDto) {
+    const page = query.page ?? 1;
+    const limit = query.limit ?? 10;
+
+    const filter: Record<string, any> = {};
+
+    if (query.category) {
+      filter.category = query.category;
+    }
+
+    if (query.search) {
+      const regex = new RegExp(query.search.trim(), 'i');
+      filter.$or = [{ title: regex }, { excerpt: regex }];
+    }
+
+    const [items, total] = await Promise.all([
+      this.blogModel
+        .find(filter)
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit),
+      this.blogModel.countDocuments(filter),
+    ]);
+
     return {
-      success: true,
-      message:
-        'Blog created successfully',
-      blog,
+      items,
+      total,
+      page,
+      limit,
+      totalPages: Math.max(1, Math.ceil(total / limit)),
     };
   }
 
+  // Admin — single, by id
 
-  //Get all blogs
+  async findOneForAdmin(id: string) {
+    const blog = await this.blogModel.findById(id);
 
-  async findAll() {
-    const blogs = await this.blogModel.find().sort({
-      createdAt: -1
-    })
-    .exec();
-
-    return {
-      success: true,
-      count: blogs.length,
-      blogs
+    if (!blog) {
+      throw new NotFoundException('Blog post not found');
     }
+
+    return blog;
   }
 
+  // Admin — update
 
-  //get by id
-  async findOne(id: string) {
-
-    //validate MongoDb ID
-    if(!Types.ObjectId.isValid(id)) {
-      throw new BadRequestException("Invalid blog ID")
-    }
-
-    //Find Blog
-    const blog = await this.blogModel.findById(id).exec();
-
-    //blog not found
-    if(!blog) {
-      throw new BadRequestException("Blog not found")
-    }
-
-    return {
-      success: true,
-      blog
-    }
-
-  }
-
-  //get by slug
-  async findBySlug(slug: string) {
-
-    //Find blog using slug
-    const blog = await this.blogModel.findOne({slug: slug.toLowerCase()}).exec();
-
-
-    //blog not found
-    if(!blog) {
-      throw new BadRequestException("Blog not found")
-    }
-
-    return {
-      success: true,
-      blog
-    }
-  }
-
-
-  //update blog
-  async update(id: string, updateBlogDto: UpdateBlogDto, file?: Express.Multer.File) {
-
-    //Validate Mongo id
-    if(!Types.ObjectId.isValid(id)) {
-      throw new BadRequestException("Invalid blog ID")
-    }
-
-    //find Existing blog
-    const blog = await this.blogModel.findById(id).exec();
-    if(!blog) {
-      throw new BadRequestException("Blog not found")
-    }
-
-    //update slug if title change
-    if(updateBlogDto.title !== undefined &&
-       updateBlogDto.title !== blog.title
-    ) {
-      const newSlug = this.generateSlug(updateBlogDto.title);
-
-
-    //check duplicate slug
-    const existingBlog = await this.blogModel.findOne({
-      slug: newSlug,
-      _id: {$ne: id}
-    });
-
-    if(existingBlog) {
-      throw new BadRequestException("A blog with this title already exists")
-    }
-    blog.title = updateBlogDto.title;
-    blog.slug = newSlug
-  }
-
-  //update basic fields
-  if(updateBlogDto.category !== undefined) {
-    blog.category = updateBlogDto.category;
-  }
-
-  if(updateBlogDto.excerpt !== undefined) {
-    blog.excerpt = updateBlogDto.excerpt
-  }
-
-  if (
-    updateBlogDto.content !== undefined
+  async update(
+    id: string,
+    dto: UpdateBlogDto,
+    image?: { url: string; fileId: string },
   ) {
-    blog.content =
-      updateBlogDto.content;
-  }
+    const blog = await this.blogModel.findById(id);
 
-  if (
-    updateBlogDto.author !== undefined
-  ) {
-    blog.author =
-      updateBlogDto.author;
-  }
-
-
-
-  // 5. Update published status
-
-
-  if (
-    updateBlogDto.isPublished !== undefined
-  ) {
-
-    blog.isPublished =
-      updateBlogDto.isPublished;
-
-    if (updateBlogDto.isPublished) {
-
-      // Set published date when publishing
-      if (!blog.publishedAt) {
-        blog.publishedAt =
-          new Date();
-      }
-
-    } else {
-
-      // Remove published date
-      blog.publishedAt = undefined;
-    }
-  }
-
-
-
-  // 6. IMAGE UPDATE
-
-  // IMPORTANT:
-  // If no new image is provided,
-  // DO NOTHING.
-  //
-  // Therefore the existing image
-  // will NOT be uploaded again.
-
-
-  if (file) {
-
-    // Delete old ImageKit image
-    if (blog.imageFileId) {
-
-      await this.imagekitService
-        .deleteFile(
-          blog.imageFileId,
-        );
+    if (!blog) {
+      throw new NotFoundException('Blog post not found');
     }
 
+    if (dto.title && dto.title !== blog.title) {
+      blog.slug = await this.generateUniqueSlug(dto.title, id);
+    }
 
-    // Upload new image
-    const uploaded =
-      await this.imagekitService.uploadFile(
-        file,
-        'healthcare/blog',
-      );
+    Object.assign(blog, dto);
 
+    if (image) {
+      blog.image = image.url;
+      blog.imageFileId = image.fileId;
+    }
 
-    // Replace old image
-    blog.image =
-      uploaded.url;
+    // set publishedAt the first time a post goes live
+    if (dto.isPublished === true && !blog.publishedAt) {
+      blog.publishedAt = new Date();
+    }
 
-    blog.imageFileId =
-      uploaded.fileId;
-  }
-
-
-
-  // 7. Save updated blog
-
-
-  const updatedBlog =
     await blog.save();
-
-
-
-  // 8. Response
-
-
-  return {
-    success: true,
-
-    message:
-      'Blog updated successfully',
-
-    blog: updatedBlog,
-}
+    return blog;
   }
 
-  //delete blog
-  async deleteBlog(id: string) {
-    //validate mongo id
-    if(!Types.ObjectId.isValid(id)) {
-      throw new BadRequestException("Invalid blog id")
+  // Admin — delete
+
+  async remove(id: string) {
+    const blog = await this.blogModel.findByIdAndDelete(id);
+
+    if (!blog) {
+      throw new NotFoundException('Blog post not found');
     }
 
-    //find blog
-    const blog = await this.blogModel.findById(id).exec();
+    return { success: true, message: 'Blog post deleted' };
+    // Note: also delete blog.imageFileId from ImageKit here if you want
+    // to avoid orphaned images — see note below.
+  }
 
-    if(!blog) {
-      throw new BadRequestException("Blog not found")
+  // Public — list published only
+
+  async findPublished(query: FindBlogsDto) {
+    const page = query.page ?? 1;
+    const limit = query.limit ?? 9;
+
+    const filter: Record<string, any> = { isPublished: true };
+
+    if (query.category) {
+      filter.category = query.category;
     }
 
-    //Delete image from imagekit
-    if(blog.imageFileId) {
-      await this.imagekitService.deleteFile(blog.imageFileId);
+    if (query.search) {
+      const regex = new RegExp(query.search.trim(), 'i');
+      filter.$or = [{ title: regex }, { excerpt: regex }];
     }
 
-    //Delete blog from MongoDb
-    await this.blogModel.findByIdAndDelete(id).exec();
+    const [items, total] = await Promise.all([
+      this.blogModel
+        .find(filter)
+        .sort({ publishedAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit),
+      this.blogModel.countDocuments(filter),
+    ]);
 
     return {
-      success: true,
-      message: "Blog deleted successfully"
+      items,
+      total,
+      page,
+      limit,
+      totalPages: Math.max(1, Math.ceil(total / limit)),
+    };
+  }
+
+  // Public — single, by slug
+
+  async findPublishedBySlug(slug: string) {
+    const blog = await this.blogModel.findOne({ slug, isPublished: true });
+
+    if (!blog) {
+      throw new NotFoundException('Blog post not found');
     }
+
+    return blog;
   }
 }
