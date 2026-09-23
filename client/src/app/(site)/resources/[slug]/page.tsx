@@ -3,19 +3,19 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ShareButton } from "@/src/components/resources/ShareButton";
 import { Container } from "@/src/components/ui/Container";
-import { ArticleCard } from "@/src/components/resources/ArticleCard";
 import { BreadcrumbJsonLd } from "@/src/components/seo/BreadcrumbJsonLd";
 import { ArticleJsonLd } from "@/src/components/seo/ArticleJsonLd";
-import {
-  articles,
-  getArticleBySlug,
-  getRelatedArticles,
-} from "@/src/data/articles";
+import { apiPublic } from "@/src/lib/api/public";
+import type { Blog } from "@/src/types/blog";
 import { formatDate } from "@/src/lib/utils";
 import { createArticleMetadata } from "@/src/lib/seo/pages";
 
-export function generateStaticParams() {
-  return articles.map((article) => ({ slug: article.slug }));
+async function getArticle(slug: string): Promise<Blog | null> {
+  try {
+    return await apiPublic<Blog>(`/blog/${slug}`);
+  } catch {
+    return null;
+  }
 }
 
 export async function generateMetadata({
@@ -24,7 +24,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const article = await getArticle(slug);
 
   if (!article) {
     return { title: "Article Not Found" };
@@ -39,13 +39,11 @@ export default async function ArticleDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const article = await getArticle(slug);
 
   if (!article) {
     notFound();
   }
-
-  const related = getRelatedArticles(article.slug, article.category);
 
   const breadcrumbs = [
     { label: "Home", href: "/" },
@@ -59,7 +57,7 @@ export default async function ArticleDetailPage({
         title={article.title}
         description={article.excerpt}
         image={article.image}
-        datePublished={article.date}
+        datePublished={article.publishedAt ?? article.createdAt}
         author={article.author}
         slug={article.slug}
       />
@@ -72,7 +70,7 @@ export default async function ArticleDetailPage({
               <div className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.08em]">
                 <span className="text-secondary">{article.category}</span>
                 <span className="text-neutral-muted">
-                  {formatDate(article.date)}
+                  {formatDate(article.publishedAt ?? article.createdAt)}
                 </span>
               </div>
               <h1 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-light leading-[1.1] tracking-tight text-primary">
@@ -85,29 +83,33 @@ export default async function ArticleDetailPage({
           </Container>
         </section>
 
-        <div className="relative aspect-[16/7] w-full overflow-hidden bg-primary">
-          <Image
-            src={article.image}
-            alt={article.title}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
+        <div className="relative w-full overflow-hidden bg-primary">
+          {/* Blurred backdrop fills the space */}
+          <div
+            aria-hidden
+            className="absolute inset-0 scale-110 bg-cover bg-center opacity-60 blur-2xl"
+            style={{ backgroundImage: `url(${article.image})` }}
           />
+
+          {/* Sharp image, forced to 80% width, centered on top */}
+          <div className="relative mx-auto flex max-h-[70vh] w-full items-center justify-center py-8">
+            <Image
+              src={article.image}
+              alt={article.title}
+              width={1600}
+              height={900}
+              priority
+              sizes="80vw"
+              className="h-auto max-h-[70vh] w-[80%] object-contain"
+            />
+          </div>
         </div>
 
         <section className="py-14 lg:py-20">
           <Container>
             <div className="mx-auto max-w-3xl">
-              <div className="flex flex-col gap-5">
-                {article.content.map((paragraph, index) => (
-                  <p
-                    key={index}
-                    className="text-[15px] leading-relaxed text-primary/90"
-                  >
-                    {paragraph}
-                  </p>
-                ))}
+              <div className="whitespace-pre-wrap text-[15px] leading-relaxed text-primary/90">
+                {article.content}
               </div>
 
               <div className="mt-10 flex items-center gap-3 border-t border-neutral-line pt-6">
@@ -121,22 +123,6 @@ export default async function ArticleDetailPage({
           </Container>
         </section>
       </article>
-
-      {related.length > 0 && (
-        <section className="border-t border-neutral-line bg-neutral-bg py-16 lg:py-24">
-          <Container>
-            <p className="eyebrow mb-8">Related Articles</p>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              {related.map((relatedArticle) => (
-                <ArticleCard
-                  key={relatedArticle.slug}
-                  article={relatedArticle}
-                />
-              ))}
-            </div>
-          </Container>
-        </section>
-      )}
     </>
   );
 }

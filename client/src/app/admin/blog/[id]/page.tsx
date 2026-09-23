@@ -1,15 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { blogCategories, type BlogCategory } from "@/src/types/blog";
+import { blogCategories, type Blog, type BlogCategory } from "@/src/types/blog";
 import { api } from "@/src/lib/api/client";
 import { ApiError } from "@/src/lib/api/errors";
 
-export default function NewBlogPage() {
+export default function EditBlogPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const router = useRouter();
+  const { id } = use(params);
+
+  const [existing, setExisting] = useState<Blog | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
+
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
   const [form, setForm] = useState({
@@ -21,17 +31,33 @@ export default function NewBlogPage() {
     isPublished: true,
   });
   const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState("");
+  const [saveError, setSaveError] = useState("");
+
+  useEffect(() => {
+    api<Blog>(`/blog/admin/${id}`)
+      .then((blog) => {
+        setExisting(blog);
+        setImagePreview(blog.image);
+        setForm({
+          title: blog.title,
+          category: blog.category,
+          author: blog.author,
+          excerpt: blog.excerpt,
+          content: blog.content,
+          isPublished: blog.isPublished,
+        });
+      })
+      .catch((err) => {
+        setLoadError(
+          err instanceof ApiError ? err.message : "Failed to load blog post",
+        );
+      })
+      .finally(() => setLoading(false));
+  }, [id]);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
-    setError("");
-
-    if (!imageFile) {
-      setError("Please choose a cover image.");
-      return;
-    }
-
+    setSaveError("");
     setIsSaving(true);
 
     try {
@@ -42,18 +68,43 @@ export default function NewBlogPage() {
       fd.append("excerpt", form.excerpt);
       fd.append("content", form.content);
       fd.append("isPublished", String(form.isPublished));
-      fd.append("image", imageFile);
+      if (imageFile) fd.append("image", imageFile);
 
-      await api("/blog", { method: "POST", body: fd });
+      await api(`/blog/${id}`, { method: "PATCH", body: fd });
 
       router.push("/admin/blog");
     } catch (err) {
-      setError(
-        err instanceof ApiError ? err.message : "Failed to create blog post",
+      setSaveError(
+        err instanceof ApiError ? err.message : "Failed to update blog post",
       );
     } finally {
       setIsSaving(false);
     }
+  }
+
+  async function handleDelete() {
+    if (!confirm("Delete this blog post? This can't be undone.")) return;
+
+    try {
+      await api(`/blog/${id}`, { method: "DELETE" });
+      router.push("/admin/blog");
+    } catch (err) {
+      setSaveError(
+        err instanceof ApiError ? err.message : "Failed to delete blog post",
+      );
+    }
+  }
+
+  if (loading) {
+    return <div className="p-8 text-sm text-neutral-muted">Loading...</div>;
+  }
+
+  if (loadError || !existing) {
+    return (
+      <div className="p-8 text-sm text-red-600">
+        {loadError || "Blog post not found"}
+      </div>
+    );
   }
 
   return (
@@ -67,7 +118,7 @@ export default function NewBlogPage() {
       </Link>
 
       <h1 className="mb-6 text-2xl font-bold text-primary sm:text-3xl">
-        Add Blog Post
+        Edit Blog Post
       </h1>
 
       <form
@@ -82,7 +133,6 @@ export default function NewBlogPage() {
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
               className="admin-input"
-              placeholder="Blog title"
             />
           </Field>
 
@@ -92,10 +142,7 @@ export default function NewBlogPage() {
                 id="category"
                 value={form.category}
                 onChange={(e) =>
-                  setForm({
-                    ...form,
-                    category: e.target.value as BlogCategory,
-                  })
+                  setForm({ ...form, category: e.target.value as BlogCategory })
                 }
                 className="admin-input"
               >
@@ -113,7 +160,6 @@ export default function NewBlogPage() {
                 value={form.author}
                 onChange={(e) => setForm({ ...form, author: e.target.value })}
                 className="admin-input"
-                placeholder="Author name (optional)"
               />
             </Field>
           </div>
@@ -126,49 +172,29 @@ export default function NewBlogPage() {
               onChange={(e) => {
                 const file = e.target.files?.[0] ?? null;
                 setImageFile(file);
-                setImagePreview(file ? URL.createObjectURL(file) : "");
+                setImagePreview(
+                  file ? URL.createObjectURL(file) : existing.image,
+                );
               }}
               className="hidden"
             />
 
-            {imagePreview ? (
-              <div className="flex items-center gap-3 rounded-md border border-neutral-line p-2">
-                <img
-                  src={imagePreview}
-                  alt="Cover preview"
-                  className="h-14 w-14 shrink-0 rounded-md border border-neutral-line object-cover"
-                />
-                <span className="flex-1 truncate text-sm text-primary">
-                  {imageFile?.name}
-                </span>
-                <label
-                  htmlFor="image"
-                  className="cursor-pointer rounded-md border border-neutral-line bg-white px-3 py-1.5 text-xs font-medium text-primary hover:bg-neutral-bg"
-                >
-                  Change
-                </label>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setImageFile(null);
-                    setImagePreview("");
-                  }}
-                  className="rounded-md border border-neutral-line bg-white px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50"
-                >
-                  Remove
-                </button>
-              </div>
-            ) : (
+            <div className="flex items-center gap-3 rounded-md border border-neutral-line p-2">
+              <img
+                src={imagePreview}
+                alt="Cover preview"
+                className="h-14 w-14 shrink-0 rounded-md border border-neutral-line object-cover"
+              />
+              <span className="flex-1 truncate text-sm text-primary">
+                {imageFile?.name ?? "Current image"}
+              </span>
               <label
                 htmlFor="image"
-                className="admin-input flex cursor-pointer items-center justify-between text-neutral-muted hover:bg-neutral-bg"
+                className="cursor-pointer rounded-md border border-neutral-line bg-white px-3 py-1.5 text-xs font-medium text-primary hover:bg-neutral-bg"
               >
-                <span>Choose an image...</span>
-                <span className="rounded-md border border-neutral-line bg-white px-3 py-1 text-xs font-medium text-primary">
-                  Browse
-                </span>
+                Change
               </label>
-            )}
+            </div>
           </Field>
 
           <Field label="Excerpt" htmlFor="excerpt">
@@ -180,7 +206,6 @@ export default function NewBlogPage() {
               value={form.excerpt}
               onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
               className="admin-input resize-none"
-              placeholder="Short summary shown in blog previews"
             />
           </Field>
 
@@ -192,7 +217,6 @@ export default function NewBlogPage() {
               value={form.content}
               onChange={(e) => setForm({ ...form, content: e.target.value })}
               className="admin-input resize-none font-mono text-sm"
-              placeholder="Full blog content"
             />
           </Field>
 
@@ -209,30 +233,36 @@ export default function NewBlogPage() {
               }
               className="h-4 w-4 rounded border-neutral-line"
             />
-            Publish immediately
+            Published
           </label>
         </div>
 
-        {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
+        {saveError && <p className="mt-4 text-sm text-red-600">{saveError}</p>}
 
-        <div className="mt-8 flex justify-end gap-3">
-          <Link
-            href="/admin/blog"
-            className="rounded-md border border-neutral-line px-4 py-2.5 text-sm font-medium text-primary hover:bg-neutral-bg"
-          >
-            Cancel
-          </Link>
+        <div className="mt-8 flex justify-between gap-3">
           <button
-            type="submit"
-            disabled={isSaving}
-            className="rounded-md bg-secondary px-4 py-2.5 text-sm font-semibold text-white hover:bg-secondary/90 disabled:opacity-60"
+            type="button"
+            onClick={handleDelete}
+            className="rounded-md border border-red-200 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50"
           >
-            {isSaving
-              ? "Saving..."
-              : form.isPublished
-                ? "Publish"
-                : "Save Draft"}
+            Delete Blog Post
           </button>
+
+          <div className="flex gap-3">
+            <Link
+              href="/admin/blog"
+              className="rounded-md border border-neutral-line px-4 py-2.5 text-sm font-medium text-primary hover:bg-neutral-bg"
+            >
+              Cancel
+            </Link>
+            <button
+              type="submit"
+              disabled={isSaving}
+              className="rounded-md bg-secondary px-4 py-2.5 text-sm font-semibold text-white hover:bg-secondary/90 disabled:opacity-60"
+            >
+              {isSaving ? "Saving..." : "Save Changes"}
+            </button>
+          </div>
         </div>
       </form>
     </div>
