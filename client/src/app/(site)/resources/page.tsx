@@ -13,16 +13,27 @@ interface BlogListResponse {
 }
 
 export default async function ResourcesPage() {
-  const data = await apiPublic<BlogListResponse>("/blog?limit=100");
+  let data: BlogListResponse = {
+    items: [],
+    total: 0,
+  };
+
+  try {
+    data = await apiPublic<BlogListResponse>("/blog?limit=100");
+  } catch (error) {
+    console.error("Failed to fetch resources:", error);
+  }
 
   return (
     <>
       <section className="border-b border-neutral-line bg-neutral-bg">
         <Container className="py-16 lg:py-20">
           <p className="eyebrow mb-4">Resources</p>
+
           <h1 className="max-w-2xl text-4xl sm:text-5xl font-light leading-[1.1] tracking-tight text-primary">
             Resources for sleep and respiratory care in Nepal
           </h1>
+
           <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-neutral-muted">
             Insights on sleep medicine, respiratory care, biomedical equipment,
             and product guidance from Himanshi Biomedical.
