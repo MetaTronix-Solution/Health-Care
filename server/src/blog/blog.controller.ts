@@ -1,3 +1,5 @@
+import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { BlogService } from './blog.service';
 import {
   Body,
   Controller,
@@ -16,6 +18,21 @@ import 'multer';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
+import { AdminAuthGuard } from 'src/auth/guards/admin-auth.guard';
+
+@Controller('blog')
+export class BlogController {
+    constructor(
+        private readonly blogService: BlogService
+    ) {}
+
+    //create blog
+    @Post()
+    @UseGuards(AdminAuthGuard)
+    @UseInterceptors(FileInterceptor("image"))
+
+    async create(
+        @Body() createBlogDto: CreateBlogDto,
 import { FindBlogsDto } from './dto/find-blogs.dto';
 import { AdminAuthGuard } from '../auth/guards/admin-auth.guard';
 import { ImagekitService } from '../imagekit/imagekit.service';
@@ -72,6 +89,17 @@ export class BlogController {
     return this.blogService.remove(id);
   }
 
+    // update blog
+    @Patch(":id")
+    @UseGuards(AdminAuthGuard)
+    @UseInterceptors(FileInterceptor("image"))
+    async update(
+        @Param("id") id: string,
+        @Body() updateBlogDto: UpdateBlogDto,
+        @UploadedFile() file?: Express.Multer.File,
+    ) {
+        return this.blogService.update(id, updateBlogDto, file)
+    }
   // PUBLIC ROUTES
 
   @Get()
@@ -79,6 +107,14 @@ export class BlogController {
     return this.blogService.findPublished(query);
   }
 
+    //delete blog
+    @Delete(":id")
+    @UseGuards(AdminAuthGuard)
+    async deleteBlog(
+        @Param("id") id: string,
+    ) {
+        return this.blogService.deleteBlog(id);
+    }
   @Get(':slug')
   async findPublishedBySlug(@Param('slug') slug: string) {
     return this.blogService.findPublishedBySlug(slug);

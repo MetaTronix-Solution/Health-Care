@@ -14,9 +14,7 @@ import { AdminLoginDto } from './dto/admin-login.dto';
 export class AuthService {
   constructor(
     private readonly adminService: AdminService,
-
     private readonly jwtService: JwtService,
-
     private readonly configService: ConfigService,
 
   ) {}
@@ -24,7 +22,6 @@ export class AuthService {
 
 
   // LOGIN
-
   async login( adminLoginDto: AdminLoginDto ) {
 
     const { email,  password } = adminLoginDto;
@@ -68,8 +65,6 @@ export class AuthService {
 
 
     // Generate tokens
-
-
     const tokens =
       await this.generateTokens(
         admin._id.toString(),
@@ -79,8 +74,6 @@ export class AuthService {
 
 
     // Save refresh token ID
-
-
     await this.adminService
       .updateRefreshTokenId(
         admin._id.toString(),
@@ -90,7 +83,6 @@ export class AuthService {
 
 
     // Response
-
     return {
       message: 'Login successful',
       accessToken: tokens.accessToken,
@@ -115,7 +107,6 @@ export class AuthService {
 
     try {
       // 1. Verify refresh token
-
       const payload =
         await this.jwtService.verifyAsync(
           refreshToken,
@@ -128,9 +119,7 @@ export class AuthService {
         );
 
 
-
       // 2. Check jti
-
       if (!payload.jti) {
 
         throw new UnauthorizedException(
@@ -139,7 +128,6 @@ export class AuthService {
       }
 
       //Find admin
-
       const admin =
         await this.adminService.findById(
           payload.sub,
@@ -147,7 +135,6 @@ export class AuthService {
 
 
       if (!admin) {
-
         throw new UnauthorizedException(
           'Admin not found',
         );
@@ -155,7 +142,6 @@ export class AuthService {
 
       //Check active
       if (!admin.isActive) {
-
         throw new UnauthorizedException(
           'Admin account is inactive',
         );
@@ -165,22 +151,17 @@ export class AuthService {
 
       //Check stored jti
 
-
       if (!admin.refreshTokenId) {
-
         throw new UnauthorizedException(
           'Refresh token not found',
         );
       }
 
       // Compare jti
-
-
       if (
         payload.jti !==
         admin.refreshTokenId
       ) {
-
         throw new UnauthorizedException(
           'Invalid refresh token',
         );
@@ -188,7 +169,6 @@ export class AuthService {
 
 
       //Generate NEW tokens
-
 
       const tokens =
         await this.generateTokens(
@@ -198,8 +178,6 @@ export class AuthService {
 
 
       // Replace old jti
-
-
       await this.adminService
         .updateRefreshTokenId(
           admin._id.toString(),
@@ -209,8 +187,6 @@ export class AuthService {
 
 
       // Return tokens
-
-
       return {
         message: 'Token refreshed successfully',
         accessToken: tokens.accessToken,
@@ -236,10 +212,7 @@ export class AuthService {
   // GENERATE TOKENS
 
 
-  private async generateTokens(
-  adminId: string,
-  email: string,
-) {
+  private async generateTokens( adminId: string, email: string) {
 
   // Unique ID for this refresh token
   const refreshTokenId = randomUUID();
