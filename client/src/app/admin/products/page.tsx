@@ -1,7 +1,4 @@
 import type { Metadata } from "next";
-import { Plus } from "lucide-react";
-
-import { PageHeader } from "@/src/components/ui/PageHeader";
 import { Button } from "@/src/components/ui/Button";
 import { ProductsExplorer } from "@/src/components/admin/products/ProductsExplorer";
 import { products } from "@/src/data/products";
@@ -11,16 +8,19 @@ export const metadata: Metadata = createAdminMetadata("Products Management");
 
 export default function ProductsPage() {
   return (
-    <div className="admin-page">
-      <PageHeader
-        title="Products Management"
-        description="Manage and track your medical equipment inventory."
-        actions={
-          <Button href="/admin/products/new" icon={<Plus aria-hidden className="h-4 w-4" />}>
-            Add Product
-          </Button>
-        }
-      />
+    <div>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-primary sm:text-3xl">
+            Products Management
+          </h1>
+          <p className="mt-1 text-sm text-neutral-muted">
+            Manage and track your medical equipment inventory.
+          </p>
+        </div>
+
+        <Button href="/admin/products/new">Add Product</Button>
+      </div>
 
       <ProductsExplorer products={products} />
     </div>
