@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Eye, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 
 export function ProductRowActions({ productId }: { productId: string }) {
   const [open, setOpen] = useState(false);
@@ -43,13 +43,6 @@ export function ProductRowActions({ productId }: { productId: string }) {
           role="menu"
           className="absolute right-0 top-9 z-20 w-40 rounded-md border border-neutral-line bg-white py-1 text-left shadow-lg"
         >
-          <Link
-            href={`/resources/${productId}`}
-            role="menuitem"
-            className="flex items-center gap-2 px-3 py-2 text-sm text-primary hover:bg-neutral-bg"
-          >
-            <Eye aria-hidden className="h-4 w-4" /> View
-          </Link>
           <Link
             href={`/admin/products/${productId}`}
             role="menuitem"
