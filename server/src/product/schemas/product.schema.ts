@@ -1,78 +1,57 @@
-import {Prop,Schema,SchemaFactory,} from '@nestjs/mongoose';
-import {HydratedDocument,} from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument } from 'mongoose';
 
 export type ProductDocument = HydratedDocument<Product>;
 
-@Schema({
-  timestamps: true,
-})
+@Schema({ timestamps: true })
 export class Product {
-
-  // PRODUCT NAME
-  @Prop({
-    required: true,
-    trim: true,
-  })
+  @Prop({ required: true, trim: true })
   name!: string;
 
-
-  // DESCRIPTION
   @Prop({
     required: true,
+    unique: true,
+    lowercase: true,
     trim: true,
+    index: true,
   })
+  slug!: string;
+
+  @Prop({ required: true, trim: true, index: true })
+  category!: string;
+
+  @Prop({ required: true, trim: true })
+  manufacturer!: string;
+
+  @Prop({ required: true, trim: true, maxlength: 300 })
+  shortDescription!: string;
+
+  @Prop({ required: true, trim: true })
   description!: string;
 
-
-
-  // PRICE
-  @Prop({
-    required: true,
-    min: 0,
-  })
+  @Prop({ required: true, min: 0 })
   price!: number;
 
-
-
-  // STOCK
-  @Prop({
-    required: true,
-    default: 0,
-    min: 0,
-  })
+  @Prop({ required: true, default: 0, min: 0 })
   stock!: number;
 
-
-
-  // IMAGES
   @Prop({
-    type: [
-      {
-        url: {
-          type: String,
-          required: true,
-        },
-
-        fileId: {
-          type: String,
-          required: true,
-        },
-
-        name: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
-
+    type: [{ url: String, fileId: String, name: String }],
     default: [],
   })
-  images!: {
-    url: string;
-    fileId: string;
-    name: string;
-  }[];
+  images!: { url: string; fileId: string; name: string }[];
 
+  @Prop({
+    type: [{ label: String, value: String }],
+    default: [],
+  })
+  specifications!: { label: string; value: string }[];
+
+  @Prop({ default: true })
+  isPublished!: boolean;
+
+  @Prop({ default: 0, min: 0 })
+  views!: number;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
