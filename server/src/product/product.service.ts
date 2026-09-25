@@ -130,7 +130,6 @@ export class ProductService {
 
   async update(id: string, dto: UpdateProductDto, newImages?: UploadedImage[]) {
     const product = await this.productModel.findById(id);
-
     if (!product) {
       throw new NotFoundException('Product not found');
     }
@@ -139,9 +138,39 @@ export class ProductService {
       product.slug = await this.generateUniqueSlug(dto.name, id);
     }
 
-    Object.assign(product, dto);
+    const { specifications, removedSpecificationIds, ...rest } = dto;
+    Object.assign(product, rest);
 
-    // newly uploaded images are appended to the existing gallery
+    if (specifications) {
+      type SpecEntry = { _id?: string; label: string; value: string };
+
+      const existingById = new Map<string, SpecEntry>(
+        product.specifications.map((s: any) => [String(s._id), s]),
+      );
+      const removedIds = new Set(removedSpecificationIds ?? []);
+
+      const merged: SpecEntry[] = [];
+      for (const spec of specifications) {
+        if (spec._id && existingById.has(spec._id)) {
+          const existing = existingById.get(spec._id)!;
+          existing.label = spec.label;
+          existing.value = spec.value;
+          merged.push(existing);
+          existingById.delete(spec._id);
+        } else {
+          merged.push({ label: spec.label, value: spec.value });
+        }
+      }
+
+      for (const [existingId, existing] of existingById) {
+        if (!removedIds.has(existingId)) {
+          merged.push(existing);
+        }
+      }
+
+      product.specifications = merged as any;
+    }
+
     if (newImages && newImages.length > 0) {
       product.images = [...product.images, ...newImages];
     }

@@ -1,6 +1,10 @@
-import { IsString, IsNotEmpty, MaxLength } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, MaxLength } from 'class-validator';
 
 export class SpecificationDto {
+  @IsOptional()
+  @IsString()
+  _id?: string;
+
   @IsString()
   @IsNotEmpty()
   @MaxLength(100)
