@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { setSessionCookies } from "@/src/lib/auth/session";
+import { setRefreshCookie } from "@/src/lib/auth/session";
 
 export async function POST(req: Request) {
   const r = await fetch(`${process.env.API_URL}/auth/login`, {
@@ -12,8 +12,8 @@ export async function POST(req: Request) {
   const data = await r.json().catch(() => ({}));
   if (!r.ok) return NextResponse.json(data, { status: r.status });
 
-  const { accessToken, refreshToken, ...safe } = data;
-  const res = NextResponse.json(safe);
-  setSessionCookies(res, { accessToken, refreshToken });
+  const { refreshToken, ...rest } = data; // rest includes accessToken + admin info
+  const res = NextResponse.json(rest); // accessToken now goes to the browser in the body
+  setRefreshCookie(res, refreshToken);
   return res;
 }

@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
+import { api } from "@/src/lib/api/client";
+import { setAccessToken } from "@/src/lib/auth/token-store";
 
 export function LogoutButton() {
   const router = useRouter();
@@ -11,8 +13,10 @@ export function LogoutButton() {
   async function handleLogout() {
     setLoading(true);
     try {
-      await fetch("/api/auth/logout", { method: "POST" });
+      await api("/auth/logout", { method: "POST" }).catch(() => {});
     } finally {
+      setAccessToken(null);
+      await fetch("/api/auth/logout", { method: "POST" }); // clears refresh cookie
       router.replace("/login");
       router.refresh();
     }

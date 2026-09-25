@@ -4,30 +4,23 @@ export type Tokens = { accessToken: string; refreshToken: string };
 
 const secure = process.env.NODE_ENV === "production";
 const base = { httpOnly: true, secure, sameSite: "lax" as const, path: "/" };
-const inflight = new Map<string, Promise<Tokens | null>>();
 
-// 15 minutes, match JWT_ACCESS_EXPIRES in your backend .env
-export const ACCESS_MAX_AGE = 60 * 15;
 export const REFRESH_MAX_AGE = 60 * 60 * 24 * 7;
 
-export function setSessionCookies(res: NextResponse, t: Tokens) {
-  res.cookies.set("access_token", t.accessToken, {
-    ...base,
-    maxAge: ACCESS_MAX_AGE,
-  });
-  res.cookies.set("refresh_token", t.refreshToken, {
+// Only the refresh token becomes a cookie now
+export function setRefreshCookie(res: NextResponse, refreshToken: string) {
+  res.cookies.set("refresh_token", refreshToken, {
     ...base,
     maxAge: REFRESH_MAX_AGE,
   });
 }
 
 export function clearSessionCookies(res: NextResponse) {
-  res.cookies.delete("access_token");
   res.cookies.delete("refresh_token");
 }
 
-// Your backend allows only one refresh token per admin, so parallel refreshes
-// would fail. This shares one call per token.
+const inflight = new Map<string, Promise<Tokens | null>>();
+
 export function refreshTokens(refreshToken: string): Promise<Tokens | null> {
   let p = inflight.get(refreshToken);
   if (!p) {
