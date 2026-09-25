@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Plus } from "lucide-react";
 import {
   AdminActionBar,
@@ -14,98 +15,111 @@ import {
   CardTitle,
 } from "@/src/components/ui/Card";
 import { Input } from "@/src/components/ui/Input";
-import { Select } from "@/src/components/ui/Select";
 import { Textarea } from "@/src/components/ui/Textarea";
 import { FormField } from "@/src/components/ui/FormField";
 import { SpecificationList } from "@/src/components/admin/products/SpecificationList";
 import { ProductImageUpload } from "@/src/components/admin/products/ProductImageUpload";
-import { generateProductSeoDefaults } from "@/src/lib/seo/product-seo";
-import { COMPANY } from "@/src/data/company";
+import { api } from "@/src/lib/api/client";
+import { ApiError } from "@/src/lib/api/errors";
 import type {
-  AdminProduct as Product,
-  ProductSpecification,
+  AdminProduct,
+  AdminProductSpecification,
 } from "@/src/types/product";
 
 export interface ProductFormProps {
-  product?: Product;
-  manufacturers?: string[];
+  product?: AdminProduct;
 }
 
-const DEFAULT_MANUFACTURERS = [
-  "BMC Medical",
-  "Philips Healthcare",
-  "ResMed",
-  "Fisher & Paykel",
-];
-
-export function ProductForm({
-  product,
-  manufacturers = DEFAULT_MANUFACTURERS,
-}: ProductFormProps) {
-  const [name, setName] = useState(product?.name ?? "");
-  const [sku, setSku] = useState(product?.sku ?? "");
-  const [manufacturer, setManufacturer] = useState(
-    product?.manufacturer ?? manufacturers[0],
-  );
-  const [description, setDescription] = useState(
-    product?.fullDescription ?? "",
-  );
-  const [status, setStatus] = useState(product?.status ?? "draft");
-  const [basePrice, setBasePrice] = useState(
-    product?.basePrice?.toString() ?? "",
-  );
-  const [requiresApproval, setRequiresApproval] = useState(
-    product?.requiresClinicalApproval ?? false,
-  );
-  const [specifications, setSpecifications] = useState<ProductSpecification[]>(
-    product?.specifications ?? [{ label: "", value: "" }],
-  );
-  const [metaTitle, setMetaTitle] = useState(product?.seo.title ?? "");
-  const [metaDescription, setMetaDescription] = useState(
-    product?.seo.metaDescription ?? "",
-  );
-  const [metaKeywords, setMetaKeywords] = useState("");
-  const [slug, setSlug] = useState(product?.seo.slug ?? "");
-
+export function ProductForm({ product }: ProductFormProps) {
+  const router = useRouter();
   const isEditing = Boolean(product);
 
-  function applySeoDefaults() {
-    const defaults = generateProductSeoDefaults({
-      name,
-      shortDescription: description.slice(0, 160),
-    });
-    setMetaTitle(defaults.title);
-    setMetaDescription(defaults.metaDescription);
-    if (!slug || !isEditing) setSlug(defaults.slug);
+  const [name, setName] = useState(product?.name ?? "");
+  const [category, setCategory] = useState(product?.category ?? "");
+  const [manufacturer, setManufacturer] = useState(product?.manufacturer ?? "");
+  const [shortDescription, setShortDescription] = useState(
+    product?.shortDescription ?? "",
+  );
+  const [description, setDescription] = useState(product?.description ?? "");
+  const [price, setPrice] = useState(product?.price?.toString() ?? "");
+  const [stock, setStock] = useState(product?.stock?.toString() ?? "");
+  const [isPublished, setIsPublished] = useState(product?.isPublished ?? true);
+  const [specifications, setSpecifications] = useState<
+    AdminProductSpecification[]
+  >(
+    product?.specifications?.length
+      ? product.specifications.map((s) => ({
+          label: s.label ?? "",
+          value: s.value ?? "",
+        }))
+      : [{ label: "", value: "" }],
+  );
+
+  const [existingImages, setExistingImages] = useState(product?.images ?? []);
+  const [newFiles, setNewFiles] = useState<File[]>([]);
+  const [removedFileIds, setRemovedFileIds] = useState<string[]>([]);
+
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  function handleRemoveExisting(fileId: string) {
+    setExistingImages((prev) => prev.filter((img) => img.fileId !== fileId));
+    setRemovedFileIds((prev) => [...prev, fileId]);
   }
 
-  function submitProduct(publish: boolean) {
-    const seoDefaults = generateProductSeoDefaults({
-      name,
-      shortDescription: description.slice(0, 160),
-    });
-
-    console.info("Product form submitted", {
-      name,
-      sku,
-      manufacturer,
-      description,
-      status: publish ? "active" : status,
-      basePrice,
-      requiresApproval,
-      specifications,
-      seo: {
-        title: metaTitle || seoDefaults.title,
-        metaDescription: metaDescription || seoDefaults.metaDescription,
-        slug: slug || seoDefaults.slug,
-        keywords: metaKeywords || undefined,
-      },
-    });
+  function buildFormData() {
+    const fd = new FormData();
+    fd.append("name", name);
+    fd.append("category", category);
+    fd.append("manufacturer", manufacturer);
+    fd.append("shortDescription", shortDescription);
+    fd.append("description", description);
+    fd.append("price", price);
+    fd.append("stock", stock);
+    fd.append("isPublished", String(isPublished));
+    fd.append(
+      "specifications",
+      JSON.stringify(
+        specifications.filter((s) => s.label.trim() && s.value.trim()),
+      ),
+    );
+    newFiles.forEach((file) => fd.append("images", file));
+    return fd;
   }
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    submitProduct(false);
+    setError("");
+    setSaving(true);
+
+    try {
+      // remove any images the admin deleted from an existing product first
+      if (isEditing && removedFileIds.length > 0) {
+        await Promise.all(
+          removedFileIds.map((fileId) =>
+            api(`/products/${product!._id}/images/${fileId}`, {
+              method: "DELETE",
+            }),
+          ),
+        );
+      }
+
+      const fd = buildFormData();
+
+      if (isEditing) {
+        await api(`/products/${product!._id}`, { method: "PATCH", body: fd });
+      } else {
+        await api("/products", { method: "POST", body: fd });
+      }
+
+      router.push("/admin/products");
+    } catch (err) {
+      setError(
+        err instanceof ApiError ? err.message : "Failed to save product",
+      );
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -123,46 +137,54 @@ export function ProductForm({
               <FormField label="Product Name" htmlFor="product-name">
                 <Input
                   id="product-name"
-                  placeholder="e.g. CardioMonitor X-200"
+                  placeholder="e.g. BMC G3 A20"
                   value={name}
                   onChange={(event) => setName(event.target.value)}
                   required
                 />
               </FormField>
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                <FormField label="SKU" htmlFor="product-sku">
+                <FormField label="Category" htmlFor="product-category">
                   <Input
-                    id="product-sku"
-                    placeholder="MD-CMX-200"
-                    value={sku}
-                    onChange={(event) => setSku(event.target.value)}
+                    id="product-category"
+                    placeholder="e.g. Sleep Therapy"
+                    value={category}
+                    onChange={(event) => setCategory(event.target.value)}
                     required
                   />
                 </FormField>
                 <FormField label="Manufacturer" htmlFor="product-manufacturer">
-                  <Select
+                  <Input
                     id="product-manufacturer"
+                    placeholder="e.g. BMC Medical"
                     value={manufacturer}
                     onChange={(event) => setManufacturer(event.target.value)}
-                  >
-                    {manufacturers.map((item) => (
-                      <option key={item} value={item}>
-                        {item}
-                      </option>
-                    ))}
-                  </Select>
+                    required
+                  />
                 </FormField>
               </div>
               <FormField
-                label="Detailed Description"
-                htmlFor="product-description"
+                label="Short Description"
+                htmlFor="product-short-description"
               >
+                <Textarea
+                  id="product-short-description"
+                  placeholder="One or two sentences shown on product cards..."
+                  rows={2}
+                  maxLength={300}
+                  value={shortDescription}
+                  onChange={(event) => setShortDescription(event.target.value)}
+                  required
+                />
+              </FormField>
+              <FormField label="Full Description" htmlFor="product-description">
                 <Textarea
                   id="product-description"
                   placeholder="Enter comprehensive product details..."
                   rows={5}
                   value={description}
                   onChange={(event) => setDescription(event.target.value)}
+                  required
                 />
               </FormField>
             </CardContent>
@@ -192,61 +214,6 @@ export function ProductForm({
               />
             </CardContent>
           </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Search Engine Optimization</CardTitle>
-              <button
-                type="button"
-                onClick={applySeoDefaults}
-                className="text-sm font-medium text-secondary hover:underline"
-              >
-                Generate from product
-              </button>
-            </CardHeader>
-            <CardContent className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-              <FormField label="SEO Title" htmlFor="seo-title">
-                <Input
-                  id="seo-title"
-                  placeholder={`${name || "Product Name"} | ${COMPANY.name} Nepal`}
-                  value={metaTitle}
-                  onChange={(event) => setMetaTitle(event.target.value)}
-                />
-              </FormField>
-              <FormField label="URL Slug" htmlFor="seo-slug">
-                <Input
-                  id="seo-slug"
-                  placeholder="bmc-g3-a20-auto-cpap"
-                  value={slug}
-                  onChange={(event) => setSlug(event.target.value)}
-                />
-              </FormField>
-              <FormField
-                label="Meta Description"
-                htmlFor="seo-description"
-                hint="Recommended: 140–160 characters describing the product for search results."
-              >
-                <Textarea
-                  id="seo-description"
-                  rows={3}
-                  value={metaDescription}
-                  onChange={(event) => setMetaDescription(event.target.value)}
-                />
-              </FormField>
-              <FormField
-                label="Meta Keywords (optional)"
-                htmlFor="seo-keywords"
-                hint="Optional. Modern search engines rely primarily on page content and titles."
-              >
-                <Input
-                  id="seo-keywords"
-                  placeholder="CPAP, sleep apnea, BMC Medical, Nepal"
-                  value={metaKeywords}
-                  onChange={(event) => setMetaKeywords(event.target.value)}
-                />
-              </FormField>
-            </CardContent>
-          </Card>
         </div>
 
         <div className="flex flex-col gap-6">
@@ -255,40 +222,40 @@ export function ProductForm({
               <CardTitle>Business Settings</CardTitle>
             </CardHeader>
             <CardContent className="space-y-5">
-              <FormField label="Status" htmlFor="product-status">
-                <Select
-                  id="product-status"
-                  value={status}
-                  onChange={(event) =>
-                    setStatus(event.target.value as Product["status"])
-                  }
-                >
-                  <option value="draft">Draft</option>
-                  <option value="active">Active</option>
-                  <option value="archived">Archived</option>
-                </Select>
-              </FormField>
-              <FormField label="Base Price (USD)" htmlFor="product-price">
-                <Input
-                  id="product-price"
-                  type="number"
-                  min={0}
-                  step="0.01"
-                  placeholder="0.00"
-                  value={basePrice}
-                  onChange={(event) => setBasePrice(event.target.value)}
-                />
-              </FormField>
+              <div className="grid grid-cols-2 gap-5">
+                <FormField label="Price" htmlFor="product-price">
+                  <Input
+                    id="product-price"
+                    type="number"
+                    min={0}
+                    step="0.01"
+                    placeholder="0.00"
+                    value={price}
+                    onChange={(event) => setPrice(event.target.value)}
+                    required
+                  />
+                </FormField>
+                <FormField label="Stock" htmlFor="product-stock">
+                  <Input
+                    id="product-stock"
+                    type="number"
+                    min={0}
+                    step="1"
+                    placeholder="0"
+                    value={stock}
+                    onChange={(event) => setStock(event.target.value)}
+                    required
+                  />
+                </FormField>
+              </div>
               <label className="flex items-center gap-2.5 text-sm text-primary">
                 <input
                   type="checkbox"
-                  checked={requiresApproval}
-                  onChange={(event) =>
-                    setRequiresApproval(event.target.checked)
-                  }
+                  checked={isPublished}
+                  onChange={(event) => setIsPublished(event.target.checked)}
                   className="h-4 w-4 rounded border-neutral-line text-secondary focus-visible:outline-2 focus-visible:outline-secondary"
                 />
-                Requires Clinical Approval
+                Published
               </label>
             </CardContent>
           </Card>
@@ -298,30 +265,30 @@ export function ProductForm({
               <CardTitle>Product Media</CardTitle>
             </CardHeader>
             <CardContent>
-              <ProductImageUpload />
+              <ProductImageUpload
+                existingImages={existingImages}
+                onRemoveExisting={handleRemoveExisting}
+                newFiles={newFiles}
+                onNewFilesChange={setNewFiles}
+              />
             </CardContent>
           </Card>
         </div>
       </div>
+
+      {error && <p className="text-sm text-red-600">{error}</p>}
 
       <AdminActionBar>
         <Button variant="ghost" href="/admin/products">
           Cancel
         </Button>
         <AdminActionBarGroup>
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={() => submitProduct(false)}
-          >
-            Save Draft
-          </Button>
-          <Button
-            type="button"
-            variant="primary"
-            onClick={() => submitProduct(true)}
-          >
-            {isEditing ? "Save Changes" : "Publish Product"}
+          <Button type="submit" variant="primary" disabled={saving}>
+            {saving
+              ? "Saving..."
+              : isEditing
+                ? "Save Changes"
+                : "Publish Product"}
           </Button>
         </AdminActionBarGroup>
       </AdminActionBar>

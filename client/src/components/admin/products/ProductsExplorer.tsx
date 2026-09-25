@@ -8,23 +8,28 @@ import { ProductRowActions } from "@/src/components/admin/products/ProductRowAct
 import { EmptyState } from "@/src/components/ui/EmptyState";
 import { Button } from "@/src/components/ui/Button";
 import { Card } from "@/src/components/ui/Card";
-import type { Product } from "@/src/types/product";
+import type { AdminProduct } from "@/src/types/product";
 
 const PAGE_SIZE = 8;
+const LOW_STOCK_THRESHOLD = 10;
 
-function StatusBadge({ status }: { status?: Product["status"] }) {
-  if (!status) return <span className="text-neutral-muted">—</span>;
+function getStockStatus(stock: number): string {
+  if (stock <= 0) return "Backordered";
+  if (stock <= LOW_STOCK_THRESHOLD) return "Low Stock";
+  return "In Stock";
+}
 
-  const styles: Record<string, string> = {
-    Published: "bg-emerald-50 text-emerald-700",
-    Draft: "bg-amber-50 text-amber-700",
-    Archived: "bg-neutral-bg text-neutral-muted",
-  };
+const stockStatusStyles: Record<string, string> = {
+  "In Stock": "bg-emerald-50 text-emerald-700",
+  "Low Stock": "bg-amber-50 text-amber-700",
+  Backordered: "bg-red-50 text-red-700",
+};
 
+function StatusBadge({ status }: { status: string }) {
   return (
     <span
       className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${
-        styles[status] ?? "bg-neutral-bg text-neutral-muted"
+        stockStatusStyles[status] ?? "bg-neutral-bg text-neutral-muted"
       }`}
     >
       {status}
@@ -32,7 +37,13 @@ function StatusBadge({ status }: { status?: Product["status"] }) {
   );
 }
 
-export function ProductsExplorer({ products }: { products: Product[] }) {
+export function ProductsExplorer({
+  products,
+  onProductDeleted,
+}: {
+  products: AdminProduct[];
+  onProductDeleted: () => void;
+}) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [page, setPage] = useState(1);
@@ -96,7 +107,6 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
         />
       ) : (
         <>
-          {/* Desktop / tablet table */}
           <div className="hidden overflow-x-auto sm:block">
             <table className="w-full text-left text-sm">
               <thead>
@@ -125,35 +135,36 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
                 </tr>
               </thead>
               <tbody>
-                {paginated.map((product, index) => (
-                  <tr key={product.slug ?? index} className="hairline">
+                {paginated.map((product) => (
+                  <tr key={product._id} className="hairline">
                     <td className="px-5 py-4 font-medium text-primary">
                       <Link
-                        href={`/admin/products/${product.slug}`}
+                        href={`/admin/products/${product._id}`}
                         className="hover:underline"
                       >
-                        {product.name ?? "Untitled product"}
+                        {product.name}
                       </Link>
                     </td>
                     <td className="px-5 py-4 text-neutral-muted">
-                      {product.category ?? "—"}
+                      {product.category}
                     </td>
                     <td className="px-5 py-4 text-neutral-muted">
-                      {product.manufacturer ?? "—"}
+                      {product.manufacturer}
                     </td>
                     <td className="px-5 py-4">
-                      <StatusBadge status={product.status} />
+                      <StatusBadge status={getStockStatus(product.stock)} />
                     </td>
                     <td className="px-5 py-4 text-neutral-muted">
-                      {product.views !== undefined
-                        ? product.views.toLocaleString()
-                        : "—"}
+                      {product.views.toLocaleString()}
                     </td>
                     <td className="px-5 py-4 text-neutral-muted">
-                      {product.updatedAt ? formatDate(product.updatedAt) : "—"}
+                      {formatDate(product.updatedAt)}
                     </td>
                     <td className="px-5 py-4">
-                      <ProductRowActions productId={product.slug} />
+                      <ProductRowActions
+                        id={product._id}
+                        onDeleted={onProductDeleted}
+                      />
                     </td>
                   </tr>
                 ))}
@@ -161,46 +172,37 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
             </table>
           </div>
 
-          {/* Mobile stacked cards */}
           <div className="divide-y divide-neutral-line sm:hidden">
-            {paginated.map((product, index) => (
-              <div
-                key={product.slug ?? index}
-                className="flex flex-col gap-2 px-4 py-4"
-              >
+            {paginated.map((product) => (
+              <div key={product._id} className="flex flex-col gap-2 px-4 py-4">
                 <div className="flex items-start justify-between gap-3">
                   <Link
-                    href={`/admin/products/${product.slug}`}
+                    href={`/admin/products/${product._id}`}
                     className="min-w-0 truncate font-medium text-primary hover:underline"
                   >
-                    {product.name ?? "Untitled product"}
+                    {product.name}
                   </Link>
                   <div className="shrink-0">
-                    <ProductRowActions productId={product.slug} />
+                    <ProductRowActions
+                      id={product._id}
+                      onDeleted={onProductDeleted}
+                    />
                   </div>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
-                  <StatusBadge status={product.status} />
-                  {product.category && (
-                    <span className="text-xs text-neutral-muted">
-                      {product.category}
-                    </span>
-                  )}
+                  <StatusBadge status={getStockStatus(product.stock)} />
+                  <span className="text-xs text-neutral-muted">
+                    {product.category}
+                  </span>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-neutral-muted">
-                  <span>{product.manufacturer ?? "—"}</span>
+                  <span>{product.manufacturer}</span>
                   <span aria-hidden>·</span>
-                  <span>
-                    {product.views !== undefined
-                      ? `${product.views.toLocaleString()} views`
-                      : "— views"}
-                  </span>
+                  <span>{product.views.toLocaleString()} views</span>
                   <span aria-hidden>·</span>
-                  <span>
-                    {product.updatedAt ? formatDate(product.updatedAt) : "—"}
-                  </span>
+                  <span>{formatDate(product.updatedAt)}</span>
                 </div>
               </div>
             ))}
@@ -217,11 +219,11 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
                 variant="secondary"
                 size="sm"
                 disabled={currentPage === 1}
-                onClick={() => setPage((value) => Math.max(1, value - 1))}
+                onClick={() => setPage((v) => Math.max(1, v - 1))}
               >
                 Prev
               </Button>
-              {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
                 (pageNumber) => (
                   <button
                     key={pageNumber}
@@ -244,9 +246,7 @@ export function ProductsExplorer({ products }: { products: Product[] }) {
                 variant="secondary"
                 size="sm"
                 disabled={currentPage === totalPages}
-                onClick={() =>
-                  setPage((value) => Math.min(totalPages, value + 1))
-                }
+                onClick={() => setPage((v) => Math.min(totalPages, v + 1))}
               >
                 Next
               </Button>

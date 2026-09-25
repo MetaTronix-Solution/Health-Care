@@ -1,5 +1,7 @@
 import type { LucideIcon } from "lucide-react";
-// Public-facing catalog product (marketing site)
+
+// Public-facing catalog product (marketing site, static data)
+
 export interface ProductSpec {
   label: string;
   value: string;
@@ -36,48 +38,47 @@ export interface Product {
   manufacturer?: string;
   status?: "Published" | "Draft" | "Archived";
   views?: number;
-  updatedAt?: string; // ISO date, e.g. "2026-08-15"
+  updatedAt?: string;
   transducerTech?: string;
   details: ProductDetailSection[];
   applications: string[];
   downloads: { label: string; href: string }[];
 }
 
-// Admin dashboard product (clinical admin portal)
-export type AdminProductStatus =
-  | "active"
-  | "draft"
-  | "archived"
-  | "low-stock"
-  | "backordered";
-
-export type ProductSpecification = {
-  label: string;
-  value: string;
-};
-
-export type AdminProduct = {
-  id: string;
-  name: string;
-  sku: string;
-  category: string;
-  manufacturer: string;
-  shortDescription: string;
-  fullDescription: string;
-  status: AdminProductStatus;
-  basePrice: number;
-  requiresClinicalApproval: boolean;
-  views: number;
-  lastUpdated: string;
-  specifications: ProductSpecification[];
-  imageUrl?: string;
-  seo: {
-    title: string;
-    metaDescription: string;
-    slug: string;
-  };
-};
-
 export type SortOption = "featured" | "name-asc" | "name-desc";
 
 export type ViewMode = "grid" | "list";
+
+// Admin dashboard product (real backend shape — matches NestJS schema)
+
+export interface AdminProductSpecification {
+  label: string;
+  value: string;
+}
+
+export interface AdminProductImage {
+  url: string;
+  fileId: string;
+  name: string;
+}
+
+export type AdminStockStatus = "In Stock" | "Low Stock" | "Backordered";
+
+export interface AdminProduct {
+  _id: string;
+  name: string;
+  slug: string;
+  category: string;
+  manufacturer: string;
+  shortDescription: string;
+  description: string;
+  price: number;
+  stock: number;
+  images: AdminProductImage[];
+  specifications: AdminProductSpecification[];
+  isPublished: boolean;
+  views: number;
+  stockStatus?: AdminStockStatus;
+  createdAt: string;
+  updatedAt: string;
+}
