@@ -1,15 +1,29 @@
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
 import { BlogExplorer } from "@/src/components/admin/blog/BlogExplorer";
-import { apiServer } from "@/src/lib/api/server";
-import type { Blog } from "@/src/types/blog";
 import { Button } from "@/src/components/ui/Button";
+import { api } from "@/src/lib/api/client";
+import type { Blog } from "@/src/types/blog";
 
 interface BlogListResponse {
   items: Blog[];
   total: number;
 }
 
-export default async function AdminBlogPage() {
-  const data = await apiServer<BlogListResponse>("/blog/admin?limit=1000");
+export default function AdminBlogPage() {
+  const [blogs, setBlogs] = useState<Blog[] | null>(null);
+  const [error, setError] = useState("");
+
+  const fetchBlogs = useCallback(() => {
+    api<BlogListResponse>("/blog/admin?limit=1000")
+      .then((data) => setBlogs(data.items))
+      .catch(() => setError("Failed to load blog posts"));
+  }, []);
+
+  useEffect(() => {
+    fetchBlogs();
+  }, [fetchBlogs]);
 
   return (
     <div>
@@ -24,7 +38,13 @@ export default async function AdminBlogPage() {
         <Button href="/admin/blog/new">Add Article</Button>
       </div>
 
-      <BlogExplorer blogs={data.items} />
+      {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
+
+      {blogs === null && !error ? (
+        <p className="text-sm text-neutral-muted">Loading...</p>
+      ) : (
+        <BlogExplorer blogs={blogs ?? []} onBlogDeleted={fetchBlogs} />
+      )}
     </div>
   );
 }

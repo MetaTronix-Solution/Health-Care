@@ -2,13 +2,17 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { api } from "@/src/lib/api/client";
 
-export function BlogRowActions({ id, slug }: { id: string; slug: string }) {
-  const router = useRouter();
+export function BlogRowActions({
+  id,
+  onDeleted,
+}: {
+  id: string;
+  onDeleted: () => void;
+}) {
   const [open, setOpen] = useState(false);
   const [coords, setCoords] = useState({ top: 0, left: 0 });
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -17,7 +21,7 @@ export function BlogRowActions({ id, slug }: { id: string; slug: string }) {
   function openMenu() {
     const rect = buttonRef.current?.getBoundingClientRect();
     if (rect) {
-      setCoords({ top: rect.bottom + 4, left: rect.right - 160 }); // 160 = menu width (w-40)
+      setCoords({ top: rect.bottom + 4, left: rect.right - 160 });
     }
     setOpen(true);
   }
@@ -42,7 +46,7 @@ export function BlogRowActions({ id, slug }: { id: string; slug: string }) {
 
     try {
       await api(`/blog/${id}`, { method: "DELETE" });
-      router.refresh();
+      onDeleted();
     } catch {
       alert("Failed to delete blog post");
     }

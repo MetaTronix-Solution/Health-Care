@@ -1,5 +1,8 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { InquiriesExplorer } from "@/src/components/admin/inquiries/InquiriesExplorer";
-import { apiServer } from "@/src/lib/api/server";
+import { api } from "@/src/lib/api/client";
 import type { Inquiry } from "@/src/types/inquiry";
 
 interface InquiryListResponse {
@@ -7,8 +10,15 @@ interface InquiryListResponse {
   total: number;
 }
 
-export default async function AdminInquiriesPage() {
-  const data = await apiServer<InquiryListResponse>("/contact?limit=1000");
+export default function AdminInquiriesPage() {
+  const [inquiries, setInquiries] = useState<Inquiry[] | null>(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    api<InquiryListResponse>("/contact?limit=1000")
+      .then((data) => setInquiries(data.items))
+      .catch(() => setError("Failed to load inquiries"));
+  }, []);
 
   return (
     <div>
@@ -23,7 +33,13 @@ export default async function AdminInquiriesPage() {
         </div>
       </div>
 
-      <InquiriesExplorer inquiries={data.items} />
+      {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
+
+      {inquiries === null && !error ? (
+        <p className="text-sm text-neutral-muted">Loading...</p>
+      ) : (
+        <InquiriesExplorer inquiries={inquiries ?? []} />
+      )}
     </div>
   );
 }

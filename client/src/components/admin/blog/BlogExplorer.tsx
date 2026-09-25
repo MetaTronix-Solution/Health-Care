@@ -23,7 +23,13 @@ const statusLabel = {
   false: "Draft",
 } as const;
 
-export function BlogExplorer({ blogs }: { blogs: Blog[] }) {
+export function BlogExplorer({
+  blogs,
+  onBlogDeleted,
+}: {
+  blogs: Blog[];
+  onBlogDeleted: () => void;
+}) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [status, setStatus] = useState("all");
@@ -157,7 +163,7 @@ export function BlogExplorer({ blogs }: { blogs: Blog[] }) {
                       </Badge>
                     </td>
                     <td className="px-5 py-4">
-                      <BlogRowActions id={blog._id} slug={blog.slug} />
+                      <BlogRowActions id={blog._id} onDeleted={onBlogDeleted} />
                     </td>
                   </tr>
                 ))}
@@ -177,7 +183,7 @@ export function BlogExplorer({ blogs }: { blogs: Blog[] }) {
                     {blog.title}
                   </Link>
                   <div className="shrink-0">
-                    <BlogRowActions id={blog._id} slug={blog.slug} />
+                    <BlogRowActions id={blog._id} onDeleted={onBlogDeleted} />
                   </div>
                 </div>
 

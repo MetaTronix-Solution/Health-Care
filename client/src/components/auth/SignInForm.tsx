@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { Input } from "@/src/components/ui/Input";
 import { Button } from "@/src/components/ui/Button";
+import { setAccessToken } from "@/src/lib/auth/token-store";
 
 export function SignInForm() {
   const router = useRouter();
@@ -36,6 +37,9 @@ export function SignInForm() {
         setError(data?.message ?? "Login failed");
         return;
       }
+
+      const data = await res.json();
+      setAccessToken(data.accessToken);
 
       router.replace("/admin/dashboard");
       router.refresh();
