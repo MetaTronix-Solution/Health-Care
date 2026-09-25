@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
 import {
   AdminActionBar,
   AdminActionBarGroup,
@@ -17,13 +16,13 @@ import {
 import { Input } from "@/src/components/ui/Input";
 import { Textarea } from "@/src/components/ui/Textarea";
 import { FormField } from "@/src/components/ui/FormField";
-import { SpecificationList } from "@/src/components/admin/products/SpecificationList";
+import { DetailSectionList } from "@/src/components/admin/products/DetailSectionList";
 import { ProductImageUpload } from "@/src/components/admin/products/ProductImageUpload";
 import { api } from "@/src/lib/api/client";
 import { ApiError } from "@/src/lib/api/errors";
 import type {
   AdminProduct,
-  AdminProductSpecification,
+  AdminProductDetailSection,
 } from "@/src/types/product";
 
 export interface ProductFormProps {
@@ -45,22 +44,24 @@ export function ProductForm({ product }: ProductFormProps) {
   const [stock, setStock] = useState(product?.stock?.toString() ?? "");
   const [isPublished, setIsPublished] = useState(product?.isPublished ?? true);
 
-  const initialSpecs: AdminProductSpecification[] = product?.specifications
-    ?.length
-    ? product.specifications.map((s) => ({
-        _id: s._id,
-        label: s.label ?? "",
-        value: s.value ?? "",
+  const initialDetails: AdminProductDetailSection[] = product?.details?.length
+    ? product.details.map((d) => ({
+        _id: d._id,
+        title: d.title ?? "",
+        body: d.body ?? "",
+        specs: (d.specs ?? []).map((s) => ({
+          label: s.label ?? "",
+          value: s.value ?? "",
+        })),
       }))
-    : [{ label: "", value: "" }];
+    : [];
 
-  const [specifications, setSpecifications] =
-    useState<AdminProductSpecification[]>(initialSpecs);
+  const [details, setDetails] =
+    useState<AdminProductDetailSection[]>(initialDetails);
 
   const [existingImages, setExistingImages] = useState(product?.images ?? []);
   const [newFiles, setNewFiles] = useState<File[]>([]);
   const [removedFileIds, setRemovedFileIds] = useState<string[]>([]);
-  const [removedSpecIds, setRemovedSpecIds] = useState<string[]>([]);
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -80,13 +81,17 @@ export function ProductForm({ product }: ProductFormProps) {
     fd.append("price", price);
     fd.append("stock", stock);
     fd.append("isPublished", String(isPublished));
-    fd.append(
-      "specifications",
-      JSON.stringify(
-        specifications.filter((s) => s.label.trim() && s.value.trim()),
-      ),
-    );
-    fd.append("removedSpecificationIds", JSON.stringify(removedSpecIds));
+
+    const cleanDetails = details
+      .filter((d) => d.title.trim() && d.body.trim())
+      .map((d) => ({
+        _id: d._id,
+        title: d.title,
+        body: d.body,
+        specs: d.specs.filter((s) => s.label.trim() && s.value.trim()),
+      }));
+
+    fd.append("details", JSON.stringify(cleanDetails));
     newFiles.forEach((file) => fd.append("images", file));
     return fd;
   }
@@ -195,29 +200,10 @@ export function ProductForm({ product }: ProductFormProps) {
 
           <Card>
             <CardHeader>
-              <CardTitle>Technical Specifications</CardTitle>
-              <button
-                type="button"
-                onClick={() =>
-                  setSpecifications((prev) => [
-                    ...prev,
-                    { label: "", value: "" },
-                  ])
-                }
-                className="flex items-center gap-1.5 text-sm font-medium text-secondary hover:underline"
-              >
-                <Plus aria-hidden className="h-4 w-4" />
-                Add Field
-              </button>
+              <CardTitle>Technical Details</CardTitle>
             </CardHeader>
             <CardContent>
-              <SpecificationList
-                specifications={specifications}
-                onChange={setSpecifications}
-                onRemove={(id) =>
-                  id && setRemovedSpecIds((prev) => [...prev, id])
-                }
-              />
+              <DetailSectionList sections={details} onChange={setDetails} />
             </CardContent>
           </Card>
         </div>
