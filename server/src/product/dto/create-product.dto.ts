@@ -1,6 +1,5 @@
-import { Transform, Type } from 'class-transformer';
+import { Transform } from 'class-transformer';
 import {
-  IsArray,
   IsBoolean,
   IsNotEmpty,
   IsNumber,
@@ -8,9 +7,14 @@ import {
   IsString,
   Min,
   MaxLength,
-  ValidateNested,
 } from 'class-validator';
-import { SpecificationDto } from './specification.dto';
+import { IsValidSpecifications } from './is-valid-specifications.validator';
+
+export interface SpecificationInput {
+  _id?: string;
+  label: string;
+  value: string;
+}
 
 export class CreateProductDto {
   @IsString()
@@ -47,8 +51,6 @@ export class CreateProductDto {
   @Min(0)
   stock!: number;
 
-  // Arrives from multipart/form-data as a JSON string, e.g.
-  // fd.append("specifications", JSON.stringify([{ label, value }]))
   @Transform(({ value }) => {
     if (typeof value === 'string') {
       try {
@@ -59,11 +61,9 @@ export class CreateProductDto {
     }
     return value;
   })
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => SpecificationDto)
   @IsOptional()
-  specifications?: SpecificationDto[];
+  @IsValidSpecifications()
+  specifications?: SpecificationInput[];
 
   @IsBoolean()
   @IsOptional()

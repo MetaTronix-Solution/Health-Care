@@ -7,11 +7,13 @@ import type { AdminProductSpecification } from "@/src/types/product";
 export interface SpecificationListProps {
   specifications: AdminProductSpecification[];
   onChange: (specifications: AdminProductSpecification[]) => void;
+  onRemove?: (id?: string) => void;
 }
 
 export function SpecificationList({
   specifications,
   onChange,
+  onRemove,
 }: SpecificationListProps) {
   function updateAt(index: number, patch: Partial<AdminProductSpecification>) {
     const next = specifications.map((spec, i) =>
@@ -21,13 +23,18 @@ export function SpecificationList({
   }
 
   function removeAt(index: number) {
+    const removed = specifications[index];
     onChange(specifications.filter((_, i) => i !== index));
+    onRemove?.(removed._id);
   }
 
   return (
     <div className="space-y-3">
       {specifications.map((spec, index) => (
-        <div key={index} className="flex items-center gap-3">
+        <div
+          key={spec._id ?? `new-${index}`}
+          className="flex items-center gap-3"
+        >
           <Input
             aria-label={`Specification ${index + 1} name`}
             placeholder="Property Name"
