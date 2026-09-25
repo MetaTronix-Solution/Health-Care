@@ -40,6 +40,8 @@ export interface Product {
   views?: number;
   updatedAt?: string;
   transducerTech?: string;
+  price?: number;
+  stock?: number;
   details: ProductDetailSection[];
   applications: string[];
   downloads: { label: string; href: string }[];

@@ -2,7 +2,23 @@ import { Phone, ArrowRight } from "lucide-react";
 import type { Product } from "@/src/types/product";
 import { COMPANY } from "@/src/data/company";
 
+function getStockLabel(stock?: number): {
+  label: string;
+  className: string;
+} | null {
+  if (stock === undefined) return null;
+  if (stock <= 0) {
+    return { label: "Out of Stock", className: "bg-red-50 text-red-700" };
+  }
+  if (stock <= 10) {
+    return { label: "Low Stock", className: "bg-amber-50 text-amber-700" };
+  }
+  return { label: "In Stock", className: "bg-green-50 text-green-700" };
+}
+
 export function ProductInformation({ product }: { product: Product }) {
+  const stockInfo = getStockLabel(product.stock);
+
   return (
     <div className="flex flex-col">
       <p className="eyebrow mb-3">{product.refCode}</p>
@@ -10,6 +26,21 @@ export function ProductInformation({ product }: { product: Product }) {
       <p className="text-body mt-5 max-w-md text-neutral-muted">
         {product.description}
       </p>
+
+      {product.price !== undefined && (
+        <div className="mt-5 flex items-center gap-3">
+          <span className="text-2xl font-semibold text-primary">
+            Rs. {product.price.toLocaleString()}
+          </span>
+          {stockInfo && (
+            <span
+              className={`inline-flex items-center rounded-full px-3 py-1 text-[12px] font-semibold ${stockInfo.className}`}
+            >
+              {stockInfo.label}
+            </span>
+          )}
+        </div>
+      )}
 
       <dl className="mt-8 space-y-3 border-t border-neutral-line pt-6">
         <div className="flex items-center justify-between">
