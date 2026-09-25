@@ -5,6 +5,10 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product, ProductDocument } from './schemas/product.schema';
+import {
+  ProductViewLog,
+  ProductViewLogDocument,
+} from './schemas/product-view-log.schema';
 import { Model } from 'mongoose';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -18,6 +22,8 @@ export class ProductService {
   constructor(
     @InjectModel(Product.name)
     private readonly productModel: Model<ProductDocument>,
+    @InjectModel(ProductViewLog.name)
+    private readonly productViewLogModel: Model<ProductViewLogDocument>,
     private readonly imagekitService: ImagekitService,
   ) {}
 
@@ -185,6 +191,15 @@ export class ProductService {
     return { success: true, message: 'Product deleted' };
   }
 
+  // Admin — top performing (dashboard widget)
+
+  async findTopPerforming(limit = 5) {
+    return this.productModel
+      .find({ isPublished: true })
+      .sort({ views: -1 })
+      .limit(limit);
+  }
+
   // Public — list published only
 
   async findPublished(query: FindProductsDto) {
@@ -236,6 +251,9 @@ export class ProductService {
     if (!product) {
       throw new NotFoundException('Product not found');
     }
+
+    // fire-and-forget log entry for the daily chart; don't block the response on it
+    this.productViewLogModel.create({ product: product._id }).catch(() => {});
 
     return product;
   }
