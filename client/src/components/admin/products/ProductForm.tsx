@@ -44,20 +44,23 @@ export function ProductForm({ product }: ProductFormProps) {
   const [price, setPrice] = useState(product?.price?.toString() ?? "");
   const [stock, setStock] = useState(product?.stock?.toString() ?? "");
   const [isPublished, setIsPublished] = useState(product?.isPublished ?? true);
-  const [specifications, setSpecifications] = useState<
-    AdminProductSpecification[]
-  >(
-    product?.specifications?.length
-      ? product.specifications.map((s) => ({
-          label: s.label ?? "",
-          value: s.value ?? "",
-        }))
-      : [{ label: "", value: "" }],
-  );
+
+  const initialSpecs: AdminProductSpecification[] = product?.specifications
+    ?.length
+    ? product.specifications.map((s) => ({
+        _id: s._id,
+        label: s.label ?? "",
+        value: s.value ?? "",
+      }))
+    : [{ label: "", value: "" }];
+
+  const [specifications, setSpecifications] =
+    useState<AdminProductSpecification[]>(initialSpecs);
 
   const [existingImages, setExistingImages] = useState(product?.images ?? []);
   const [newFiles, setNewFiles] = useState<File[]>([]);
   const [removedFileIds, setRemovedFileIds] = useState<string[]>([]);
+  const [removedSpecIds, setRemovedSpecIds] = useState<string[]>([]);
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -83,6 +86,7 @@ export function ProductForm({ product }: ProductFormProps) {
         specifications.filter((s) => s.label.trim() && s.value.trim()),
       ),
     );
+    fd.append("removedSpecificationIds", JSON.stringify(removedSpecIds));
     newFiles.forEach((file) => fd.append("images", file));
     return fd;
   }
@@ -93,7 +97,6 @@ export function ProductForm({ product }: ProductFormProps) {
     setSaving(true);
 
     try {
-      // remove any images the admin deleted from an existing product first
       if (isEditing && removedFileIds.length > 0) {
         await Promise.all(
           removedFileIds.map((fileId) =>
@@ -211,6 +214,9 @@ export function ProductForm({ product }: ProductFormProps) {
               <SpecificationList
                 specifications={specifications}
                 onChange={setSpecifications}
+                onRemove={(id) =>
+                  id && setRemovedSpecIds((prev) => [...prev, id])
+                }
               />
             </CardContent>
           </Card>

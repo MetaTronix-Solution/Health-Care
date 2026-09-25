@@ -52,6 +52,7 @@ export type ViewMode = "grid" | "list";
 // Admin dashboard product (real backend shape — matches NestJS schema)
 
 export interface AdminProductSpecification {
+  _id?: string;
   label: string;
   value: string;
 }

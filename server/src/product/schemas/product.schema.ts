@@ -42,7 +42,12 @@ export class Product {
   images!: { url: string; fileId: string; name: string }[];
 
   @Prop({
-    type: [{ label: String, value: String }],
+    type: [
+      {
+        label: { type: String, required: true },
+        value: { type: String, required: true },
+      },
+    ],
     default: [],
   })
   specifications!: { label: string; value: string }[];
