@@ -1,34 +1,48 @@
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+"use client";
+
+import { use, useEffect, useState } from "react";
 import { PageHeader } from "@/src/components/ui/PageHeader";
 import { AdminBreadcrumbs } from "@/src/components/admin/AdminBreadcrumbs";
 import { ProductForm } from "@/src/components/admin/products/ProductForm";
-import { products } from "@/src/data/products";
-import { createAdminMetadata } from "@/src/lib/seo/metadata";
+import { api } from "@/src/lib/api/client";
+import { ApiError } from "@/src/lib/api/errors";
+import type { AdminProduct } from "@/src/types/product";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}): Promise<Metadata> {
-  const { id } = await params;
-
-  const product = products.find((item) => item.slug === id);
-
-  return createAdminMetadata(product ? `Edit ${product.name}` : "Product Not Found");
-}
-
-export default async function ProductDetailPage({
+export default function ProductDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params;
+  const { id } = use(params);
+  const [product, setProduct] = useState<AdminProduct | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const product = products.find((item) => item.slug === id);
+  useEffect(() => {
+    api<AdminProduct>(`/products/admin/${id}`)
+      .then(setProduct)
+      .catch((err) =>
+        setError(
+          err instanceof ApiError ? err.message : "Failed to load product",
+        ),
+      )
+      .finally(() => setLoading(false));
+  }, [id]);
 
-  if (!product) {
-    notFound();
+  if (loading) {
+    return (
+      <div className="admin-page">
+        <p className="text-sm text-neutral-muted">Loading...</p>
+      </div>
+    );
+  }
+
+  if (error || !product) {
+    return (
+      <div className="admin-page">
+        <p className="text-sm text-red-600">{error || "Product not found"}</p>
+      </div>
+    );
   }
 
   return (
@@ -39,38 +53,11 @@ export default async function ProductDetailPage({
           { label: product.name },
         ]}
       />
-
       <PageHeader
         title={product.name}
         description={`Editing specifications and business rules for ${product.name}.`}
       />
-
-      <ProductForm
-        product={
-          product
-            ? {
-                id: product.slug,
-                name: product.name,
-                sku: product.refCode,
-                category: product.category,
-                manufacturer: "BMC Medical",
-                shortDescription: product.shortDescription,
-                fullDescription: product.description,
-                status: "active",
-                basePrice: 0,
-                requiresClinicalApproval: false,
-                views: 0,
-                lastUpdated: new Date().toISOString(),
-                specifications: [],
-                seo: {
-                  title: `${product.name} | Himanshi Biomedical Nepal`,
-                  metaDescription: product.shortDescription,
-                  slug: product.slug,
-                },
-              }
-            : undefined
-        }
-      />
+      <ProductForm product={product} />
     </div>
   );
 }

@@ -3,8 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { UploadCloud, X } from "lucide-react";
+import type { AdminProductImage } from "@/src/types/product";
 
-interface ImageItem {
+interface NewImageItem {
   id: string;
   file: File;
   url: string;
@@ -13,80 +14,115 @@ interface ImageItem {
 const MAX_IMAGES = 6;
 const MAX_SIZE_MB = 5;
 
-export function ProductImageUpload() {
+export interface ProductImageUploadProps {
+  existingImages: AdminProductImage[];
+  onRemoveExisting: (fileId: string) => void;
+  newFiles: File[];
+  onNewFilesChange: (files: File[]) => void;
+}
+
+export function ProductImageUpload({
+  existingImages,
+  onRemoveExisting,
+  newFiles,
+  onNewFilesChange,
+}: ProductImageUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [images, setImages] = useState<ImageItem[]>([]);
+  const [previews, setPreviews] = useState<NewImageItem[]>([]);
   const [isDragActive, setIsDragActive] = useState(false);
 
-  // Revoke object URLs on unmount to avoid leaking memory
   useEffect(() => {
+    const items = newFiles.map((file) => ({
+      id: `${file.name}-${file.size}`,
+      file,
+      url: URL.createObjectURL(file),
+    }));
+    setPreviews(items);
     return () => {
-      images.forEach((img) => URL.revokeObjectURL(img.url));
+      items.forEach((item) => URL.revokeObjectURL(item.url));
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [newFiles]);
+
+  const totalCount = existingImages.length + newFiles.length;
+  const canAddMore = totalCount < MAX_IMAGES;
 
   function handleFiles(files: FileList | null) {
     if (!files || files.length === 0) return;
 
     const incoming = Array.from(files);
-    const remainingSlots = MAX_IMAGES - images.length;
+    const remainingSlots = MAX_IMAGES - totalCount;
 
     const accepted = incoming
       .filter((file) => file.size <= MAX_SIZE_MB * 1024 * 1024)
-      .slice(0, remainingSlots)
-      .map((file) => ({
-        id: `${file.name}-${file.size}-${crypto.randomUUID()}`,
-        file,
-        url: URL.createObjectURL(file),
-      }));
+      .slice(0, remainingSlots);
 
     if (accepted.length === 0) return;
-    setImages((prev) => [...prev, ...accepted]);
+    onNewFilesChange([...newFiles, ...accepted]);
 
-    // allow re-selecting the same file again later
     if (inputRef.current) inputRef.current.value = "";
   }
 
-  function removeImage(id: string) {
-    setImages((prev) => {
-      const target = prev.find((img) => img.id === id);
-      if (target) URL.revokeObjectURL(target.url);
-      return prev.filter((img) => img.id !== id);
-    });
+  function removeNewFile(id: string) {
+    const target = previews.find((p) => p.id === id);
+    if (!target) return;
+    onNewFilesChange(newFiles.filter((f) => f !== target.file));
   }
-
-  const canAddMore = images.length < MAX_IMAGES;
 
   return (
     <div className="space-y-3">
       <input
         ref={inputRef}
         type="file"
-        accept="image/svg+xml,image/png,image/jpeg,image/gif"
+        accept="image/png,image/jpeg,image/webp"
         multiple
         className="sr-only"
         onChange={(event) => handleFiles(event.target.files)}
       />
 
-      {images.length > 0 && (
+      {(existingImages.length > 0 || previews.length > 0) && (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {images.map((img) => (
+          {existingImages.map((img) => (
+            <div
+              key={img.fileId}
+              className="relative overflow-hidden rounded-md border border-neutral-line"
+            >
+              <Image
+                src={img.url}
+                alt={img.name}
+                width={240}
+                height={160}
+                className="h-32 w-full object-cover"
+              />
+              <button
+                type="button"
+                onClick={() => onRemoveExisting(img.fileId)}
+                aria-label="Remove image"
+                className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-white/90 text-primary hover:bg-white focus-visible:outline-2 focus-visible:outline-secondary"
+              >
+                <X aria-hidden className="h-4 w-4" />
+              </button>
+            </div>
+          ))}
+
+          {previews.map((img) => (
             <div
               key={img.id}
               className="relative overflow-hidden rounded-md border border-neutral-line"
             >
               <Image
                 src={img.url}
-                alt="Uploaded product preview"
+                alt="New upload preview"
                 width={240}
                 height={160}
                 className="h-32 w-full object-cover"
                 unoptimized
               />
+              <span className="absolute left-2 top-2 rounded bg-secondary px-1.5 py-0.5 text-[10px] font-medium text-white">
+                New
+              </span>
               <button
                 type="button"
-                onClick={() => removeImage(img.id)}
+                onClick={() => removeNewFile(img.id)}
                 aria-label="Remove uploaded image"
                 className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-white/90 text-primary hover:bg-white focus-visible:outline-2 focus-visible:outline-secondary"
               >
@@ -122,7 +158,7 @@ export function ProductImageUpload() {
             Click to upload or drag and drop
           </span>
           <span className="text-xs text-neutral-muted">
-            SVG, PNG, JPG or GIF (max. {MAX_SIZE_MB}MB each, up to {MAX_IMAGES}{" "}
+            PNG, JPG or WEBP (max. {MAX_SIZE_MB}MB each, up to {MAX_IMAGES}{" "}
             images)
           </span>
         </button>

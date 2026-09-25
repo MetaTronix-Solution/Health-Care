@@ -2,18 +2,18 @@
 
 import { Trash2 } from "lucide-react";
 import { Input } from "@/src/components/ui/Input";
-import type { ProductSpecification } from "@/src/types/product";
+import type { AdminProductSpecification } from "@/src/types/product";
 
 export interface SpecificationListProps {
-  specifications: ProductSpecification[];
-  onChange: (specifications: ProductSpecification[]) => void;
+  specifications: AdminProductSpecification[];
+  onChange: (specifications: AdminProductSpecification[]) => void;
 }
 
 export function SpecificationList({
   specifications,
   onChange,
 }: SpecificationListProps) {
-  function updateAt(index: number, patch: Partial<ProductSpecification>) {
+  function updateAt(index: number, patch: Partial<AdminProductSpecification>) {
     const next = specifications.map((spec, i) =>
       i === index ? { ...spec, ...patch } : spec,
     );
@@ -31,14 +31,14 @@ export function SpecificationList({
           <Input
             aria-label={`Specification ${index + 1} name`}
             placeholder="Property Name"
-            value={spec.label}
+            value={spec.label ?? ""}
             onChange={(event) => updateAt(index, { label: event.target.value })}
             className="flex-1"
           />
           <Input
             aria-label={`Specification ${index + 1} value`}
             placeholder="Value"
-            value={spec.value}
+            value={spec.value ?? ""}
             onChange={(event) => updateAt(index, { value: event.target.value })}
             className="flex-1"
           />
