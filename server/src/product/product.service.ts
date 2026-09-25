@@ -62,8 +62,14 @@ export class ProductService {
     try {
       const slug = await this.generateUniqueSlug(dto.name);
 
+      const details = dto.details?.map((section, i) => ({
+        ...section,
+        index: String(i + 1),
+      }));
+
       const product = await this.productModel.create({
         ...dto,
+        details,
         slug,
         images,
       });
@@ -138,37 +144,14 @@ export class ProductService {
       product.slug = await this.generateUniqueSlug(dto.name, id);
     }
 
-    const { specifications, removedSpecificationIds, ...rest } = dto;
+    const { details, ...rest } = dto;
     Object.assign(product, rest);
 
-    if (specifications) {
-      type SpecEntry = { _id?: string; label: string; value: string };
-
-      const existingById = new Map<string, SpecEntry>(
-        product.specifications.map((s: any) => [String(s._id), s]),
-      );
-      const removedIds = new Set(removedSpecificationIds ?? []);
-
-      const merged: SpecEntry[] = [];
-      for (const spec of specifications) {
-        if (spec._id && existingById.has(spec._id)) {
-          const existing = existingById.get(spec._id)!;
-          existing.label = spec.label;
-          existing.value = spec.value;
-          merged.push(existing);
-          existingById.delete(spec._id);
-        } else {
-          merged.push({ label: spec.label, value: spec.value });
-        }
-      }
-
-      for (const [existingId, existing] of existingById) {
-        if (!removedIds.has(existingId)) {
-          merged.push(existing);
-        }
-      }
-
-      product.specifications = merged as any;
+    if (details) {
+      product.details = details.map((section, i) => ({
+        ...section,
+        index: String(i + 1),
+      })) as any;
     }
 
     if (newImages && newImages.length > 0) {
@@ -178,7 +161,6 @@ export class ProductService {
     await product.save();
     return product;
   }
-
   // Admin — remove a single image from a product
 
   async removeImage(id: string, fileId: string) {

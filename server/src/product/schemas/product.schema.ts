@@ -44,13 +44,28 @@ export class Product {
   @Prop({
     type: [
       {
-        label: { type: String, required: true },
-        value: { type: String, required: true },
+        index: { type: String, required: true },
+        title: { type: String, required: true },
+        body: { type: String, required: true },
+        specs: {
+          type: [
+            {
+              label: { type: String, required: true },
+              value: { type: String, required: true },
+            },
+          ],
+          default: [],
+        },
       },
     ],
     default: [],
   })
-  specifications!: { label: string; value: string }[];
+  details!: {
+    index: string;
+    title: string;
+    body: string;
+    specs: { label: string; value: string }[];
+  }[];
 
   @Prop({ default: true })
   isPublished!: boolean;
