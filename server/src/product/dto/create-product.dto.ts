@@ -8,12 +8,14 @@ import {
   Min,
   MaxLength,
 } from 'class-validator';
-import { IsValidSpecifications } from './is-valid-specifications.validator';
+import { IsValidDetails } from './is-valid-details.validator';
 
-export interface SpecificationInput {
+export interface DetailSectionInput {
   _id?: string;
-  label: string;
-  value: string;
+  index: string;
+  title: string;
+  body: string;
+  specs?: { label: string; value: string }[];
 }
 
 export class CreateProductDto {
@@ -62,8 +64,8 @@ export class CreateProductDto {
     return value;
   })
   @IsOptional()
-  @IsValidSpecifications()
-  specifications?: SpecificationInput[];
+  @IsValidDetails()
+  details?: DetailSectionInput[];
 
   @IsBoolean()
   @IsOptional()
