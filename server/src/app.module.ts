@@ -10,6 +10,8 @@ import { ContactModule } from './contact/contact.module';
 import { ImagekitModule } from './imagekit/imagekit.module';
 import { ProductModule } from './product/product.module';
 import { BlogModule } from './blog/blog.module';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -22,12 +24,12 @@ import { BlogModule } from './blog/blog.module';
 
       inject: [ConfigService],
 
-      useFactory: ( configService: ConfigService ) => ({
-        uri: configService.get<string>(
-          'MONGO_URI',
-        ),
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGO_URI'),
       }),
     }),
+
+    ThrottlerModule.forRoot([{ ttl: 60000, limit: 20 }]),
 
     AdminModule,
 
@@ -41,5 +43,6 @@ import { BlogModule } from './blog/blog.module';
 
     BlogModule,
   ],
+  providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
 export class AppModule {}
