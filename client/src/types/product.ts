@@ -53,10 +53,16 @@ export type ViewMode = "grid" | "list";
 
 // Admin dashboard product (real backend shape — matches NestJS schema)
 
-export interface AdminProductSpecification {
-  _id?: string;
+export interface AdminProductSpec {
   label: string;
   value: string;
+}
+
+export interface AdminProductDetailSection {
+  _id?: string;
+  title: string;
+  body: string;
+  specs: AdminProductSpec[];
 }
 
 export interface AdminProductImage {
@@ -78,7 +84,7 @@ export interface AdminProduct {
   price: number;
   stock: number;
   images: AdminProductImage[];
-  specifications: AdminProductSpecification[];
+  details: AdminProductDetailSection[];
   isPublished: boolean;
   views: number;
   stockStatus?: AdminStockStatus;

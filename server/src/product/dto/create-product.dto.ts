@@ -12,7 +12,7 @@ import { IsValidDetails } from './is-valid-details.validator';
 
 export interface DetailSectionInput {
   _id?: string;
-  index: string;
+  index?: string;
   title: string;
   body: string;
   specs?: { label: string; value: string }[];
