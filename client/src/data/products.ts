@@ -15,7 +15,8 @@ export const products: Product[] = [
     categorySlug: "respiratory-therapy",
     refCode: "G3 B25VT / B30VT",
     coordinates: "",
-
+    price: 185000,
+    stock: 4,
     manufacturer: "BMC Medical",
     status: "Published",
     views: 14250,
@@ -91,7 +92,8 @@ export const products: Product[] = [
     categorySlug: "sleep-therapy",
     refCode: "G3 A20 / CPAP",
     coordinates: "",
-
+    price: 185000,
+    stock: 14,
     manufacturer: "BMC Medical",
     status: "Published",
     views: 9840,
@@ -175,7 +177,8 @@ export const products: Product[] = [
     categorySlug: "oxygen-therapy",
     refCode: "KJR-Y51W / OXYGEN CONCENTRATOR",
     coordinates: "",
-
+    price: 185000,
+    stock: 14,
     manufacturer: "KCAREU",
     status: "Published",
     views: 6120,
