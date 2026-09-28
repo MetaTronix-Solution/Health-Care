@@ -51,7 +51,8 @@ export function AnalyticsOverview({ data }: { data: PerformancePoint[] }) {
               axisLine={false}
               tick={{ fill: "#6b7280", fontSize: 12 }}
               width={40}
-              domain={[0, "dataMax + 100"]}
+              allowDecimals={false}
+              domain={[0, (dataMax: number) => Math.max(dataMax, 5)]}
             />
             <YAxis
               yAxisId="right"
@@ -60,7 +61,8 @@ export function AnalyticsOverview({ data }: { data: PerformancePoint[] }) {
               axisLine={false}
               tick={{ fill: "#6b7280", fontSize: 12 }}
               width={40}
-              domain={[0, "dataMax + 20"]}
+              allowDecimals={false}
+              domain={[0, (dataMax: number) => Math.max(dataMax, 5)]}
             />
             <Tooltip
               cursor={{ stroke: "#dfe4e8", strokeWidth: 1 }}
@@ -74,19 +76,21 @@ export function AnalyticsOverview({ data }: { data: PerformancePoint[] }) {
               yAxisId="left"
               type="monotone"
               dataKey="views"
+              name="Views"
               stroke="#2e5bff"
               strokeWidth={2}
-              dot={false}
+              dot={{ r: 3 }}
               activeDot={{ r: 5 }}
             />
             <Line
               yAxisId="right"
               type="monotone"
               dataKey="inquiries"
+              name="Inquiries"
               stroke="#f97316"
               strokeWidth={2}
               strokeDasharray="5 4"
-              dot={false}
+              dot={{ r: 3 }}
               activeDot={{ r: 5 }}
             />
           </LineChart>

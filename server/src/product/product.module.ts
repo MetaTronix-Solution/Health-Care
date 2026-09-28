@@ -21,6 +21,6 @@ import { ImagekitModule } from '../imagekit/imagekit.module';
   ],
   controllers: [ProductController],
   providers: [ProductService],
-  exports: [MongooseModule],
+  exports: [ProductService],
 })
 export class ProductModule {}
