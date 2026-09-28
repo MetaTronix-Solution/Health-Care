@@ -16,13 +16,15 @@ import {
 import { COMPANY } from "@/src/data/company";
 import { createProductMetadata } from "@/src/lib/seo/pages";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  const product = await getProductBySlug(slug).catch(() => null);
 
   if (!product) {
     return { title: "Product Not Found" };
@@ -43,7 +45,10 @@ export default async function ProductDetailPage({
     notFound();
   }
 
-  const related = await getRelatedProducts(product.slug, product.categorySlug);
+  const related = await getRelatedProducts(
+    product.slug,
+    product.categorySlug,
+  ).catch(() => []);
 
   const breadcrumbs = [
     { label: "Home", href: "/" },
@@ -70,7 +75,9 @@ export default async function ProductDetailPage({
         </Container>
       </section>
 
-      <ProductSpecifications product={product} />
+      {product.details.length > 0 && (
+        <ProductSpecifications product={product} />
+      )}
 
       <section className="py-16 lg:py-24">
         <Container
@@ -115,7 +122,7 @@ export default async function ProductDetailPage({
         </Container>
       </section>
 
-      <RelatedProducts products={related} />
+      {related.length > 0 && <RelatedProducts products={related} />}
     </>
   );
 }
