@@ -44,7 +44,6 @@ export interface Product {
   stock?: number;
   details: ProductDetailSection[];
   applications: string[];
-  downloads: { label: string; href: string }[];
 }
 
 export type SortOption = "featured" | "name-asc" | "name-desc";
@@ -87,6 +86,7 @@ export interface AdminProduct {
   details: AdminProductDetailSection[];
   isPublished: boolean;
   views: number;
+  applications: string[];
   stockStatus?: AdminStockStatus;
   createdAt: string;
   updatedAt: string;

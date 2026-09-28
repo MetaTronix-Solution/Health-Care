@@ -67,6 +67,9 @@ export class Product {
     specs: { label: string; value: string }[];
   }[];
 
+  @Prop({ type: [String], default: [] })
+  applications!: string[];
+
   @Prop({ default: true })
   isPublished!: boolean;
 

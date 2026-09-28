@@ -7,6 +7,7 @@ import {
   IsString,
   Min,
   MaxLength,
+  IsArray,
 } from 'class-validator';
 import { IsValidDetails } from './is-valid-details.validator';
 
@@ -66,6 +67,21 @@ export class CreateProductDto {
   @IsOptional()
   @IsValidDetails()
   details?: DetailSectionInput[];
+
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      try {
+        return JSON.parse(value);
+      } catch {
+        return value;
+      }
+    }
+    return value;
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  applications?: string[];
 
   @IsBoolean()
   @IsOptional()
