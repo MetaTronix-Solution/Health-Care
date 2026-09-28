@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { Container } from "@/src/components/ui/Container";
-import { products } from "@/src/data/products";
+import { getProducts } from "@/src/lib/api/public-products";
 import { productsMetadata } from "@/src/lib/seo/pages";
 import { ProductsCatalog } from "@/src/components/products/ProductsCatalog";
 
 export const metadata: Metadata = productsMetadata;
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
+  const products = await getProducts();
+
   return (
     <>
       <section className="border-b border-neutral-line bg-neutral-bg">

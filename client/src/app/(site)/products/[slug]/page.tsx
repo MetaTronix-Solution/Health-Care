@@ -10,16 +10,11 @@ import { RelatedProducts } from "@/src/components/products/RelatedProducts";
 import { BreadcrumbJsonLd } from "@/src/components/seo/BreadcrumbJsonLd";
 import { ProductJsonLd } from "@/src/components/seo/ProductJsonLd";
 import {
-  products,
   getProductBySlug,
   getRelatedProducts,
-} from "@/src/data/products";
+} from "@/src/lib/api/public-products";
 import { COMPANY } from "@/src/data/company";
 import { createProductMetadata } from "@/src/lib/seo/pages";
-
-export function generateStaticParams() {
-  return products.map((product) => ({ slug: product.slug }));
-}
 
 export async function generateMetadata({
   params,
@@ -27,7 +22,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     return { title: "Product Not Found" };
@@ -42,19 +37,21 @@ export default async function ProductDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     notFound();
   }
 
-  const related = getRelatedProducts(product.slug, product.categorySlug);
+  const related = await getRelatedProducts(product.slug, product.categorySlug);
 
   const breadcrumbs = [
     { label: "Home", href: "/" },
     { label: "Products", href: "/products" },
     { label: product.name },
   ];
+
+  const hasApplications = product.applications.length > 0;
 
   return (
     <>
@@ -76,22 +73,28 @@ export default async function ProductDetailPage({
       <ProductSpecifications product={product} />
 
       <section className="py-16 lg:py-24">
-        <Container className="grid grid-cols-1 gap-10 lg:grid-cols-2">
-          <div>
-            <h2 className="text-2xl font-medium tracking-tight text-primary">
-              Applications
-            </h2>
-            <ul className="mt-5 flex flex-col gap-3">
-              {product.applications.map((application) => (
-                <li
-                  key={application}
-                  className="flex items-center justify-between border-t border-neutral-line pt-3 text-[14px] text-primary"
-                >
-                  {application}
-                </li>
-              ))}
-            </ul>
-          </div>
+        <Container
+          className={`grid grid-cols-1 gap-10 ${
+            hasApplications ? "lg:grid-cols-2" : "lg:grid-cols-1"
+          }`}
+        >
+          {hasApplications && (
+            <div>
+              <h2 className="text-2xl font-medium tracking-tight text-primary">
+                Applications
+              </h2>
+              <ul className="mt-5 flex flex-col gap-3">
+                {product.applications.map((application) => (
+                  <li
+                    key={application}
+                    className="flex items-center justify-between border-t border-neutral-line pt-3 text-[14px] text-primary"
+                  >
+                    {application}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <div className="flex flex-col justify-between border border-neutral-line bg-neutral-bg p-8">
             <div>

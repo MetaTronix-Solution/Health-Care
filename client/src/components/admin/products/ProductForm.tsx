@@ -17,6 +17,7 @@ import { Input } from "@/src/components/ui/Input";
 import { Textarea } from "@/src/components/ui/Textarea";
 import { FormField } from "@/src/components/ui/FormField";
 import { DetailSectionList } from "@/src/components/admin/products/DetailSectionList";
+import { ApplicationList } from "@/src/components/admin/products/ApplicationList";
 import { ProductImageUpload } from "@/src/components/admin/products/ProductImageUpload";
 import { api } from "@/src/lib/api/client";
 import { ApiError } from "@/src/lib/api/errors";
@@ -59,6 +60,10 @@ export function ProductForm({ product }: ProductFormProps) {
   const [details, setDetails] =
     useState<AdminProductDetailSection[]>(initialDetails);
 
+  const [applications, setApplications] = useState<string[]>(
+    product?.applications ?? [],
+  );
+
   const [existingImages, setExistingImages] = useState(product?.images ?? []);
   const [newFiles, setNewFiles] = useState<File[]>([]);
   const [removedFileIds, setRemovedFileIds] = useState<string[]>([]);
@@ -92,6 +97,10 @@ export function ProductForm({ product }: ProductFormProps) {
       }));
 
     fd.append("details", JSON.stringify(cleanDetails));
+    fd.append(
+      "applications",
+      JSON.stringify(applications.map((a) => a.trim()).filter(Boolean)),
+    );
     newFiles.forEach((file) => fd.append("images", file));
     return fd;
   }
@@ -204,6 +213,18 @@ export function ProductForm({ product }: ProductFormProps) {
             </CardHeader>
             <CardContent>
               <DetailSectionList sections={details} onChange={setDetails} />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Applications</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ApplicationList
+                applications={applications}
+                onChange={setApplications}
+              />
             </CardContent>
           </Card>
         </div>

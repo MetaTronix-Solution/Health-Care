@@ -82,8 +82,6 @@ export const products: Product[] = [
       "S/T Therapy",
       "Non-Invasive Ventilation",
     ],
-
-    downloads: [{ label: "Product Brochure (PDF)", href: "#" }],
   },
   {
     slug: "bmc-g3-a20",
@@ -167,8 +165,6 @@ export const products: Product[] = [
       "CPAP Therapy",
       "AutoCPAP Therapy",
     ],
-
-    downloads: [{ label: "Product Brochure (PDF)", href: "#" }],
   },
   {
     slug: "kjr-y51w",
@@ -240,8 +236,6 @@ export const products: Product[] = [
       "Respiratory Care",
       "Nebulization Therapy",
     ],
-
-    downloads: [{ label: "Product Brochure (PDF)", href: "#" }],
   },
 ];
 

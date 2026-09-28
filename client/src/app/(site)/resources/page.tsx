@@ -6,6 +6,7 @@ import type { Blog } from "@/src/types/blog";
 import { resourcesMetadata } from "@/src/lib/seo/pages";
 
 export const metadata: Metadata = resourcesMetadata;
+export const dynamic = "force-dynamic";
 
 interface BlogListResponse {
   items: Blog[];
