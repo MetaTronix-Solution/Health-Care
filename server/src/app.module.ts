@@ -12,6 +12,7 @@ import { ProductModule } from './product/product.module';
 import { BlogModule } from './blog/blog.module';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -42,6 +43,8 @@ import { APP_GUARD } from '@nestjs/core';
     ProductModule,
 
     BlogModule,
+
+    DashboardModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

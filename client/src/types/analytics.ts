@@ -22,3 +22,23 @@ export type TopProduct = {
   views: number;
   status: "in-stock" | "low-stock" | "backordered";
 };
+
+// Raw backend responses (GET /dashboard/*)
+
+export type ApiStat = {
+  value: number;
+  changePercent?: number;
+};
+
+export type ApiStats = {
+  totalProducts: ApiStat;
+  activeProducts: ApiStat;
+  newInquiries: ApiStat;
+  serviceRequests: ApiStat;
+};
+
+export type ApiPerformancePoint = {
+  day: string;
+  views: number;
+  inquiries: number;
+};
