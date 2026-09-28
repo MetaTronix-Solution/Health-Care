@@ -17,6 +17,7 @@ export function setRefreshCookie(res: NextResponse, refreshToken: string) {
 
 export function clearSessionCookies(res: NextResponse) {
   res.cookies.delete("refresh_token");
+  res.cookies.delete("csrf_token");
 }
 
 const inflight = new Map<string, Promise<Tokens | null>>();

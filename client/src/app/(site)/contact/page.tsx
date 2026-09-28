@@ -41,7 +41,7 @@ export default function ContactPage() {
               <p className="eyebrow mb-3">Specialization</p>
               <p className="text-body-sm text-primary/80">
                 Sleep medicine, respiratory care, CPAP/BiPAP solutions, and
-                biomedical equipment — including authorized BMC Medical products
+                biomedical equipment including authorized BMC Medical products
                 in Nepal.
               </p>
             </div>

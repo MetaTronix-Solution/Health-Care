@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
 import { api } from "@/src/lib/api/client";
 import { setAccessToken } from "@/src/lib/auth/token-store";
+import { csrfHeaders } from "@/src/lib/auth/csrf-client";
 
 export function LogoutButton() {
   const router = useRouter();
@@ -13,10 +14,18 @@ export function LogoutButton() {
   async function handleLogout() {
     setLoading(true);
     try {
+      // 1. Invalidate the refresh token in NestJS (uses the in-memory access token)
       await api("/auth/logout", { method: "POST" }).catch(() => {});
     } finally {
+      // 2. Drop the in-memory access token
       setAccessToken(null);
-      await fetch("/api/auth/logout", { method: "POST" }); // clears refresh cookie
+
+      // 3. Clear the httpOnly cookies, once, with the CSRF header
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        headers: { ...csrfHeaders() },
+      }).catch(() => {});
+
       router.replace("/login");
       router.refresh();
     }
