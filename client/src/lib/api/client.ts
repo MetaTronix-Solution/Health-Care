@@ -1,8 +1,12 @@
 import { ApiError } from "./errors";
 import { getAccessToken, setAccessToken } from "@/src/lib/auth/token-store";
+import { csrfHeaders } from "@/src/lib/auth/csrf-client";
 
 async function silentRefresh(): Promise<string | null> {
-  const res = await fetch("/api/auth/refresh", { method: "POST" });
+  const res = await fetch("/api/auth/refresh", {
+    method: "POST",
+    headers: { ...csrfHeaders() },
+  });
   if (!res.ok) return null;
   const { accessToken } = await res.json();
   setAccessToken(accessToken);

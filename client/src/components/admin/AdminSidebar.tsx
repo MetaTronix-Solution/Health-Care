@@ -10,7 +10,7 @@ export function AdminSidebar() {
       style={{ width: "var(--admin-sidebar-width)" }}
     >
       <div className="px-5 py-6">
-        <Link href="/dashboard" className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3">
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary">
             <ShieldPlus aria-hidden className="h-5 w-5 text-white" />
           </span>

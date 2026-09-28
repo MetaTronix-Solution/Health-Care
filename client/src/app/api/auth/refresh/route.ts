@@ -1,13 +1,16 @@
-import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
 import {
   clearSessionCookies,
   refreshTokens,
   setRefreshCookie,
 } from "@/src/lib/auth/session";
+import { csrfGuard, setCsrfCookie } from "@/src/lib/auth/csrf";
 
-export async function POST() {
-  const refresh = (await cookies()).get("refresh_token")?.value;
+export async function POST(req: NextRequest) {
+  const blocked = csrfGuard(req);
+  if (blocked) return blocked;
+
+  const refresh = req.cookies.get("refresh_token")?.value;
   if (!refresh) {
     return NextResponse.json({ message: "No session" }, { status: 401 });
   }
@@ -24,5 +27,6 @@ export async function POST() {
 
   const res = NextResponse.json({ accessToken: tokens.accessToken });
   setRefreshCookie(res, tokens.refreshToken);
+  setCsrfCookie(res);
   return res;
 }
